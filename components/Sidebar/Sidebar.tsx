@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   HomeIcon as HomeIconOutlined,
   Cog6ToothIcon as SettingsIconOutlined,
@@ -20,30 +21,29 @@ type Theme = "dark" | "light";
 export default function Sidebar() {
   const menuItems = [
     {
+      id: 0,
       name: "Dashboard",
       icon: HomeIconOutlined,
       iconSolid: HomeIconSolid,
-      to: "/",
+      url: "/",
     },
     {
-      name: "Notes",
+      id: 1,
+      name: "Tickets",
       icon: NotesIconOutlined,
       iconSolid: NotesIconSolid,
-      to: "/notes",
+      url: "/tickets",
     },
     {
+      id: 2,
       name: "Settings",
       icon: SettingsIconOutlined,
       iconSolid: SettingsIconSolid,
-      to: "/settings",
+      url: "/settings",
     },
   ];
-  const [selectedItem, setSelectedItem] = useState(menuItems[0]);
   const [theme, setTheme] = useState<Theme>("light");
-
-  const handleOnClick = (item: any) => {
-    setSelectedItem(item);
-  };
+  const pathname = usePathname();
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -55,32 +55,27 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`h-screen w-72 border-r-2 border-gray-100 dark:border-none transition-all`}
+      className={`h-screen w-64 border-r-2 border-gray-100 dark:border-none transition-all`}
     >
       <div className="flex h-screen justify-between flex-col items-start dark:bg-neutral-900 bg-gray-50 transition-all">
-        <div className="w-full mt-2">
+        <div className="w-full mt-4">
           <div className="flex items-center mx-6 my-2 p-2 px-4">
-            <p className="text-3xl text-white bg-green-500 font-semibold text-primary tracking-wider p-2 px-4 rounded">
+            <p className="text-3xl bg-neutral-900 dark:bg-neutral-700 font-semibold text-white tracking-wider p-2 px-4 rounded">
               C
             </p>
           </div>
-          <div className="w-full">
+          <div className="mt-4">
             {menuItems.map((item, index) => (
-              <Link key={index} href={item.to}>
+              <Link key={index} href={item.url}>
                 <div
                   className={`flex mx-6 my-2 p-2 px-4 hover:text-primary hover:cursor-pointer transition-colors ${
-                    selectedItem.name === item.name
+                    pathname === item.url
                       ? "text-primary"
                       : "text-gray-600 dark:text-neutral-300"
                   }`}
-                  onClick={() => handleOnClick(item)}
                 >
                   <div className="w-6 h-6 align-middle mr-3">
-                    {selectedItem.name === item.name ? (
-                      <item.iconSolid />
-                    ) : (
-                      <item.icon />
-                    )}
+                    {pathname === item.url ? <item.iconSolid /> : <item.icon />}
                   </div>
                   {item.name}
                 </div>
