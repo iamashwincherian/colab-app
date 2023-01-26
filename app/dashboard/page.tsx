@@ -1,3 +1,5 @@
+"use client";
+
 import PageLayout from "../../components/layouts/PageLayout";
 import MainContent from "../../components/layoutWrapper/MainContent";
 
