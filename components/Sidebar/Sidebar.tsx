@@ -3,55 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  HomeIcon as HomeIconOutlined,
-  Cog6ToothIcon as SettingsIconOutlined,
-  ClipboardDocumentListIcon as NotesIconOutlined,
-  MoonIcon,
-  SunIcon,
-} from "@heroicons/react/24/outline";
-import {
-  HomeIcon as HomeIconSolid,
-  Cog6ToothIcon as SettingsIconSolid,
-  ClipboardDocumentListIcon as NotesIconSolid,
-} from "@heroicons/react/24/solid";
 
-type Theme = "dark" | "light";
+import menuItems from "./menuItems";
 
 export default function Sidebar() {
-  const menuItems = [
-    {
-      id: 0,
-      name: "Dashboard",
-      icon: HomeIconOutlined,
-      iconSolid: HomeIconSolid,
-      url: "/",
-    },
-    {
-      id: 1,
-      name: "Tickets",
-      icon: NotesIconOutlined,
-      iconSolid: NotesIconSolid,
-      url: "/tickets",
-    },
-    {
-      id: 2,
-      name: "Settings",
-      icon: SettingsIconOutlined,
-      iconSolid: SettingsIconSolid,
-      url: "/settings",
-    },
-  ];
-  const [theme, setTheme] = useState<Theme>("light");
   const pathname = usePathname();
-
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    const root = window.document.documentElement;
-    root.classList.remove(theme);
-    root.classList.add(newTheme);
-    setTheme(newTheme);
-  };
 
   return (
     <div
@@ -81,18 +37,6 @@ export default function Sidebar() {
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-        <div className="w-full">
-          <hr className="border-gray-200 dark:border-gray-700"></hr>
-          <div
-            onClick={toggleTheme}
-            className="flex mx-6 my-2 p-2 px-4 text-gray-600 dark:text-white hover:text-primary cursor-pointer transition-colors"
-          >
-            <div className="w-5 h-5 align-middle mr-3">
-              {theme === "light" ? <MoonIcon /> : <SunIcon />}
-            </div>
-            <p>Toggle Theme</p>
           </div>
         </div>
       </div>
