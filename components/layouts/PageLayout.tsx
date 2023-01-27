@@ -6,7 +6,7 @@ export default function PageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex">
+    <div className="flex bg-white dark:bg-dark transition-colors">
       <Sidebar />
       {children}
     </div>

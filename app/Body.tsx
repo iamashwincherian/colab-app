@@ -8,6 +8,8 @@ import {
   useThemeContext,
 } from "../contexts/ThemeContext";
 import clsx from "../helpers/clsx";
+import { SnackbarProvider } from "notistack";
+import { UserContextProvider } from "../contexts/UserContext";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -22,7 +24,17 @@ const inter = Inter({
 
 const Body = ({ children }: BodyProps) => {
   const { theme } = useThemeContext();
-  return <body className={clsx(theme, inter.className)}>{children}</body>;
+  return (
+    <body className={clsx(theme, inter.className)}>
+      <SnackbarProvider
+        anchorOrigin={{ horizontal: "right", vertical: "top" }}
+        autoHideDuration={1000 * 3}
+        preventDuplicate
+      >
+        {children}
+      </SnackbarProvider>
+    </body>
+  );
 };
 
 export default function ContextProviderWrappers({
@@ -31,9 +43,11 @@ export default function ContextProviderWrappers({
 }: BodyProps) {
   return (
     <SessionProvider session={session}>
-      <ThemeContextProvider>
-        <Body>{children}</Body>
-      </ThemeContextProvider>
+      <UserContextProvider>
+        <ThemeContextProvider>
+          <Body>{children}</Body>
+        </ThemeContextProvider>
+      </UserContextProvider>
     </SessionProvider>
   );
 }
