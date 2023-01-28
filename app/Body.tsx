@@ -24,6 +24,7 @@ const inter = Inter({
 
 const Body = ({ children }: BodyProps) => {
   const { theme } = useThemeContext();
+
   return (
     <body className={clsx(theme, inter.className)}>
       <SnackbarProvider
