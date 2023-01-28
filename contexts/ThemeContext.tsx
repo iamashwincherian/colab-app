@@ -18,9 +18,9 @@ const ThemeContext = createContext<ThemeContextInterface>({
 });
 
 export const useThemeContext = () => useContext(ThemeContext);
-
 export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = usePersistentContextStore("theme", DEFAULT_THEME);
+
   return (
     <ThemeContext.Provider
       value={{

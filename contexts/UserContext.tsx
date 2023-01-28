@@ -17,6 +17,7 @@ export const useUserContext = () => useContext(UserContext);
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = usePersistentContextStore("user", {});
+
   return (
     <UserContext.Provider
       value={{
