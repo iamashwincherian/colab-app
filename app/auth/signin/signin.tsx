@@ -1,18 +1,20 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import Logo from "../../../components/logo/logo";
 import GoogleButton from "../components/buttons/GoogleButton";
 
 export default function SigninPage({ providers }: any) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { enqueueSnackbar } = useSnackbar();
   const { google } = providers;
+  const [email, setEmail] = useState("iamashwincherian@gmail.com");
+  const [password, setPassword] = useState("iamhacker5802");
 
   const checkForCallbackError = () => {
     const error = searchParams.get("error");
@@ -27,6 +29,15 @@ export default function SigninPage({ providers }: any) {
     checkForCallbackError();
   }, []);
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    signIn("credentials", {
+      callbackUrl: "/?auth=success",
+      email,
+      password,
+    });
+  };
+
   return (
     <FullScreenLayout>
       <div className="flex justify-center items-center w-screen h-screen">
@@ -39,7 +50,7 @@ export default function SigninPage({ providers }: any) {
           </div>
           <div className="overflow-hidden shadow sm:rounded-lg">
             <div className="w-[400px] bg-white dark:bg-dark-2 dark:text-gray-300 px-4 py-5 sm:p-6 ">
-              <form>
+              <form onSubmit={handleLogin}>
                 <p className="text-xl font-regular">Login</p>
                 <small className="mb-4 text-gray-400 ">Welcome back</small>
                 <div className="my-5">
@@ -60,11 +71,13 @@ export default function SigninPage({ providers }: any) {
                     Email
                   </label>
                   <input
+                    id="email-address"
                     type="text"
                     name="email-address"
-                    id="email-address"
                     autoComplete="email"
                     placeholder="user@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
                 </div>
@@ -76,11 +89,13 @@ export default function SigninPage({ providers }: any) {
                     Password
                   </label>
                   <input
+                    id="password"
                     type="password"
                     name="password"
-                    id="password"
                     autoComplete="password"
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
                 </div>
@@ -93,8 +108,7 @@ export default function SigninPage({ providers }: any) {
                   </a>
                 </div>
                 <button
-                  onClick={() => router.push("/")}
-                  type={"button"}
+                  type={"submit"}
                   className="bg-primary hover:bg-primary-dark text-white w-full my-3 py-2 rounded-md shadow transition-colors"
                 >
                   Login
