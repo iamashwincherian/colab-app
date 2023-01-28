@@ -23,7 +23,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (session && searchParams.get("auth") === "success") {
-      enqueueSnackbar(`Welcome back ${session.user?.name}`, {
+      enqueueSnackbar(`Welcome ${session.user?.name}`, {
         variant: "success",
       });
       router.replace(pathname);
