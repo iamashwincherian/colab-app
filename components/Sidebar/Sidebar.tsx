@@ -57,7 +57,7 @@ const Profile = () => {
   const { user, logoutUser } = useUserContext();
   const { enqueueSnackbar } = useSnackbar();
 
-  if (!Object.keys(user).length) return <></>;
+  if (!user || !Object.keys(user).length) return <></>;
 
   const getNameInitials = () => {
     const [firstName, ...lastName] = "Ashwin".split(" ");
