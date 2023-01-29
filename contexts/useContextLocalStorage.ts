@@ -12,7 +12,7 @@ const store = (key: string, data: any = null) => {
   localStorage.setItem(key, JSON.stringify(data))
 }
 
-export default function usePersistentContextStore(key: string, value: any) {
+export default function useContextLocalStorage(key: string, value: any) {
   let initialValue = value
   let storeKey = STORE_KEY_INITIAL + key
   const isServer = typeof window === "undefined"
@@ -42,5 +42,5 @@ export default function usePersistentContextStore(key: string, value: any) {
     }
   }, [state]);
 
-  return [state, setState];
+  return [state, setState] as const;
 }

@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext } from "react";
-import usePersistentContextStore from "./useContextStore";
+import useContextLocalStorage from "./useContextLocalStorage";
 
 interface UserContextInterface {
   user: object;
@@ -16,7 +16,7 @@ const UserContext = createContext<UserContextInterface>({
 export const useUserContext = () => useContext(UserContext);
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = usePersistentContextStore("user", {});
+  const [user, setUser] = useContextLocalStorage("userData", {});
 
   return (
     <UserContext.Provider
