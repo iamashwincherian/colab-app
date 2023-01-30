@@ -6,7 +6,7 @@ type PropTypes = {
 
 export default function MainContent({ children, title, subtitle }: PropTypes) {
   return (
-    <div className="py-6 px-8 flex-1">
+    <div className="flex flex-col py-6 px-8 flex-1">
       <div className="mb-5">
         <h1 className="text-3xl font-medium tracking-tight text-gray-900 dark:text-zinc-300 capitalize">
           {title}
