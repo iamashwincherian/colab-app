@@ -24,7 +24,7 @@ export default NextAuth({
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials, req) {
+      async authorize(credentials: any, req) {
         const { email, password } = credentials
 
         const user = await fetch(`${API_HOST}/auth/login`, {
@@ -38,10 +38,10 @@ export default NextAuth({
         return user || null
       }
     })
-  
   ],
   pages: {
     signIn: '/auth/signin',
+    newUser: '/auth/register',
     signOut: '/auth/signout',
     error: '/auth/error', // Error code passed in query string as ?error=
     verifyRequest: '/auth/verify-request', // (used for check email message)

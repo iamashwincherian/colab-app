@@ -7,10 +7,10 @@ const CALLBACK_URL = "/?auth=success";
 
 const ButtonVarientTexts = {
   login: "Login with Google",
-  signup: "Signup with Google",
+  register: "Register with Google",
 };
 
-type ButtonVarient = "login" | "signup";
+type ButtonVarient = "login" | "register";
 interface ButtonProps {
   id: string;
   type: ButtonVarient;
