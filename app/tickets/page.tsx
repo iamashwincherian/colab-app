@@ -51,55 +51,42 @@ export default function Home() {
   const { columnOrder, columns, items } = tickets;
 
   const onDragEnd = (result: any) => {
-    const {
-      source: { index: sourceIndex, droppableId: sourceId },
-      destination: { index: destinationIndex, droppableId: destinationId },
-      draggableId,
-    } = result;
-    if (!result.destination) return;
+    const { source, destination, draggableId } = result;
+    if (!destination) return;
+
+    const { index: sourceIndex, droppableId: sourceId } = source;
+    const { index: destinationIndex, droppableId: destinationId } = destination;
     if (sourceId === destinationId && sourceIndex === destinationIndex) return;
 
     const sourceColumn = columns[sourceId];
-    const destinationColumn = columns[destinationId];
     const sourceTicketIds = [...sourceColumn.ticketIds];
     sourceTicketIds.splice(sourceIndex, 1);
 
-    if (sourceColumn === destinationColumn) {
+    if (sourceId === destinationId) {
       sourceTicketIds.splice(destinationIndex, 0, draggableId);
-
-      const newColumn = {
-        ...sourceColumn,
-        ticketIds: sourceTicketIds,
-      };
       setTickets({
         ...tickets,
         columns: {
           ...tickets.columns,
-          [newColumn.id]: newColumn,
+          [sourceId]: { ...sourceColumn, ticketIds: sourceTicketIds },
         },
       });
       return;
     }
 
-    const newSourceColumn = {
-      ...sourceColumn,
-      ticketIds: sourceTicketIds,
-    };
-
+    const destinationColumn = columns[destinationId];
     const destinationTicketIds = [...destinationColumn.ticketIds];
     destinationTicketIds.splice(destinationIndex, 0, draggableId);
-
-    const newDestinationColumn = {
-      ...destinationColumn,
-      ticketIds: destinationTicketIds,
-    };
 
     setTickets({
       ...tickets,
       columns: {
         ...columns,
-        [sourceColumn.id]: newSourceColumn,
-        [destinationColumn.id]: newDestinationColumn,
+        [sourceId]: { ...sourceColumn, ticketIds: sourceTicketIds },
+        [destinationId]: {
+          ...destinationColumn,
+          ticketIds: destinationTicketIds,
+        },
       },
     });
   };
