@@ -4,8 +4,9 @@ import PageLayout from "../../components/layouts/PageLayout";
 import MainContent from "../../components/layoutWrapper/MainContent";
 
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
-import { StrictModeDroppable } from "../../components/droppable/droppable";
+import { StrictModeDroppable } from "../../components/droppable/Droppable";
 import { useState } from "react";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 const title = "Tickets";
 const subtitle =
@@ -95,14 +96,14 @@ export default function Home() {
     <PageLayout>
       <MainContent title={title} subtitle={subtitle}>
         <DragDropContext onDragEnd={onDragEnd}>
-          <div className="flex dark:text-white items-start dark:shadow">
+          <div className="flex dark:text-white items-start">
             {columnOrder.map((colId: string) => {
               const column = columns[colId];
 
               return (
                 <div
                   key={colId}
-                  className="w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md"
+                  className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md"
                 >
                   <div className="p-2 dark:shadow-xl px-3">{column.text}</div>
                   <StrictModeDroppable droppableId={colId}>
@@ -125,7 +126,7 @@ export default function Home() {
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className="dark:bg-dark-3 mx-3 p-4 rounded border dark:border-none dark:shadow-lg cursor-pointer mb-3"
+                                    className="bg-white shadow-sm dark:bg-dark-3 mx-3 p-4 rounded border dark:border-none dark:shadow-lg cursor-pointer mb-3"
                                   >
                                     {items[ticketId].content}
                                   </div>
@@ -133,11 +134,11 @@ export default function Home() {
                               </Draggable>
                             )
                           )}
-                          {!column.ticketIds.length && (
-                            <div className="py-2"></div>
-                          )}
                         </div>
                         {provided.placeholder}
+                        <div className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-dark-2 py-2 h dark:hover:bg-dark-3">
+                          <PlusIcon className="w-5 h-5 [&>path]:stroke-[3]" />
+                        </div>
                       </div>
                     )}
                   </StrictModeDroppable>
