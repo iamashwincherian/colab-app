@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 import menuItems from "./menuItems";
@@ -54,6 +54,7 @@ export default function Sidebar() {
 }
 
 const Profile = () => {
+  const router = useRouter();
   const { user, logoutUser } = useUserContext();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -70,8 +71,9 @@ const Profile = () => {
     enqueueSnackbar(`Logging you out ...`, {
       variant: "default",
     });
-    signOut({ callbackUrl: "/auth/signin" });
     logoutUser();
+    signOut({ redirect: false });
+    router.push("/auth/signin");
   };
 
   return (

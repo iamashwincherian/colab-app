@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 
@@ -12,6 +12,7 @@ import GoogleButton from "../components/buttons/GoogleButton";
 
 export default function SigninPage({ providers }: any) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { google } = providers;
   const [email, setEmail] = useState("iamashwincherian@gmail.com");
@@ -30,13 +31,19 @@ export default function SigninPage({ providers }: any) {
     checkForCallbackError();
   }, []);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signIn("credentials", {
-      callbackUrl: "/?auth=success",
+    const response = await signIn("credentials", {
+      callbackUrl: "/auth/callback?auth=success",
       email,
       password,
+      redirect: false,
     });
+    if (response?.ok) {
+      if (response.url) {
+        router.replace(response.url);
+      }
+    }
   };
 
   return (
