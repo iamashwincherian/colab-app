@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 
@@ -10,8 +10,9 @@ import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import Logo from "../../../components/logo/logo";
 import GoogleButton from "../components/buttons/GoogleButton";
 
-export default function SignupPage({ providers }: any) {
+export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { google } = providers;
   const [email, setEmail] = useState("");
@@ -31,13 +32,30 @@ export default function SignupPage({ providers }: any) {
     checkForCallbackError();
   }, []);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // signIn("credentials", {
-    //   callbackUrl: "/?auth=success",
-    //   email,
-    //   password,
-    // });
+    if (password !== passwordConfirm) {
+      enqueueSnackbar("Passwords doesn't match", {
+        variant: "error",
+      });
+      return;
+    }
+
+    const response = await signIn("credentials", {
+      callbackUrl: "/auth/callback?auth=success",
+      redirect: false,
+      isSignup: true,
+      email,
+      password,
+    });
+    if (response?.ok) {
+      if (response.url) {
+        enqueueSnackbar("Registered successfully", { variant: "success" });
+        router.replace(response.url);
+      }
+    } else {
+      enqueueSnackbar(response?.error, { variant: "error" });
+    }
   };
 
   return (
@@ -82,6 +100,7 @@ export default function SignupPage({ providers }: any) {
                     placeholder="user@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                     className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
                 </div>
@@ -99,6 +118,7 @@ export default function SignupPage({ providers }: any) {
                     autoComplete="password"
                     placeholder="••••••••"
                     value={password}
+                    required
                     onChange={(e) => setPassword(e.target.value)}
                     className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
@@ -117,6 +137,7 @@ export default function SignupPage({ providers }: any) {
                     autoComplete="password-confirm"
                     placeholder="••••••••"
                     value={passwordConfirm}
+                    required
                     onChange={(e) => setPasswordConfirm(e.target.value)}
                     className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />

@@ -2,8 +2,7 @@ import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from "next-auth/providers/credentials";
 
-import callbacks from './callbacks'
-const API_HOST = 'http://127.0.0.1:8000/api'
+import { signIn, jwt, session, authorize } from './callbacks'
 
 export default NextAuth({
   secret: process.env.AUTH_SECRET,
@@ -24,19 +23,7 @@ export default NextAuth({
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials: any, req) {
-        const { email, password } = credentials
-
-        const user = await fetch(`${API_HOST}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        })
-          .then(res => res.json())
-          .catch(err => console.log(err));
-
-        return user || null
-      }
+      authorize
     })
   ],
   pages: {
@@ -46,6 +33,6 @@ export default NextAuth({
     error: '/auth/error', // Error code passed in query string as ?error=
     verifyRequest: '/auth/verify-request', // (used for check email message)
   },
-  callbacks,
+  callbacks: { signIn, jwt, session },
 })
 
