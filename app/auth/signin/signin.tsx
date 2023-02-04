@@ -41,8 +41,11 @@ export default function SigninPage({ providers }: any) {
     });
     if (response?.ok) {
       if (response.url) {
+        enqueueSnackbar("Logged in successfully", { variant: "success" });
         router.replace(response.url);
       }
+    } else {
+      enqueueSnackbar(response?.error, { variant: "error" });
     }
   };
 

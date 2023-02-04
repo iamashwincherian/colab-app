@@ -44,13 +44,13 @@ const session = async ({ session, token, user }: any) => {
 }
 
 const authorize = async (credentials: any) => {
-  const { email, password, isSignup } = credentials
+  const { email, password, firstName = null, lastName = null,isSignup } = credentials
   const url = isSignup ? REGISTER_URL : LOGIN_URL
 
   const user = await fetch(url, {
     method: 'POST',
     headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ email, password, first_name: firstName, last_name: lastName }),
   })
     .then(res => {
       if(res.ok) return res.json()

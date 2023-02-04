@@ -17,7 +17,8 @@ export default function RegisterPage({ providers }: any) {
   const { google } = providers;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastNmae] = useState("");
 
   const checkForCallbackError = () => {
     const error = searchParams.get("error");
@@ -34,12 +35,6 @@ export default function RegisterPage({ providers }: any) {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (password !== passwordConfirm) {
-      enqueueSnackbar("Passwords doesn't match", {
-        variant: "error",
-      });
-      return;
-    }
 
     const response = await signIn("credentials", {
       callbackUrl: "/auth/callback?auth=success",
@@ -47,6 +42,8 @@ export default function RegisterPage({ providers }: any) {
       isSignup: true,
       email,
       password,
+      firstName,
+      lastName,
     });
     if (response?.ok) {
       if (response.url) {
@@ -84,7 +81,46 @@ export default function RegisterPage({ providers }: any) {
                   <p className="mx-4 dark:text-gray-200">or</p>
                   <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
                 </div>
-
+                <div className="flex gap-2 mb-3">
+                  <div>
+                    <label
+                      htmlFor="email-address"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-400"
+                    >
+                      First Name
+                    </label>
+                    <input
+                      id="first-name"
+                      type="text"
+                      name="first-name"
+                      autoComplete="first-name"
+                      value={firstName}
+                      placeholder={"John"}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                      className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="email-address"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-400"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      id="last-name"
+                      type="text"
+                      name="last-name"
+                      autoComplete="last-name"
+                      value={lastName}
+                      placeholder={"Doe"}
+                      onChange={(e) => setLastNmae(e.target.value)}
+                      required
+                      className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                    />
+                  </div>
+                </div>
                 <div className="mb-3">
                   <label
                     htmlFor="email-address"
@@ -123,7 +159,7 @@ export default function RegisterPage({ providers }: any) {
                     className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
                 </div>
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-400"
@@ -141,7 +177,7 @@ export default function RegisterPage({ providers }: any) {
                     onChange={(e) => setPasswordConfirm(e.target.value)}
                     className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
-                </div>
+                </div> */}
                 <button
                   type={"submit"}
                   className="bg-primary hover:bg-primary-dark text-white w-full my-3 py-2 rounded-md shadow transition-colors"
