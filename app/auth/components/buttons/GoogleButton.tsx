@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 
-const CALLBACK_URL = "/?auth=success";
+const CALLBACK_URL = "/auth/callback?auth=success";
 
 const ButtonVarientTexts = {
   login: "Login with Google",

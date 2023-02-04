@@ -14,21 +14,21 @@ const jwt = async ({ token, account, profile }: any) => {
   if (!account) return token;
 
   if(account.provider === "google") {
-    const data = await fetch(`${API_HOST}/auth/google/`, {
+    const user = await fetch(`${API_HOST}/auth/google/`, {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
       body: JSON.stringify({ id_token: account.id_token }),
     }).then(res => res.json());
 
     token = {
-      token: data.token,
-      email: data.user.email,
-      username: data.user.username,
-      name: data.user.name,
-      is_staff: data.user.is_staff,
-      is_active: data.user.is_active,
-      last_login: data.user.last_login,
-      date_joined: data.user.date_joined,
+      token: user.token,
+      email: user.email,
+      username: user.username,
+      name: user.name,
+      is_staff: user.is_staff,
+      is_active: user.is_active,
+      last_login: user.last_login,
+      date_joined: user.date_joined,
     };
   }
 
