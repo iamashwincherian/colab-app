@@ -16,7 +16,7 @@ export default function SigninPage({ providers }: any) {
   const { enqueueSnackbar } = useSnackbar();
   const { google } = providers;
   const [email, setEmail] = useState("iamashwincherian@gmail.com");
-  const [password, setPassword] = useState("iamhacker5802");
+  const [password, setPassword] = useState("hacker5802");
 
   const checkForCallbackError = () => {
     const error = searchParams.get("error");
