@@ -3,6 +3,11 @@ import Logo from "../../components/logo/logo";
 import ProjectList from "./components/ProjectList";
 
 export default function Projects() {
+  const projectListItems = [
+    { id: 0, title: "Project 1" },
+    { id: 1, title: "Project 2" },
+  ];
+
   return (
     <FullScreenLayout>
       <div className="flex flex-col">
@@ -19,7 +24,7 @@ export default function Projects() {
           </p>
         </div>
         <div className="mt-1 bg-white px-8 py-6">
-          <ProjectList />
+          <ProjectList items={projectListItems} />
         </div>
       </div>
     </FullScreenLayout>
