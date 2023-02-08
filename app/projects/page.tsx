@@ -5,7 +5,7 @@ import ProjectList from "./components/ProjectList";
 export default function Projects() {
   const projectListItems = [
     { id: 0, title: "Project 1" },
-    { id: 1, title: "Project 2" },
+    { id: 1, title: "Project 3" },
   ];
 
   return (
