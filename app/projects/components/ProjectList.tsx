@@ -1,6 +1,7 @@
 type ProjectType = {
   id: number;
   title: string;
+  description?: string;
 };
 
 type PropTypes = {
