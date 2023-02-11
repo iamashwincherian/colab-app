@@ -9,7 +9,11 @@ export default function Projects() {
       title: "Project 1",
       description: "This is description of project 1",
     },
-    { id: 1, title: "Project 3" },
+    {
+      id: 1,
+      title: "Project 3",
+      description: "This is description of project 2",
+    },
   ];
 
   return (
