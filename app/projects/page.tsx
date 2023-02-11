@@ -6,8 +6,9 @@ export default function Projects() {
   const projectListItems = [
     {
       id: 0,
-      title: "Project 1",
-      description: "This is description of project 1",
+      title: "Collaborative Task Manager",
+      description:
+        "A task management system that allows multiple users to collaborate on a single projec",
     },
     {
       id: 1,
