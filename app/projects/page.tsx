@@ -8,13 +8,13 @@ export default function Projects() {
       id: 0,
       title: "Collaborative Task Manager",
       description:
-        "A task management system that allows multiple users to collaborate on a single projec",
+        "A task management system that allows multiple users to collaborate on a single project",
     },
     {
       id: 1,
       title: "Fitness Tracker App",
       description:
-        "A mobile app that allows users to track their fitness goals and progress",
+        "A mobile app that allows users to track their fitness goals and progress.",
     },
   ];
 
