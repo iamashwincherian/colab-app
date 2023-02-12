@@ -12,8 +12,9 @@ export default function Projects() {
     },
     {
       id: 1,
-      title: "Project 2",
-      description: "This is description of project 2",
+      title: "Fitness Tracker App",
+      description:
+        "A mobile app that allows users to track their fitness goals and progress",
     },
   ];
 
