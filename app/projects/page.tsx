@@ -8,7 +8,7 @@ export default function Projects() {
       id: 0,
       title: "Collaborative Task Manager",
       description:
-        "A task management system that allows multiple users to collaborate on a single project",
+        "A task management system that allows multiple users to collaborate on a single project.",
     },
     {
       id: 1,
