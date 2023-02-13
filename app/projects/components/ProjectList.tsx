@@ -16,7 +16,10 @@ export default function ProjectList({ items }: PropTypes) {
           key={project.id}
           className="border rounded-md w-60 h-52 p-4 hover:shadow cursor-pointer"
         >
-          {project.title}
+          <p>{project.title}</p>
+          <p className="text-gray-500 mt-2">
+            <small>{project.description}</small>
+          </p>
         </div>
       ))}
     </div>
