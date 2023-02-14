@@ -3,21 +3,6 @@ import Logo from "../../components/logo/logo";
 import ProjectList from "./components/ProjectList";
 
 export default function Projects() {
-  const projectListItems = [
-    {
-      id: 0,
-      title: "Collaborative Task Manager",
-      description:
-        "A task management system that allows multiple users to collaborate on a single project.",
-    },
-    {
-      id: 1,
-      title: "Fitness Tracker App",
-      description:
-        "A mobile app that allows users to track their fitness goals and progress.",
-    },
-  ];
-
   return (
     <FullScreenLayout>
       <div className="flex flex-col">
@@ -34,7 +19,7 @@ export default function Projects() {
           </p>
         </div>
         <div className="mt-1 bg-white px-8 py-6">
-          <ProjectList items={projectListItems} />
+          <ProjectList />
         </div>
       </div>
     </FullScreenLayout>
