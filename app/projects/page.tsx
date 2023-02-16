@@ -5,8 +5,8 @@ import ProjectList from "./components/ProjectList";
 export default function Projects() {
   return (
     <FullScreenLayout>
-      <div className="flex flex-col">
-        <div className="flex flex-col py-6 px-8 w-screen shadow">
+      <div className="flex flex-col dark:bg-dark h-screen">
+        <div className="flex flex-col py-6 px-8 w-screen shadow dark:shadow-md dark:bg-dark-2">
           <div className="mb-5">
             <Logo />
           </div>
@@ -18,7 +18,7 @@ export default function Projects() {
             and collaborate with your team
           </p>
         </div>
-        <div className="mt-1 bg-white px-8 py-6">
+        <div className="mt-1 bg-white dark:bg-dark px-8 py-6">
           <ProjectList />
         </div>
       </div>

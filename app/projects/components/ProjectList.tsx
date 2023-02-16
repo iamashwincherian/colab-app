@@ -25,10 +25,10 @@ export default function ProjectList() {
       {projects.map((project) => (
         <div
           key={project.id}
-          className="border rounded-md w-60 h-52 p-4 hover:shadow cursor-pointer"
+          className="border dark:border-none rounded-md w-60 h-52 p-4 dark:bg-dark-3 hover:shadow cursor-pointer"
         >
-          <p>{project.title}</p>
-          <p className="text-gray-500 mt-2">
+          <p className="dark:text-white">{project.title}</p>
+          <p className="text-gray-500 dark:text-gray-300 mt-2">
             <small>{project.description}</small>
           </p>
         </div>
