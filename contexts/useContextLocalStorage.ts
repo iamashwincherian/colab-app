@@ -17,7 +17,7 @@ export default function useContextLocalStorage(key: string, value: any) {
   let storeKey = STORE_KEY_INITIAL + key
   const isServer = typeof window === "undefined"
 
-  const [state, setState] = useState(null)
+  const [state, setState] = useState<typeof value>(null)
   const [initStateRender, setInitStateRender] = useState(true)
 
   useEffect(() => {
