@@ -15,8 +15,8 @@ export default function SigninPage({ providers }: any) {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { google } = providers;
-  const [email, setEmail] = useState("iamashwincherian@gmail.com");
-  const [password, setPassword] = useState("hacker5802");
+  const [email, setEmail] = useState("ashwin@colab.com");
+  const [password, setPassword] = useState("colabtest");
 
   const checkForCallbackError = () => {
     const error = searchParams.get("error");
