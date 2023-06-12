@@ -19,7 +19,9 @@ export default function Callback() {
         variant: "success",
       });
       setUser(session?.user);
-      router.replace("/");
+
+      // TODO: If recently opened project exists ? redirect to /dashboard : redirect to /projects
+      router.replace("/projects");
     }
   } else if (status === "unauthenticated") {
     if (searchParams.get("logout") === "success") {

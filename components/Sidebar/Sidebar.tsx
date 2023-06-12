@@ -9,6 +9,7 @@ import menuItems from "./menuItems";
 import Logo from "../logo/logo";
 import { useUserContext } from "../../contexts/UserContext";
 import { useSnackbar } from "notistack";
+import { useSettingsContext } from "../../contexts/SettingsContext";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -56,6 +57,7 @@ export default function Sidebar() {
 const Profile = () => {
   const router = useRouter();
   const { user, logoutUser } = useUserContext();
+  const { settings } = useSettingsContext();
   const { enqueueSnackbar } = useSnackbar();
 
   if (!user || !Object.keys(user).length) return <></>;
@@ -88,9 +90,12 @@ const Profile = () => {
           </div>
         </div>
         <div className="flex flex-col px-2">
-          <p className="text-sm leading-5 dark:text-gray-300 text-gray-600 mb-1">
-            {user.name}
+          <p className="text-sm font-bold leading-5 dark:text-gray-300 text-gray-600 mb-1">
+            {settings?.activeProject.name}
           </p>
+          <small className="text-xs leading-5 dark:text-gray-400 text-gray-600 mb-1">
+            {user.name}
+          </small>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import {
 import clsx from "../helpers/clsx";
 import { SnackbarProvider } from "notistack";
 import { UserContextProvider } from "../contexts/UserContext";
+import { SettingsContextProvider } from "../contexts/SettingsContext";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -44,11 +45,13 @@ export default function ContextProviderWrappers({
 }: BodyProps) {
   return (
     <SessionProvider session={session}>
-      <UserContextProvider>
-        <ThemeContextProvider>
-          <Body>{children}</Body>
-        </ThemeContextProvider>
-      </UserContextProvider>
+      <SettingsContextProvider>
+        <UserContextProvider>
+          <ThemeContextProvider>
+            <Body>{children}</Body>
+          </ThemeContextProvider>
+        </UserContextProvider>
+      </SettingsContextProvider>
     </SessionProvider>
   );
 }

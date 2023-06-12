@@ -16,7 +16,7 @@ const UserContext = createContext<UserContextInterface>({
 export const useUserContext = () => useContext(UserContext);
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useContextLocalStorage("userData", {});
+  const [user, setUser] = useContextLocalStorage("user", {});
 
   return (
     <UserContext.Provider
