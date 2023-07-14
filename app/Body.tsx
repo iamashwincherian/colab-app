@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 
 import {
   ThemeContextProvider,
