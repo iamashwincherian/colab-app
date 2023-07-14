@@ -4,25 +4,17 @@ import Card from "./Card";
 
 type ListProps = {
   id: string;
-  item: {
-    text: string;
-    cardIds: string[];
-  };
+  title: string;
   cards: {
-    [id: string]: {
-      id: string;
-      text: string;
-    };
-  };
+    id: string;
+    text: string;
+  }[];
 };
 
-export default function List({ item, id, cards }: ListProps) {
+export default function List({ id, title, cards }: ListProps) {
   return (
-    <div
-      key={id}
-      className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md"
-    >
-      <div className="p-2 dark:shadow-xl px-3">{item.text}</div>
+    <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
+      <div className="p-2 dark:shadow-xl px-3">{title}</div>
       <StrictModeDroppable droppableId={`list-${id}`}>
         {(provided) => (
           <div
@@ -31,13 +23,8 @@ export default function List({ item, id, cards }: ListProps) {
             {...provided.droppableProps}
           >
             <div>
-              {item.cardIds.map((cardId: string, index: number) => (
-                <Card
-                  id={cardId}
-                  name={cards[cardId].text}
-                  key={index}
-                  index={index}
-                />
+              {cards.map(({ id: cardId, text }, index) => (
+                <Card key={cardId} id={cardId} index={index} text={text} />
               ))}
             </div>
             {provided.placeholder}

@@ -6,14 +6,14 @@ import FullScreenLayout from "../../components/layouts/FullScreenLayout";
 import useBoard from "./hooks/useBoard.hook";
 
 export default function Boards() {
-  // const { data } = useBoard("1");
+  const { list, cards, onChange } = useBoard();
 
   return (
     <FullScreenLayout nav>
       <div className="p-10 pt-6">
         <BoardNameEditor />
         <div className="mt-8">
-          <KanbanBoard />
+          <KanbanBoard list={list} cards={cards} onChange={onChange} />
         </div>
       </div>
     </FullScreenLayout>
