@@ -29,44 +29,46 @@ export default function useKanbanBoard(
     let sourceCards = cards.filter((card) => card.listId === sourceId);
     if (!sourceCards) return;
 
+    const cardMoving = sourceCards.find(
+      (card) => source.index === card.position
+    );
+    if (!cardMoving) return;
+
     if (sourceId === destinationId) {
       if (sourceIndex === destinationIndex) return;
-
-      const cardToMove = sourceCards.find(
-        (card) => card.position === sourceIndex
-      );
-      if (!cardToMove) return;
 
       // Remove the item from its current position
       sourceCards.splice(sourceIndex, 1);
 
       // Insert the item at the second position
-      sourceCards.splice(destinationIndex, 0, cardToMove);
+      sourceCards.splice(destinationIndex, 0, cardMoving);
 
       // readjust the positions
-      sourceCards = sourceCards.map((card, index) => ({ ...card, index }));
+      sourceCards = sourceCards.map((card, position) => ({
+        ...card,
+        position,
+      }));
       const tempCards = cards.filter((card) => card.listId !== sourceId);
       setCards([...tempCards, ...sourceCards]);
     } else {
       let destinationCards = cards.filter(
         (card) => card.listId === destinationId
       );
-      const cardToMove = sourceCards.find(
-        (card) => card.position === sourceIndex
-      );
-      if (!cardToMove) return;
 
       // Remove the item from its current position
       sourceCards.splice(sourceIndex, 1);
 
       // Insert the item at the second position
-      destinationCards.splice(destinationIndex, 0, cardToMove);
+      destinationCards.splice(destinationIndex, 0, cardMoving);
 
       // readjust the positions
-      sourceCards = sourceCards.map((card, index) => ({ ...card, index }));
-      destinationCards = destinationCards.map((card, index) => ({
+      sourceCards = sourceCards.map((card, position) => ({
         ...card,
-        index,
+        position,
+      }));
+      destinationCards = destinationCards.map((card, position) => ({
+        ...card,
+        position,
         listId: destinationId,
       }));
 
