@@ -1,17 +1,13 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
+
 import { StrictModeDroppable } from "../droppable/Droppable";
 import Card from "./Card";
+import { sortCards } from "./helpers/sort";
+import { ListProp } from "./types";
 
-type ListProps = {
-  id: string;
-  title: string;
-  cards: {
-    id: string;
-    text: string;
-  }[];
-};
+export default function List({ id, title, cards = [] }: ListProp) {
+  const sortedCards = sortCards(cards);
 
-export default function List({ id, title, cards }: ListProps) {
   return (
     <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
       <div className="p-2 dark:shadow-xl px-3">{title}</div>
@@ -23,7 +19,7 @@ export default function List({ id, title, cards }: ListProps) {
             {...provided.droppableProps}
           >
             <div>
-              {cards.map(({ id: cardId, text }, index) => (
+              {sortedCards.map(({ id: cardId, text }, index) => (
                 <Card key={cardId} id={cardId} index={index} text={text} />
               ))}
             </div>

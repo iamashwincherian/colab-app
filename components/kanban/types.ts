@@ -8,5 +8,6 @@ export type CardProp = {
 export type ListProp = {
   id: string;
   title: string;
-  position: number;
+  position?: number;
+  cards?: CardProp[];
 };

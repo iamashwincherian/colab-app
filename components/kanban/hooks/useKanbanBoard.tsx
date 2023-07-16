@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { CardProp, ListProp } from "../types";
+import { sortCards } from "../helpers/sort";
 
 export default function useKanbanBoard(
   defaultList: ListProp[],
@@ -26,7 +27,9 @@ export default function useKanbanBoard(
 
     const { index: sourceIndex, droppableId: sourceId } = source;
     const { index: destinationIndex, droppableId: destinationId } = destination;
-    let sourceCards = cards.filter((card) => card.listId === sourceId);
+    let sourceCards = sortCards(cards).filter(
+      (card) => card.listId === sourceId
+    );
     if (!sourceCards) return;
 
     const cardMoving = sourceCards.find(
@@ -48,11 +51,11 @@ export default function useKanbanBoard(
         ...card,
         position,
       }));
-      const tempCards = cards.filter((card) => card.listId !== sourceId);
-      setCards([...tempCards, ...sourceCards]);
+      const restOfTheCards = cards.filter((card) => card.listId !== sourceId);
+      setCards([...restOfTheCards, ...sourceCards]);
     } else {
-      let destinationCards = cards.filter(
-        (card) => card.listId === destinationId
+      let destinationCards = sortCards(
+        cards.filter((card) => card.listId === destinationId)
       );
 
       // Remove the item from its current position
@@ -72,11 +75,11 @@ export default function useKanbanBoard(
         listId: destinationId,
       }));
 
-      const tempCards = cards.filter(
+      const restOfTheCards = cards.filter(
         (card) => ![sourceId, destinationId].includes(card.listId)
       );
 
-      const newCards = [...tempCards, ...sourceCards, ...destinationCards];
+      const newCards = [...restOfTheCards, ...sourceCards, ...destinationCards];
       setCards(newCards);
     }
   };
