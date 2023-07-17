@@ -9,8 +9,8 @@ export default function useKanbanBoard(
   defaultList: ListProp[],
   defaultCards: CardProp[]
 ) {
-  const [list, setList] = useState(defaultList);
-  const [cards, setCards] = useState(defaultCards);
+  const [list, setList] = useState(defaultList || []);
+  const [cards, setCards] = useState(defaultCards || []);
 
   useEffect(() => {
     setList(defaultList);

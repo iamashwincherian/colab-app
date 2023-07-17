@@ -1,6 +1,5 @@
 "use client";
 
-import { trpc } from "../utils/trpc";
 import Body from "./Body";
 import Head from "./head";
 

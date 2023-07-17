@@ -2,7 +2,7 @@
 
 import { createTRPCNext } from "@trpc/next";
 import { httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "../server/root";
+import type { AppRouter } from "../../server/routes";
 
 const BASE_URL = `http://localhost:${process.env.PORT ?? 3000}`;
 

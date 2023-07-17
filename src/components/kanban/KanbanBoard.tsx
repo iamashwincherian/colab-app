@@ -24,12 +24,15 @@ export default function KanbanBoard(props: BoardProps) {
   return (
     <DragDropContext onDragEnd={handleChange}>
       <div className="flex dark:text-white items-start">
-        {list.map(({ id, title }: ListProp) => {
-          const cardsInTheListItem = cards.filter((card) => card.listId === id);
-          return (
-            <List id={id} key={id} title={title} cards={cardsInTheListItem} />
-          );
-        })}
+        {list.length &&
+          list.map(({ id, title }: ListProp) => {
+            const cardsInTheListItem = cards.filter(
+              (card) => card.listId === id
+            );
+            return (
+              <List id={id} key={id} title={title} cards={cardsInTheListItem} />
+            );
+          })}
       </div>
     </DragDropContext>
   );

@@ -11,6 +11,7 @@ import clsx from "../helpers/clsx";
 import { SnackbarProvider } from "notistack";
 import { UserContextProvider } from "../contexts/UserContext";
 import { SettingsContextProvider } from "../contexts/SettingsContext";
+import TrpcProvider from "../utils/trpc/trpcProvider";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -44,14 +45,16 @@ export default function ContextProviderWrappers({
   session,
 }: BodyProps) {
   return (
-    <SessionProvider session={session}>
-      <SettingsContextProvider>
-        <UserContextProvider>
-          <ThemeContextProvider>
-            <Body>{children}</Body>
-          </ThemeContextProvider>
-        </UserContextProvider>
-      </SettingsContextProvider>
-    </SessionProvider>
+    <TrpcProvider>
+      <SessionProvider session={session}>
+        <SettingsContextProvider>
+          <UserContextProvider>
+            <ThemeContextProvider>
+              <Body>{children}</Body>
+            </ThemeContextProvider>
+          </UserContextProvider>
+        </SettingsContextProvider>
+      </SessionProvider>
+    </TrpcProvider>
   );
 }

@@ -1,9 +1,8 @@
 import { publicProcedure, router } from "./trpc";
+import dataRoutes from "./api/data";
 
 export const appRouter = router({
-  hello: publicProcedure.query(() => {
-    return { message: "Hello world" };
-  }),
+  data: dataRoutes,
 });
 
 export type AppRouter = typeof appRouter;
