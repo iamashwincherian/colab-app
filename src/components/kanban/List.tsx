@@ -5,12 +5,12 @@ import Card from "./Card";
 import { sortCards } from "./helpers/sort";
 import { ListProp } from "./types";
 
-export default function List({ id, title, cards = [] }: ListProp) {
-  const sortedCards = sortCards(cards);
+export default function List({ id, name, cards = [] }: any) {
+  const sortedCards = sortCards(cards) || [];
 
   return (
     <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
-      <div className="p-2 dark:shadow-xl px-3">{title}</div>
+      <div className="p-2 dark:shadow-xl px-3">{name}</div>
       <StrictModeDroppable droppableId={`list-${id}`}>
         {(provided) => (
           <div
@@ -19,8 +19,8 @@ export default function List({ id, title, cards = [] }: ListProp) {
             {...provided.droppableProps}
           >
             <div>
-              {sortedCards.map(({ id: cardId, text }, index) => (
-                <Card key={cardId} id={cardId} index={index} text={text} />
+              {sortedCards.map(({ id: cardId, title }, index) => (
+                <Card key={cardId} id={cardId} index={index} title={title} />
               ))}
             </div>
             {provided.placeholder}

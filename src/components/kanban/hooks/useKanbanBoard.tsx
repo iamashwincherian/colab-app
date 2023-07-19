@@ -6,11 +6,11 @@ import { CardProp, ListProp } from "../types";
 import { sortCards } from "../helpers/sort";
 
 export default function useKanbanBoard(
-  defaultList: ListProp[],
-  defaultCards: CardProp[]
+  defaultList: ListProp,
+  defaultCards: CardProp
 ) {
-  const [list, setList] = useState(defaultList || []);
-  const [cards, setCards] = useState(defaultCards || []);
+  const [list, setList] = useState<ListProp>(defaultList || []);
+  const [cards, setCards] = useState<CardProp>(defaultCards || []);
 
   useEffect(() => {
     setList(defaultList);
@@ -18,23 +18,26 @@ export default function useKanbanBoard(
   }, [defaultList, defaultCards]);
 
   const onDragEnd = (result: DropResult) => {
-    let { source, destination, draggableId } = result;
+    let { source, destination } = result;
     if (!destination) return;
 
-    draggableId = draggableId.replace("card-", "");
     source.droppableId = source.droppableId.replace("list-", "");
     destination.droppableId = destination.droppableId.replace("list-", "");
+    const draggableId: number = parseInt(
+      result.draggableId.replace("card-", "")
+    );
 
-    const { index: sourceIndex, droppableId: sourceId } = source;
-    const { index: destinationIndex, droppableId: destinationId } = destination;
-    let sourceCards = sortCards(cards).filter(
-      (card) => card.listId === sourceId
+    const { index: sourceIndex } = source;
+    const { index: destinationIndex } = destination;
+    const sourceId: number = parseInt(source.droppableId);
+    const destinationId: number = parseInt(destination.droppableId);
+
+    let sourceCards = sortCards(
+      cards.filter((card) => card.listId === sourceId)
     );
     if (!sourceCards) return;
 
-    const cardMoving = sourceCards.find(
-      (card) => source.index === card.position
-    );
+    const cardMoving = sourceCards.find((card) => draggableId === card.id);
     if (!cardMoving) return;
 
     if (sourceId === destinationId) {
@@ -54,9 +57,8 @@ export default function useKanbanBoard(
       const restOfTheCards = cards.filter((card) => card.listId !== sourceId);
       setCards([...restOfTheCards, ...sourceCards]);
     } else {
-      let destinationCards = sortCards(
-        cards.filter((card) => card.listId === destinationId)
-      );
+      let destinationCards =
+        sortCards(cards.filter((card) => card.listId === destinationId)) || [];
 
       // Remove the item from its current position
       sourceCards.splice(sourceIndex, 1);

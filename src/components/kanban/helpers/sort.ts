@@ -5,7 +5,8 @@ type sortItem = {
   [key: string]: any;
 };
 
-const sort = (items: CardProp[]) => {
+const sort = (items: CardProp = []) => {
+  if (!items || !items.length) return;
   return items.sort((a: sortItem, b: sortItem) => a.position - b.position);
 };
 

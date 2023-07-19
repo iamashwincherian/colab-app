@@ -2,11 +2,11 @@ import { Draggable } from "react-beautiful-dnd";
 
 type CardProps = {
   id: string;
-  text: string | undefined;
+  title: string | undefined;
   index: number;
 };
 
-export default function Card({ id, text, index }: CardProps) {
+export default function Card({ id, title, index }: CardProps) {
   return (
     <Draggable draggableId={`card-${id}`} key={`card-${id}`} index={index}>
       {(provided) => (
@@ -16,7 +16,7 @@ export default function Card({ id, text, index }: CardProps) {
           {...provided.dragHandleProps}
           className="bg-white shadow-sm dark:bg-dark-3 mx-3 p-4 rounded border dark:border-none dark:shadow-lg cursor-pointer mb-3"
         >
-          {text}
+          {title}
         </div>
       )}
     </Draggable>

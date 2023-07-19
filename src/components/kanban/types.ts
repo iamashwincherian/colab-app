@@ -1,13 +1,5 @@
-export type CardProp = {
-  id: string;
-  text: string;
-  position: number;
-  listId: ListProp["id"];
-};
+import { inferRouterOutputs } from "@trpc/server";
+import { AppRouter } from "../../server/routes";
 
-export type ListProp = {
-  id: string;
-  title: string;
-  position?: number;
-  cards?: CardProp[];
-};
+export type CardProp = inferRouterOutputs<AppRouter>["data"]["cards"] | never[];
+export type ListProp = inferRouterOutputs<AppRouter>["data"]["list"] | never[];
