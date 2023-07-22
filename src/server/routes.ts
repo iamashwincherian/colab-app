@@ -1,10 +1,10 @@
 import { router } from "./trpc";
-import dataRoutes from "./api/data";
-import boardRoutes from "./api/board";
+import listRoutes from "./api/lists";
+import boardRoutes from "./api/boards";
 
 export const appRouter = router({
-  data: dataRoutes,
   boards: boardRoutes,
+  lists: listRoutes,
 });
 
 export type AppRouter = typeof appRouter;

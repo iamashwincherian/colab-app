@@ -1,19 +1,11 @@
-"use client";
-
 import { trpc } from "../../../utils/trpc/trpc";
-import type { inferRouterOutputs } from "@trpc/server";
 import { CardProp, ListProp } from "../../../components/kanban/types";
-import { useEffect, useState } from "react";
-import type { AppRouter } from "../../../server/routes";
 
-export default function useBoard() {
-  const [listQuery, cardsQuery] = trpc.useQueries((t) => [
-    t.data.list(),
-    t.data.cards(),
-  ]);
+export default function useBoard(boardId: number) {
+  const query = trpc.lists.all.useQuery({ boardId, includeCards: true });
 
-  const list: ListProp = listQuery.data || [];
-  const cards: CardProp = cardsQuery.data || [];
+  const list: ListProp = query.data || [];
+  const cards: CardProp = query.data?.flatMap((list) => list.cards) || [];
 
   const onChange = (result: any) => {};
 

@@ -7,7 +7,8 @@ import useBoard from "./hooks/useBoard.hook";
 import { trpc } from "../../utils/trpc/trpc";
 
 const Boards = () => {
-  const { list, cards, onChange } = useBoard();
+  const boardId = 1;
+  const { list, cards, onChange } = useBoard(boardId);
 
   return (
     <FullScreenLayout nav>
