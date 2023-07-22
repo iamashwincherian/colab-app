@@ -14,7 +14,7 @@ const dataRoutes = router({
   }),
   cards: publicProcedure.query(async ({ ctx: { prisma } }) => {
     const cards = await prisma.card.findMany({
-      where: { userId: 1 },
+      where: { userId: 1, boardId: 1 },
     });
     if (!cards) throw new TRPCError({ code: "NOT_FOUND" });
     return cards as Card[];

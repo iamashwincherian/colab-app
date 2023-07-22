@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import { trpc } from "../../../utils/trpc/trpc";
 
 export default function BoardNameEditor() {
   const placeholder = "Enter board name";
-  const defaultBoardName = "Board 1";
-  const [boardName, setBoardName] = useState(defaultBoardName);
+  const savedBoardName = trpc.boards.find.useQuery({ id: 1 })?.data?.name;
+  const [boardName, setBoardName] = useState(savedBoardName || "");
   const [showEditIcon, setShowEditIcon] = useState(true);
   const inputRef = useRef(null);
 
@@ -25,6 +26,12 @@ export default function BoardNameEditor() {
       inputRef.current.style.width = `${length + 1}ch`;
     }
   }, [boardName]);
+
+  useEffect(() => {
+    if (savedBoardName) {
+      setBoardName(savedBoardName);
+    }
+  }, [savedBoardName]);
 
   return (
     <div className="flex items-center">
