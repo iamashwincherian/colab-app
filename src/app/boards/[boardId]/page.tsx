@@ -8,7 +8,7 @@ import BoardNameEditor from "../../../components/input/boardNameEditor/BoardName
 import KanbanBoard from "../../../components/kanban/KanbanBoard";
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import { trpc } from "../../../utils/trpc/trpc";
-import useBoard from "../hooks/useBoard.hook";
+import useBoard from "./hooks/useBoard.hook";
 
 type BoardProps = {
   params: { boardId: string };
@@ -19,7 +19,7 @@ const Board = (props: BoardProps) => {
     params: { boardId },
   } = props;
 
-  const { cards, list, onChange } = useBoard(boardId);
+  const { board, cards, list, onChange } = useBoard(boardId);
 
   const breadCrumbs = (
     <BreadCrumbs>
@@ -32,7 +32,7 @@ const Board = (props: BoardProps) => {
     <FullScreenLayout nav>
       <div className="p-10 pt-6">
         {breadCrumbs}
-        <BoardNameEditor boardId={boardId} />
+        <BoardNameEditor name={board?.name} />
         <div className="mt-8">
           <KanbanBoard list={list} cards={cards} onChange={onChange} />
         </div>

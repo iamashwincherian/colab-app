@@ -1,4 +1,4 @@
-import ThemeSwitcher from "../../app/boards/components/ThemeSwitcher";
+import ThemeSwitcher from "../themeSwitcher/ThemeSwitcher";
 import Logo from "../logo/logo";
 
 export default function Navbar() {

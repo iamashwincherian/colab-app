@@ -7,4 +7,5 @@ export default router({
     .query(({ ctx: { prisma }, input: { id } }) =>
       prisma.board.findUnique({ where: { id } })
     ),
+  all: publicProcedure.query(({ ctx: { prisma } }) => prisma.board.findMany()),
 });

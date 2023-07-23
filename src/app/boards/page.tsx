@@ -1,23 +1,20 @@
 "use client";
 
-import BoardNameEditor from "../../components/input/boardNameEditor/BoardNameEditor";
-import KanbanBoard from "../../components/kanban/KanbanBoard";
 import FullScreenLayout from "../../components/layouts/FullScreenLayout";
-import useBoard from "./hooks/useBoard.hook";
+import MainContent from "../../components/layoutWrapper/MainContent";
 import { trpc } from "../../utils/trpc/trpc";
+import BoardCard from "./components/BoardCard";
 
 const Boards = () => {
-  const boardId = 1;
-  const { list, cards, onChange } = useBoard(boardId);
+  const boards = trpc.boards.all.useQuery()?.data;
 
   return (
     <FullScreenLayout nav>
-      <div className="p-10 pt-6">
-        <BoardNameEditor />
-        <div className="mt-8">
-          <KanbanBoard list={list} cards={cards} onChange={onChange} />
-        </div>
-      </div>
+      <MainContent title="Boards">
+        {boards?.map(({ id, name }) => (
+          <BoardCard key={id} id={id} name={name} />
+        ))}
+      </MainContent>
     </FullScreenLayout>
   );
 };
