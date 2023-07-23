@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { trpc } from "../../utils/trpc/trpc";
 import { publicProcedure, router } from "../trpc";
 
 export default router({

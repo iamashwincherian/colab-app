@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { trpc } from "../../../utils/trpc/trpc";
 
-export default function BoardNameEditor() {
+export default function BoardNameEditor({ boardId }: { boardId: string }) {
   const placeholder = "Enter board name";
-  const savedBoardName = trpc.boards.find.useQuery({ id: 1 })?.data?.name;
+  const savedBoardName = trpc.boards.find.useQuery({ id: parseInt(boardId) })
+    ?.data?.name;
   const [boardName, setBoardName] = useState(savedBoardName || "");
   const [showEditIcon, setShowEditIcon] = useState(true);
   const inputRef = useRef(null);

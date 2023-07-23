@@ -9,7 +9,10 @@ export default router({
         includeCards: z.boolean().optional().default(false),
       })
     )
-    .query(({ ctx: { prisma }, input: { includeCards } }) =>
-      prisma.list.findMany({ include: { cards: includeCards } })
+    .query(({ ctx: { prisma }, input: { includeCards, boardId } }) =>
+      prisma.list.findMany({
+        where: { boardId },
+        include: { cards: includeCards },
+      })
     ),
 });
