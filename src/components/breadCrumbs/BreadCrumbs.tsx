@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
+import clsx from "../../helpers/clsx";
 
 type BreadCrumbsProps = {
   children?: ReactNode[];
@@ -21,7 +22,10 @@ export function BreadCrumbItem({ text, link }: BreadCrumbItemProps) {
   const linkClasses = link && "hover:underline cursor-pointer";
 
   return (
-    <div className={linkClasses} onClick={jumpToLink}>
+    <div
+      className={clsx("whitespace-nowrap", linkClasses)}
+      onClick={jumpToLink}
+    >
       {text}
     </div>
   );
@@ -29,7 +33,7 @@ export function BreadCrumbItem({ text, link }: BreadCrumbItemProps) {
 
 export function BreadCrumbs({ children }: BreadCrumbsProps) {
   return (
-    <div className="flex gap-2 text-xs bg-white dark:bg-dark-2 w-min dark:px-4 dark:py-2 dark:rounded-full">
+    <div className="flex gap-2 text-xs dark:bg-dark-2 w-min dark:px-4 dark:py-2 dark:rounded-full">
       {children?.map((child, index) => {
         return (
           <div className="flex gap-2 dark:text-white" key={index}>

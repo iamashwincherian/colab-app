@@ -10,7 +10,6 @@ export default function BoardCard({ id, name, description }: BoardCardProps) {
   const router = useRouter();
   const openBoard = () => {
     router.replace(`/boards/${id}`);
-    console.log("hi");
   };
 
   return (

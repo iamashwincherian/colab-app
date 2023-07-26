@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
-import { trpc } from "../../../utils/trpc/trpc";
 
 export default function BoardNameEditor({
   name: savedBoardName,
@@ -37,7 +36,7 @@ export default function BoardNameEditor({
   }, [savedBoardName]);
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center my-2">
       <input
         ref={inputRef}
         value={boardName}

@@ -15,16 +15,13 @@ type BoardProps = {
 };
 
 const Board = (props: BoardProps) => {
-  const {
-    params: { boardId },
-  } = props;
-
+  const { params: { boardId = null } = { boardId: null } } = props;
   const { board, cards, list, onChange } = useBoard(boardId);
 
   const breadCrumbs = (
     <BreadCrumbs>
       <BreadCrumbItem text="Boards" link="/boards" />
-      <BreadCrumbItem text="1" />
+      {board ? <BreadCrumbItem text={board?.name} /> : null}
     </BreadCrumbs>
   );
 
@@ -34,7 +31,14 @@ const Board = (props: BoardProps) => {
         {breadCrumbs}
         <BoardNameEditor name={board?.name} />
         <div className="mt-8">
-          <KanbanBoard list={list} cards={cards} onChange={onChange} />
+          {board?.id && (
+            <KanbanBoard
+              boardId={board.id}
+              list={list}
+              cards={cards}
+              onChange={onChange}
+            />
+          )}
         </div>
       </div>
     </FullScreenLayout>

@@ -15,4 +15,22 @@ export default router({
         include: { cards: includeCards },
       })
     ),
+  create: publicProcedure
+    .input(
+      z.object({
+        name: z.string().nonempty(),
+        position: z.number(),
+        boardId: z.number(),
+      })
+    )
+    .mutation(({ ctx: { prisma }, input: { name, position, boardId } }) =>
+      prisma.list.create({
+        data: {
+          name,
+          position,
+          boardId,
+          userId: 1,
+        },
+      })
+    ),
 });

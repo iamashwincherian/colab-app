@@ -86,5 +86,10 @@ export default function useKanbanBoard(
     }
   };
 
-  return { list, cards, onDragEnd };
+  const updateList = (newList: []) => {
+    setList([...newList]);
+    return newList;
+  };
+
+  return { list, cards, onDragEnd, updateList };
 }
