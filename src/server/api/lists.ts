@@ -33,4 +33,15 @@ export default router({
         },
       })
     ),
+  delete: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .mutation(({ ctx: { prisma }, input: { id } }) =>
+      prisma.list.delete({
+        where: { id },
+      })
+    ),
 });

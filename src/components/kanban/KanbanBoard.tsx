@@ -20,6 +20,12 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { trpc } from "../../utils/trpc/trpc";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuTrigger,
+} from "../ui/context-menu";
+import { ContextMenuItem } from "@radix-ui/react-context-menu";
 
 type BoardProps = {
   boardId: number;
@@ -84,7 +90,8 @@ const NewList = ({ onCreate }: { onCreate: Function }) => {
 };
 
 export default function KanbanBoard(props: BoardProps) {
-  const create = trpc.lists.create.useMutation();
+  const createMutation = trpc.lists.create.useMutation();
+  const deleteMutation = trpc.lists.delete.useMutation();
 
   const { boardId, list: defaultList, cards: defaultCards, onChange } = props;
   let { list, cards, onDragEnd, updateList } = useKanbanBoard(
@@ -106,12 +113,18 @@ export default function KanbanBoard(props: BoardProps) {
       (max: number, item) => Math.max(max, item.position),
       1
     );
-    const newListItem = await create.mutateAsync({
+    const newListItem = await createMutation.mutateAsync({
       boardId,
       name,
       position: latestPosition,
     });
     updateList([...list, newListItem]);
+  };
+
+  const handleDelete = async (id: number) => {
+    const updatedList = list.filter((list) => list.id !== id);
+    await deleteMutation.mutateAsync({ id });
+    updateList(updatedList);
   };
 
   return (
@@ -124,12 +137,24 @@ export default function KanbanBoard(props: BoardProps) {
                   (card) => card.listId === id
                 );
                 return (
-                  <List
-                    id={id}
-                    key={id}
-                    name={name}
-                    cards={cardsInTheListItem}
-                  />
+                  <ContextMenu key={id}>
+                    <ContextMenuTrigger>
+                      <List
+                        id={id}
+                        key={id}
+                        name={name}
+                        cards={cardsInTheListItem}
+                      />
+                    </ContextMenuTrigger>
+                    <ContextMenuContent>
+                      <ContextMenuItem
+                        onClick={() => handleDelete(id)}
+                        className="cursor-pointer"
+                      >
+                        Delete
+                      </ContextMenuItem>
+                    </ContextMenuContent>
+                  </ContextMenu>
                 );
               })
             : null)}
