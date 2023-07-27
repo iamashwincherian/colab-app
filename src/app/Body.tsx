@@ -50,7 +50,10 @@ export default function ContextProviderWrappers({
         <SettingsContextProvider>
           <UserContextProvider>
             <ThemeContextProvider>
-              <Body>{children}</Body>
+              <Body>
+                {children}
+                <div id="modalEl"></div>
+              </Body>
             </ThemeContextProvider>
           </UserContextProvider>
         </SettingsContextProvider>

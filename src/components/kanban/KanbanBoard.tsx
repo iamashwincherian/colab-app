@@ -1,12 +1,11 @@
 "use client";
 
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { PlusIcon } from "@heroicons/react/24/solid";
 
 import List from "./List";
 import useKanbanBoard from "./hooks/useKanbanBoard";
 import { ListProp, CardProp } from "./types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc/trpc";
 import {
   ContextMenu,
@@ -15,6 +14,8 @@ import {
 } from "../ui/context-menu";
 import { ContextMenuItem } from "@radix-ui/react-context-menu";
 import NewListForm from "./forms/newList";
+import openModal from "../../utils/openModal";
+import ConfirmationModal from "../modals/ConfirmationModal";
 
 type BoardProps = {
   boardId: number;
@@ -26,6 +27,7 @@ type BoardProps = {
 export default function KanbanBoard(props: BoardProps) {
   const createMutation = trpc.lists.create.useMutation();
   const deleteMutation = trpc.lists.delete.useMutation();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const { boardId, list: defaultList, cards: defaultCards, onChange } = props;
   let { list, cards, onDragEnd, updateList } = useKanbanBoard(
@@ -55,10 +57,21 @@ export default function KanbanBoard(props: BoardProps) {
     updateList([...list, newListItem]);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = (id: number) => {
     const updatedList = list.filter((list) => list.id !== id);
-    await deleteMutation.mutateAsync({ id });
-    updateList(updatedList);
+    openModal(
+      <ConfirmationModal
+        open={true}
+        message="Are you sure you want to delete this list?"
+        description="Please note that all the cards in this list will also be deleted!"
+        onSubmit={async () => {
+          setOpenDeleteModal(false);
+          await deleteMutation.mutateAsync({ id });
+          updateList(updatedList);
+        }}
+      />,
+      {}
+    );
   };
 
   return (
