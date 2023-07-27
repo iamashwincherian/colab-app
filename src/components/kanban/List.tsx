@@ -3,14 +3,42 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { StrictModeDroppable } from "../droppable/Droppable";
 import Card from "./Card";
 import { sortCards } from "./helpers/sort";
-import { ListProp } from "./types";
+import {
+  DotsHorizontalIcon,
+  DropdownMenuIcon,
+  Pencil1Icon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
-export default function List({ id, name, cards = [] }: any) {
+export default function List({ id, name, cards = [], onDelete }: any) {
   const sortedCards = sortCards(cards) || [];
 
   return (
     <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
-      <div className="p-2 dark:shadow-xl px-3">{name}</div>
+      <div className="flex justify-between items-center p-2 px-3">
+        <p>{name}</p>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <DotsHorizontalIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <Pencil1Icon className="mr-2" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-red-500" onClick={onDelete}>
+              <TrashIcon className="mr-2" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <StrictModeDroppable droppableId={`list-${id}`}>
         {(provided) => (
           <div

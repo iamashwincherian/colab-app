@@ -2,7 +2,6 @@
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-import ConfirmationModal from "../components/modals/ConfirmationModal";
 
 export default function openModal(modal: any, props: object = {}) {
   const modalEl = document.getElementById("modalEl");

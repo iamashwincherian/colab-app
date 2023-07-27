@@ -69,8 +69,7 @@ export default function KanbanBoard(props: BoardProps) {
           await deleteMutation.mutateAsync({ id });
           updateList(updatedList);
         }}
-      />,
-      {}
+      />
     );
   };
 
@@ -84,24 +83,13 @@ export default function KanbanBoard(props: BoardProps) {
                   (card) => card.listId === id
                 );
                 return (
-                  <ContextMenu key={id}>
-                    <ContextMenuTrigger>
-                      <List
-                        id={id}
-                        key={id}
-                        name={name}
-                        cards={cardsInTheListItem}
-                      />
-                    </ContextMenuTrigger>
-                    <ContextMenuContent>
-                      <ContextMenuItem
-                        onClick={() => handleDelete(id)}
-                        className="cursor-pointer"
-                      >
-                        Delete
-                      </ContextMenuItem>
-                    </ContextMenuContent>
-                  </ContextMenu>
+                  <List
+                    id={id}
+                    key={id}
+                    name={name}
+                    cards={cardsInTheListItem}
+                    onDelete={() => handleDelete(id)}
+                  />
                 );
               })
             : null)}
