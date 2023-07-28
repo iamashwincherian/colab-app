@@ -1,13 +1,6 @@
-import { FormEvent, FormEventHandler, useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
-import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+
+import PrimaryModal from "./PrimaryModal";
 
 type ConfirmationProps = {
   open: boolean;
@@ -34,8 +27,7 @@ export default function ConfirmationModal(props: ConfirmationProps) {
     setOpen(props.open);
   }, [props.open]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     setOpen(false);
     if (onSubmit) {
       onSubmit();
@@ -49,30 +41,20 @@ export default function ConfirmationModal(props: ConfirmationProps) {
     }
   };
 
-  const handleOpenChange = (value: boolean) => {
-    if (!value) {
+  const handleOpenChange = (open: Boolean) => {
+    if (!open) {
       handleCancel();
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-md">
-        <form onSubmit={handleSubmit} onReset={handleCancel}>
-          <DialogHeader>
-            <DialogTitle>{confirmationMessage}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="mt-4">
-            <Button type="reset" variant="outline">
-              Cancel
-            </Button>
-            <Button type="submit" variant="destructive">
-              {submitButtonLabel}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <PrimaryModal
+      title={confirmationMessage}
+      description={description}
+      submitButton={{ label: submitButtonLabel, varient: "destructive" }}
+      open={open}
+      onClose={handleOpenChange}
+      onSubmit={handleSubmit}
+    />
   );
 }
