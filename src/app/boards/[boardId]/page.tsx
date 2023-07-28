@@ -29,11 +29,10 @@ const Board = (props: BoardProps) => {
     <FullScreenLayout nav>
       <div className="p-10 pt-6">
         {breadCrumbs}
-        <BoardNameEditor name={board?.name} />
-        <div className="mt-8">
-          {board?.id && (
+        <div className="mt-4">
+          {board && (
             <KanbanBoard
-              boardId={board.id}
+              board={board}
               list={list}
               cards={cards}
               onChange={onChange}
