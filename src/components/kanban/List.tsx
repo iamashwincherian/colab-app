@@ -15,6 +15,41 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { MouseEventHandler, useState } from "react";
+import openModal from "../../utils/openModal";
+import PrimaryModal from "../modals/PrimaryModal";
+
+const Menu = ({
+  onDelete,
+}: {
+  onDelete: MouseEventHandler<HTMLDivElement>;
+}) => {
+  const openEditModal = () => {
+    openModal(
+      <PrimaryModal title="Hello" description="Welcome to colab">
+        Hello
+      </PrimaryModal>
+    );
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <DotsHorizontalIcon />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem onClick={openEditModal}>
+          <Pencil1Icon className="mr-2" />
+          Edit
+        </DropdownMenuItem>
+        <DropdownMenuItem className="text-red-500" onClick={onDelete}>
+          <TrashIcon className="mr-2" />
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export default function List({ id, name, cards = [], onDelete }: any) {
   const sortedCards = sortCards(cards) || [];
@@ -23,21 +58,7 @@ export default function List({ id, name, cards = [], onDelete }: any) {
     <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
       <div className="flex justify-between items-center p-2 px-3">
         <p>{name}</p>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <DotsHorizontalIcon />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Pencil1Icon className="mr-2" />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-500" onClick={onDelete}>
-              <TrashIcon className="mr-2" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Menu onDelete={onDelete} />
       </div>
       <StrictModeDroppable droppableId={`list-${id}`}>
         {(provided) => (

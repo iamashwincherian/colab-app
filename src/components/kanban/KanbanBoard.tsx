@@ -7,13 +7,7 @@ import useKanbanBoard from "./hooks/useKanbanBoard";
 import { ListProp, CardProp } from "./types";
 import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc/trpc";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuTrigger,
-} from "../ui/context-menu";
-import { ContextMenuItem } from "@radix-ui/react-context-menu";
-import NewListForm from "./forms/newList";
+import NewListForm from "./components/CreateListForm";
 import openModal from "../../utils/openModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 
@@ -44,7 +38,7 @@ export default function KanbanBoard(props: BoardProps) {
     onChange(result);
   };
 
-  const handleNewList = async (name: string) => {
+  const handleNewList = async ({ name }: { name: string }) => {
     const latestPosition = list.reduce(
       (max: number, item) => Math.max(max, item.position),
       1
