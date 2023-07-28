@@ -44,7 +44,7 @@ export default function BoardNameEditor({
         onFocus={() => toggleEditIcon(false)}
         onBlur={() => toggleEditIcon(true)}
         placeholder={placeholder}
-        className="p-3 w-0 bg-transparent text-3xl pl-0 focus:outline-none border-b border-transparent focus:border-b focus:border-black focus:border-dashed dark:text-white dark:focus:border-white"
+        className="p-3 w-0 bg-transparent text-3xl font-medium pl-0 focus:outline-none border-b border-transparent focus:border-b focus:border-black focus:border-dashed dark:text-white dark:focus:border-white"
       />
       {showEditIcon && (
         <PencilIcon width={16} height={16} className="text-gray-500" />
