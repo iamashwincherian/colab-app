@@ -17,28 +17,28 @@ import {
 } from "../ui/dropdown-menu";
 import { MouseEventHandler, useState } from "react";
 import openModal from "../../utils/openModal";
-import PrimaryModal from "../modals/PrimaryModal";
+import EditListModal from "./modals/EditListModal";
 
 const Menu = ({
+  name,
   onDelete,
+  onEdit,
 }: {
+  name: string;
   onDelete: MouseEventHandler<HTMLDivElement>;
+  onEdit: MouseEventHandler<HTMLDivElement>;
 }) => {
-  const openEditModal = () => {
-    openModal(
-      <PrimaryModal title="Hello" description="Welcome to colab">
-        Hello
-      </PrimaryModal>
-    );
-  };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <DotsHorizontalIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={openEditModal}>
+        <DropdownMenuItem
+          onClick={() =>
+            openModal(<EditListModal name={name} onSubmit={onEdit} />)
+          }
+        >
           <Pencil1Icon className="mr-2" />
           Edit
         </DropdownMenuItem>
@@ -51,14 +51,14 @@ const Menu = ({
   );
 };
 
-export default function List({ id, name, cards = [], onDelete }: any) {
+export default function List({ id, name, cards = [], onDelete, onEdit }: any) {
   const sortedCards = sortCards(cards) || [];
 
   return (
     <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
       <div className="flex justify-between items-center p-2 px-3">
         <p>{name}</p>
-        <Menu onDelete={onDelete} />
+        <Menu name={name} onDelete={onDelete} onEdit={onEdit} />
       </div>
       <StrictModeDroppable droppableId={`list-${id}`}>
         {(provided) => (

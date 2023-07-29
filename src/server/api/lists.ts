@@ -33,6 +33,20 @@ export default router({
         },
       })
     ),
+  edit: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().nonempty(),
+        boardId: z.number(),
+      })
+    )
+    .mutation(({ ctx: { prisma }, input: { id, name, boardId } }) =>
+      prisma.list.update({
+        where: { id, boardId },
+        data: { name },
+      })
+    ),
   delete: publicProcedure
     .input(
       z.object({

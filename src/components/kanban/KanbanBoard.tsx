@@ -28,6 +28,7 @@ type BoardProps = {
 
 export default function KanbanBoard(props: BoardProps) {
   const createMutation = trpc.lists.create.useMutation();
+  const editMutation = trpc.lists.edit.useMutation();
   const deleteMutation = trpc.lists.delete.useMutation();
 
   const {
@@ -63,6 +64,16 @@ export default function KanbanBoard(props: BoardProps) {
       position: latestPosition,
     });
     updateList([...list, newListItem]);
+  };
+
+  const handleEditList = async (id: number, name: string) => {
+    const updatedList = list.filter((list) => list.id !== id);
+    const newListItem = await editMutation.mutateAsync({
+      boardId,
+      id,
+      name,
+    });
+    updateList([...updatedList, newListItem]);
   };
 
   const handleDelete = (id: number) => {
@@ -111,6 +122,9 @@ export default function KanbanBoard(props: BoardProps) {
                         name={name}
                         cards={cardsInTheListItem}
                         onDelete={() => handleDelete(id)}
+                        onEdit={({ name: newName }: { name: string }) =>
+                          handleEditList(id, newName)
+                        }
                       />
                     );
                   })
