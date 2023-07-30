@@ -1,24 +1,25 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
-
-import { StrictModeDroppable } from "../droppable/Droppable";
-import Card from "./Card";
-import { sortCards } from "./helpers/sort";
+import { MouseEventHandler } from "react";
 import {
   DotsHorizontalIcon,
-  DropdownMenuIcon,
   Pencil1Icon,
   TrashIcon,
 } from "@radix-ui/react-icons";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { MouseEventHandler, useState } from "react";
+import { StrictModeDroppable } from "../droppable/Droppable";
+import Card from "./Card";
+import { sortCards } from "./helpers/sort";
 import openModal from "../../utils/openModal";
 import EditListModal from "./modals/EditListModal";
 import CreateCardModal from "./modals/CreateCardModal";
+import ConfirmationModal from "../modals/ConfirmationModal";
+import { useBoardContext } from "../../contexts/BoardContext";
 
 const Menu = ({
   name,
@@ -56,11 +57,22 @@ export default function List({
   id,
   name,
   cards = [],
-  onDelete,
   onEdit,
   onCardCreate,
 }: any) {
   const sortedCards = sortCards(cards) || [];
+  const { deleteList } = useBoardContext();
+
+  const onDelete = () => {
+    openModal(
+      <ConfirmationModal
+        open={true}
+        message="Are you sure you want to delete this list?"
+        description="Please note that all the cards in this list will also be deleted!"
+        onSubmit={() => deleteList({ listId: id })}
+      />
+    );
+  };
 
   return (
     <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">

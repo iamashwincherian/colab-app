@@ -12,6 +12,7 @@ interface BoardContextType extends BoardType {
   setBoard: (payload: { board: object | null; cards: []; list: [] }) => void;
   setCards: (cards: CardProp[]) => void;
   createList: ({ name, boardId }: { name: string; boardId: number }) => void;
+  deleteList: ({ listId }: { listId: number }) => void;
   updateCard: ({ cardId, title }: { cardId: number; title: string }) => void;
   deleteCard: (cardId: number) => void;
 }
@@ -28,6 +29,7 @@ const BoardContext = createContext<BoardContextType>({
   cards: [],
   setBoard() {},
   createList() {},
+  deleteList() {},
   setCards() {},
   updateCard() {},
   deleteCard() {},
@@ -37,6 +39,7 @@ export const useBoardContext = () => useContext(BoardContext);
 export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
   const [board, setBoardData] = useState(defaultBoard);
   const createListMutation = trpc.lists.create.useMutation();
+  const deleteListMutation = trpc.lists.delete.useMutation();
   const updateCardMutation = trpc.cards.update.useMutation();
   const deleteCardMutation = trpc.cards.delete.useMutation();
 
@@ -56,6 +59,11 @@ export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
             boardId,
           });
           setBoardData({ ...board, list: [...board.list, newList] });
+        },
+        deleteList: ({ listId }) => {
+          const list = board.list.filter((list) => list.id !== listId);
+          deleteListMutation.mutate({ listId });
+          setBoardData({ ...board, list });
         },
         updateCard: ({ cardId, title }) => {
           const cards = board.cards.filter((card) => card.id !== cardId);

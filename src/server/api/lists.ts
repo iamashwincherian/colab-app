@@ -54,12 +54,12 @@ export default router({
   delete: publicProcedure
     .input(
       z.object({
-        id: z.number(),
+        listId: z.number(),
       })
     )
-    .mutation(({ ctx: { prisma }, input: { id } }) =>
+    .mutation(({ ctx: { prisma }, input: { listId } }) =>
       prisma.list.delete({
-        where: { id },
+        where: { id: listId },
       })
     ),
 });
