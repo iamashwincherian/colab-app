@@ -49,4 +49,15 @@ export default router({
         });
       }
     }),
+  delete: publicProcedure
+    .input(
+      z.object({
+        cardId: z.number(),
+      })
+    )
+    .mutation(({ ctx: { prisma }, input: { cardId } }) =>
+      prisma.card.delete({
+        where: { id: cardId },
+      })
+    ),
 });

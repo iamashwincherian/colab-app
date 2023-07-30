@@ -1,11 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { trpc } from "../../../../utils/trpc/trpc";
-import {
-  BoardProp,
-  CardProp,
-  ListProp,
-} from "../../../../components/kanban/types";
 import { useBoardContext } from "../../../../contexts/BoardContext";
 
 export default function useBoard(boardId: string | undefined) {
@@ -16,12 +11,7 @@ export default function useBoard(boardId: string | undefined) {
     includeCards: true,
   });
 
-  const [list, setList] = useState<ListProp>(boardQuery.data || []);
-  const [cards, setCards] = useState<CardProp>(
-    listQuery.data?.flatMap((list) => list.cards) || []
-  );
-  const [board, setBoardData] = useState<BoardProp | {}>({});
-  const { setBoard } = useBoardContext();
+  const { board, cards, list, setBoard } = useBoardContext();
 
   useEffect(() => {
     if (boardId) fetchData();
@@ -30,9 +20,6 @@ export default function useBoard(boardId: string | undefined) {
   const fetchData = () => {
     if (!boardId) return;
 
-    setList(listQuery.data || []);
-    setCards(listQuery.data?.flatMap((list) => list.cards) || []);
-    setBoardData(boardQuery.data || {});
     setBoard({
       board: boardQuery.data || {},
       cards: listQuery.data?.flatMap((list) => list.cards) || [],

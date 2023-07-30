@@ -1,15 +1,20 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { CardProp } from "../components/kanban/types";
+import { CardProp, ListProp } from "../components/kanban/types";
+import { trpc } from "../utils/trpc/trpc";
 
-type BoardContextType = {
+interface BoardType {
   board: object | undefined;
-  cards: [];
-  list: [];
+  list: ListProp[];
+  cards: CardProp[];
+}
+
+interface BoardContextType extends BoardType {
   setBoard: (payload: { board: object | null; cards: []; list: [] }) => void;
   setCards: (cards: CardProp[]) => void;
-};
+  deleteCard: (card: CardProp) => void;
+}
 
-const defaultBoard = {
+const defaultBoard: BoardType = {
   board: {},
   list: [],
   cards: [],
@@ -21,11 +26,13 @@ const BoardContext = createContext<BoardContextType>({
   cards: [],
   setBoard() {},
   setCards() {},
+  deleteCard() {},
 });
 
 export const useBoardContext = () => useContext(BoardContext);
 export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
   const [board, setBoardData] = useState(defaultBoard);
+  const deleteCardMutation = trpc.cards.delete.useMutation();
 
   return (
     <BoardContext.Provider
@@ -36,6 +43,11 @@ export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
         },
         setCards: (cards: CardProp[] = []) => {
           if (cards.length) setBoardData({ ...board, cards });
+        },
+        deleteCard: (cardId: CardProp = []) => {
+          const cards = board.cards.filter((card) => card.id !== cardId);
+          setBoardData({ ...board, cards });
+          deleteCardMutation.mutate({ cardId });
         },
       }}
     >
