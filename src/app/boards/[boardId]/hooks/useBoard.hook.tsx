@@ -14,10 +14,10 @@ export default function useBoard(boardId: string | undefined) {
   const { board, cards, list, setBoard } = useBoardContext();
 
   useEffect(() => {
-    if (boardId) fetchData();
+    if (boardId) setData();
   }, [boardQuery.isFetched]);
 
-  const fetchData = () => {
+  const setData = () => {
     if (!boardId) return;
 
     setBoard({

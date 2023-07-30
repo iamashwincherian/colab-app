@@ -13,6 +13,7 @@ import ConfirmationModal from "../modals/ConfirmationModal";
 import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
 import { Button } from "../ui/button";
 import CreateListModal from "./modals/CreateListModal";
+import { useBoardContext } from "../../contexts/BoardContext";
 
 type BoardProps = {
   board: {
@@ -24,10 +25,10 @@ type BoardProps = {
 };
 
 export default function KanbanBoard(props: BoardProps) {
-  const createMutation = trpc.lists.create.useMutation();
   const editMutation = trpc.lists.edit.useMutation();
   const deleteMutation = trpc.lists.delete.useMutation();
   const createCardMutation = trpc.cards.create.useMutation();
+  const { createList } = useBoardContext();
 
   const {
     board,
@@ -47,19 +48,6 @@ export default function KanbanBoard(props: BoardProps) {
 
   const handleOnChange = async (result: DropResult) => {
     await onDragEnd(boardId, result);
-  };
-
-  const handleNewList = async ({ name }: { name: string }) => {
-    const latestPosition = list.reduce(
-      (max: number, item) => Math.max(max, item.position),
-      1
-    );
-    const newListItem = await createMutation.mutateAsync({
-      boardId,
-      name,
-      position: latestPosition,
-    });
-    updateList([...list, newListItem]);
   };
 
   const handleEditList = async (id: number, name: string) => {
@@ -103,9 +91,17 @@ export default function KanbanBoard(props: BoardProps) {
     updateCards([...cards, newCard]);
   };
 
-  const createNewButton = () => (
+  const createNewButton = (
     <Button
-      onClick={() => openModal(<CreateListModal onSubmit={handleNewList} />)}
+      onClick={() =>
+        openModal(
+          <CreateListModal
+            onSubmit={({ name }: { name: string }) =>
+              createList({ boardId, name })
+            }
+          />
+        )
+      }
     >
       <PlusIcon className="mr-2" />
       Create New
@@ -116,7 +112,7 @@ export default function KanbanBoard(props: BoardProps) {
     <div>
       <div className="flex justify-between items-center">
         <BoardNameEditor name={board.name} />
-        {createNewButton()}
+        {createNewButton}
       </div>
       <div className="mt-6">
         <DragDropContext onDragEnd={handleOnChange}>

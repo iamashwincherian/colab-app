@@ -19,20 +19,24 @@ export default router({
     .input(
       z.object({
         name: z.string().nonempty(),
-        position: z.number(),
         boardId: z.number(),
       })
     )
-    .mutation(({ ctx: { prisma }, input: { name, position, boardId } }) =>
-      prisma.list.create({
+    .mutation(async ({ ctx: { prisma }, input: { name, boardId } }) => {
+      const nextPosition = await prisma.list.count({
+        where: { boardId, userId: 1 },
+      });
+      const newList = await prisma.list.create({
         data: {
           name,
-          position,
           boardId,
+          position: nextPosition,
           userId: 1,
         },
-      })
-    ),
+      });
+
+      return newList;
+    }),
   edit: publicProcedure
     .input(
       z.object({
