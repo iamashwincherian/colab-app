@@ -30,6 +30,19 @@ export default router({
         });
       }
     ),
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        title: z.string(),
+      })
+    )
+    .mutation(({ ctx: { prisma }, input: { id, title } }) =>
+      prisma.card.update({
+        where: { id },
+        data: { title },
+      })
+    ),
   updatePosition: publicProcedure
     .input(
       z.object({

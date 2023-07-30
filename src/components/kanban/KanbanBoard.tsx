@@ -1,17 +1,17 @@
 "use client";
 
+import { useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 import List from "./List";
 import useKanbanBoard from "./hooks/useKanbanBoard";
 import { ListProp, CardProp } from "./types";
-import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc/trpc";
 import openModal from "../../utils/openModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
 import { Button } from "../ui/button";
-import { PlusIcon } from "@radix-ui/react-icons";
 import CreateListModal from "./modals/CreateListModal";
 
 type BoardProps = {

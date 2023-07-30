@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import {
   BreadCrumbs,
   BreadCrumbItem,
@@ -9,10 +8,6 @@ import KanbanBoard from "../../../components/kanban/KanbanBoard";
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import { trpc } from "../../../utils/trpc/trpc";
 import useBoard from "./hooks/useBoard.hook";
-import {
-  BoardContextProvider,
-  useBoardContext,
-} from "../../../contexts/BoardContext";
 
 type BoardProps = {
   params: { boardId: string };

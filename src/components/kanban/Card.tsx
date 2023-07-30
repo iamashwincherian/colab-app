@@ -11,7 +11,7 @@ export default function Card({ id, title, index }: CardProps) {
   return (
     <Draggable draggableId={`card-${id}`} key={`card-${id}`} index={index}>
       {(provided) => (
-        <CardContextMenu id={parseInt(id)}>
+        <CardContextMenu card={{ id, title }}>
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}

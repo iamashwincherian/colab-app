@@ -11,7 +11,8 @@ interface BoardType {
 interface BoardContextType extends BoardType {
   setBoard: (payload: { board: object | null; cards: []; list: [] }) => void;
   setCards: (cards: CardProp[]) => void;
-  deleteCard: (card: CardProp) => void;
+  updateCard: ({ cardId, title }: { cardId: number; title: string }) => void;
+  deleteCard: (cardId: number) => void;
 }
 
 const defaultBoard: BoardType = {
@@ -26,12 +27,14 @@ const BoardContext = createContext<BoardContextType>({
   cards: [],
   setBoard() {},
   setCards() {},
+  updateCard() {},
   deleteCard() {},
 });
 
 export const useBoardContext = () => useContext(BoardContext);
 export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
   const [board, setBoardData] = useState(defaultBoard);
+  const updateCardMutation = trpc.cards.update.useMutation();
   const deleteCardMutation = trpc.cards.delete.useMutation();
 
   return (
@@ -41,10 +44,19 @@ export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
         setBoard: (payload: object) => {
           setBoardData({ ...board, ...payload });
         },
-        setCards: (cards: CardProp[] = []) => {
+        setCards: (cards) => {
           if (cards.length) setBoardData({ ...board, cards });
         },
-        deleteCard: (cardId: CardProp = []) => {
+        updateCard: ({ cardId, title }) => {
+          const cards = board.cards.filter((card) => card.id !== cardId);
+          const cardToEdit = board.cards.find((card) => card.id === cardId);
+          setBoardData({
+            ...board,
+            cards: [...cards, { ...cardToEdit, title }],
+          });
+          updateCardMutation.mutate({ id: cardId, title });
+        },
+        deleteCard: (cardId) => {
           const cards = board.cards.filter((card) => card.id !== cardId);
           setBoardData({ ...board, cards });
           deleteCardMutation.mutate({ cardId });
