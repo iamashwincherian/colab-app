@@ -43,8 +43,8 @@ model Card {
   id       Int    @id @default(autoincrement())
   title    String
   position Int
-  list     List   @relation(fields: [listId], references: [id])
-  listId   Int
+  list     List?  @relation(fields: [listId], references: [id])
+  listId   Int?
   user     User   @relation(fields: [userId], references: [id])
   userId   Int
   board    Board  @relation(fields: [boardId], references: [id])
