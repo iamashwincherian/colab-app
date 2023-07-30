@@ -11,6 +11,7 @@ import clsx from "../helpers/clsx";
 import { SnackbarProvider } from "notistack";
 import { UserContextProvider } from "../contexts/UserContext";
 import { SettingsContextProvider } from "../contexts/SettingsContext";
+import { BoardContextProvider } from "../contexts/BoardContext";
 import TrpcProvider from "../utils/trpc/trpcProvider";
 
 interface BodyProps {
@@ -50,10 +51,12 @@ export default function ContextProviderWrappers({
         <SettingsContextProvider>
           <UserContextProvider>
             <ThemeContextProvider>
-              <Body>
-                {children}
-                <div id="modalEl"></div>
-              </Body>
+              <BoardContextProvider>
+                <Body>
+                  {children}
+                  <div id="modalEl"></div>
+                </Body>
+              </BoardContextProvider>
             </ThemeContextProvider>
           </UserContextProvider>
         </SettingsContextProvider>

@@ -18,6 +18,7 @@ import {
 import { MouseEventHandler, useState } from "react";
 import openModal from "../../utils/openModal";
 import EditListModal from "./modals/EditListModal";
+import CreateCardModal from "./modals/CreateCardModal";
 
 const Menu = ({
   name,
@@ -51,7 +52,14 @@ const Menu = ({
   );
 };
 
-export default function List({ id, name, cards = [], onDelete, onEdit }: any) {
+export default function List({
+  id,
+  name,
+  cards = [],
+  onDelete,
+  onEdit,
+  onCardCreate,
+}: any) {
   const sortedCards = sortCards(cards) || [];
 
   return (
@@ -73,7 +81,12 @@ export default function List({ id, name, cards = [], onDelete, onEdit }: any) {
               ))}
             </div>
             {provided.placeholder}
-            <div className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-dark-2 py-2 h dark:hover:bg-dark-3 rounded-b-md">
+            <div
+              onClick={() =>
+                openModal(<CreateCardModal id={id} onSubmit={onCardCreate} />)
+              }
+              className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-dark-2 py-2 h dark:hover:bg-dark-3 rounded-b-md"
+            >
               <PlusIcon className="w-5 h-5 [&>path]:stroke-[3]" />
             </div>
           </div>

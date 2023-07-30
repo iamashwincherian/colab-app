@@ -4,20 +4,24 @@ import { useEffect, useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { CardProp, ListProp } from "../types";
 import { sortCards } from "../helpers/sort";
+import { useBoardContext } from "../../../contexts/BoardContext";
+import { trpc } from "../../../utils/trpc/trpc";
 
 export default function useKanbanBoard(
   defaultList: ListProp,
   defaultCards: CardProp
 ) {
   const [list, setList] = useState<ListProp>(defaultList || []);
-  const [cards, setCards] = useState<CardProp>(defaultCards || []);
+  const [cards, setCardsData] = useState<CardProp>(defaultCards || []);
+  const { setCards } = useBoardContext();
+  const cardUpdatePositionMutation = trpc.cards.updatePosition.useMutation();
 
   useEffect(() => {
     setList(defaultList);
-    setCards(defaultCards);
+    setCardsData(defaultCards);
   }, [defaultList, defaultCards]);
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (boardId: number, result: DropResult) => {
     let { source, destination } = result;
     if (!destination) return;
 
@@ -55,7 +59,12 @@ export default function useKanbanBoard(
         position,
       }));
       const restOfTheCards = cards.filter((card) => card.listId !== sourceId);
-      setCards([...restOfTheCards, ...sourceCards]);
+      const newCards = [...restOfTheCards, ...sourceCards];
+      setCardsData(newCards);
+      setCards(newCards);
+      console.log("update");
+
+      await cardUpdatePositionMutation.mutate({ cards: newCards, boardId });
     } else {
       let destinationCards =
         sortCards(cards.filter((card) => card.listId === destinationId)) || [];
@@ -82,7 +91,10 @@ export default function useKanbanBoard(
       );
 
       const newCards = [...restOfTheCards, ...sourceCards, ...destinationCards];
+      setCardsData(newCards);
       setCards(newCards);
+      console.log("update");
+      await cardUpdatePositionMutation.mutate({ cards: newCards, boardId });
     }
   };
 
@@ -91,5 +103,10 @@ export default function useKanbanBoard(
     return newList;
   };
 
-  return { list, cards, onDragEnd, updateList };
+  const updateCards = (newCards: CardProp[] = []) => {
+    setCardsData([...newCards]);
+    return newCards;
+  };
+
+  return { list, cards, onDragEnd, updateList, updateCards };
 }

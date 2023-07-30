@@ -1,14 +1,18 @@
 "use client";
 
+import { useEffect } from "react";
 import {
   BreadCrumbs,
   BreadCrumbItem,
 } from "../../../components/breadCrumbs/BreadCrumbs";
-import BoardNameEditor from "../../../components/input/boardNameEditor/BoardNameEditor";
 import KanbanBoard from "../../../components/kanban/KanbanBoard";
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import { trpc } from "../../../utils/trpc/trpc";
 import useBoard from "./hooks/useBoard.hook";
+import {
+  BoardContextProvider,
+  useBoardContext,
+} from "../../../contexts/BoardContext";
 
 type BoardProps = {
   params: { boardId: string };
@@ -16,7 +20,7 @@ type BoardProps = {
 
 const Board = (props: BoardProps) => {
   const { params: { boardId = null } = { boardId: null } } = props;
-  const { board, cards, list, onChange } = useBoard(boardId);
+  const { board, list, cards } = useBoard(boardId);
 
   const breadCrumbs = (
     <BreadCrumbs>
@@ -30,14 +34,7 @@ const Board = (props: BoardProps) => {
       <div className="p-10 pt-6">
         {breadCrumbs}
         <div className="mt-4">
-          {board && (
-            <KanbanBoard
-              board={board}
-              list={list}
-              cards={cards}
-              onChange={onChange}
-            />
-          )}
+          {board && <KanbanBoard board={board} list={list} cards={cards} />}
         </div>
       </div>
     </FullScreenLayout>

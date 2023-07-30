@@ -47,10 +47,12 @@ export const SettingsContextProvider = ({
             ...settings,
             activeProject: projectId,
           }),
-        toggleTheme: () => ({
-          ...settings,
-          theme: settings.theme === "light" ? "dark" : "light",
-        }),
+        toggleTheme: () => {
+          return {
+            ...settings,
+            theme: settings.theme === "light" ? "dark" : "light",
+          };
+        },
       }}
     >
       {children}

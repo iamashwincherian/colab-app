@@ -7,13 +7,11 @@ import useKanbanBoard from "./hooks/useKanbanBoard";
 import { ListProp, CardProp } from "./types";
 import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc/trpc";
-import NewListForm from "./components/CreateListForm";
 import openModal from "../../utils/openModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
 import { Button } from "../ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
-import CreateListForm from "./components/CreateListForm";
 import CreateListModal from "./modals/CreateListModal";
 
 type BoardProps = {
@@ -23,23 +21,22 @@ type BoardProps = {
   };
   list: ListProp;
   cards: CardProp;
-  onChange: Function;
 };
 
 export default function KanbanBoard(props: BoardProps) {
   const createMutation = trpc.lists.create.useMutation();
   const editMutation = trpc.lists.edit.useMutation();
   const deleteMutation = trpc.lists.delete.useMutation();
+  const createCardMutation = trpc.cards.create.useMutation();
 
   const {
     board,
     board: { id: boardId },
     list: defaultList,
     cards: defaultCards,
-    onChange,
   } = props;
 
-  let { list, cards, onDragEnd, updateList } = useKanbanBoard(
+  let { list, cards, onDragEnd, updateList, updateCards } = useKanbanBoard(
     defaultList,
     defaultCards
   );
@@ -48,9 +45,8 @@ export default function KanbanBoard(props: BoardProps) {
     updateList(defaultList);
   }, [defaultList]);
 
-  const handleChange = (payload: DropResult) => {
-    const result = onDragEnd(payload);
-    onChange(result);
+  const handleOnChange = async (result: DropResult) => {
+    await onDragEnd(boardId, result);
   };
 
   const handleNewList = async ({ name }: { name: string }) => {
@@ -76,7 +72,7 @@ export default function KanbanBoard(props: BoardProps) {
     updateList([...updatedList, newListItem]);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDeleteList = (id: number) => {
     const updatedList = list.filter((list) => list.id !== id);
     openModal(
       <ConfirmationModal
@@ -89,6 +85,22 @@ export default function KanbanBoard(props: BoardProps) {
         }}
       />
     );
+  };
+
+  const handleOnCardCreate = async ({
+    id,
+    name,
+  }: {
+    id: number;
+    name: string;
+  }) => {
+    const newCard = await createCardMutation.mutateAsync({
+      boardId: boardId,
+      listId: id,
+      title: name,
+    });
+
+    updateCards([...cards, newCard]);
   };
 
   const createNewButton = () => (
@@ -107,7 +119,7 @@ export default function KanbanBoard(props: BoardProps) {
         {createNewButton()}
       </div>
       <div className="mt-6">
-        <DragDropContext onDragEnd={handleChange}>
+        <DragDropContext onDragEnd={handleOnChange}>
           <div className="flex dark:text-white items-start">
             {list &&
               (list?.length
@@ -121,10 +133,11 @@ export default function KanbanBoard(props: BoardProps) {
                         key={id}
                         name={name}
                         cards={cardsInTheListItem}
-                        onDelete={() => handleDelete(id)}
+                        onDelete={() => handleDeleteList(id)}
                         onEdit={({ name: newName }: { name: string }) =>
                           handleEditList(id, newName)
                         }
+                        onCardCreate={handleOnCardCreate}
                       />
                     );
                   })

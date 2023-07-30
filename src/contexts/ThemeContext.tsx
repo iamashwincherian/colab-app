@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import useContextLocalStorage from "./useContextLocalStorage";
 
 type Theme = "light" | "dark";
@@ -7,12 +7,14 @@ const DEFAULT_THEME: Theme = "light";
 
 interface ThemeContextInterface {
   theme: Theme;
+  setId: () => void;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextInterface>({
   theme: DEFAULT_THEME,
+  setId() {},
   setTheme() {},
   toggleTheme() {},
 });
@@ -26,7 +28,9 @@ export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         theme,
         setTheme: (theme) => setTheme(theme),
-        toggleTheme: () => setTheme(theme === "light" ? "dark" : "light"),
+        toggleTheme: () => {
+          return setTheme(theme === "light" ? "dark" : "light");
+        },
       }}
     >
       {children}
