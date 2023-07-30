@@ -13,8 +13,8 @@ export default function useKanbanBoard(
 ) {
   const [list, setList] = useState<ListProp>(defaultList || []);
   const [cards, setCardsData] = useState<CardProp>(defaultCards || []);
-  const { setCards } = useBoardContext();
   const cardUpdatePositionMutation = trpc.cards.updatePosition.useMutation();
+  const { setCards } = useBoardContext();
 
   useEffect(() => {
     setList(defaultList);
@@ -62,7 +62,6 @@ export default function useKanbanBoard(
       const newCards = [...restOfTheCards, ...sourceCards];
       setCardsData(newCards);
       setCards(newCards);
-      console.log("update");
 
       await cardUpdatePositionMutation.mutate({ cards: newCards, boardId });
     } else {
@@ -93,7 +92,6 @@ export default function useKanbanBoard(
       const newCards = [...restOfTheCards, ...sourceCards, ...destinationCards];
       setCardsData(newCards);
       setCards(newCards);
-      console.log("update");
       await cardUpdatePositionMutation.mutate({ cards: newCards, boardId });
     }
   };
