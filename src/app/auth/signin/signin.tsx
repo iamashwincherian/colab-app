@@ -34,10 +34,10 @@ export default function SigninPage({ providers }: any) {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await signIn("credentials", {
-      callbackUrl: "/auth/callback?auth=success",
+      // callbackUrl: "/auth/callback?auth=success",
       email,
       password,
-      redirect: false,
+      redirect: true,
     });
     if (response?.ok) {
       if (response.url) {

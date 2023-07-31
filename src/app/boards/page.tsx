@@ -2,8 +2,9 @@
 
 import FullScreenLayout from "../../components/layouts/FullScreenLayout";
 import MainContent from "../../components/layoutWrapper/MainContent";
-import { trpc } from "../../utils/trpc/trpc";
 import BoardCard from "./components/BoardCard";
+import withAuth from "../../utils/withAuth";
+import { trpc } from "../../utils/trpc/trpc";
 
 const Boards = () => {
   const boards = trpc.boards.all.useQuery()?.data;
@@ -19,4 +20,4 @@ const Boards = () => {
   );
 };
 
-export default trpc.withTRPC(Boards);
+export default trpc.withTRPC(withAuth(Boards));

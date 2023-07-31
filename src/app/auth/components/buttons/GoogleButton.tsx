@@ -2,8 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-
-const CALLBACK_URL = "/auth/callback?auth=success";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const ButtonVarientTexts = {
   login: "Login with Google",
@@ -18,10 +17,16 @@ interface ButtonProps {
 
 export default function GoogleButton({ type, id }: ButtonProps) {
   const getText = (type: ButtonVarient) => ButtonVarientTexts[type];
+  const params = useSearchParams();
+
+  const handleOnClick = () => {
+    const callbackUrl = params?.get("callback") || "/";
+    signIn(id, { callbackUrl });
+  };
 
   return (
     <button
-      onClick={() => signIn(id, { callbackUrl: CALLBACK_URL })}
+      onClick={handleOnClick}
       type={"button"}
       className="w-full text-center py-3 my-3 border flex space-x-2 items-center justify-center hover:cursor-pointer dark:border-gray-700 border-slate-200 rounded-lg dark:text-gray-300 hover:shadow dark:hover:bg-dark text-slate-700 hover:text-slate-900 transition-colors"
     >
