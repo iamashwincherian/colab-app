@@ -1,11 +1,12 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-// import { signIn, jwt, session, authorize } from "./callbacks";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { db } from "../../../../server/db";
 
 const handler = NextAuth({
   secret: process.env.AUTH_SECRET,
+  adapter: PrismaAdapter(db),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -24,30 +25,17 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials: any, req: any) => {
-        const {
-          email,
-          password,
-          firstName = null,
-          lastName = null,
-          isSignup,
-        } = credentials;
-        console.log(credentials);
-        // const url = isSignup ? REGISTER_URL : LOGIN_URL
-
-        // const user = await getUser(url, email, password, firstName, lastName)
-
         return null;
       },
     }),
   ],
   pages: {
     signIn: "/auth/signIn",
-    newUser: "/auth/register",
+    newUser: "/",
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=
     verifyRequest: "/auth/verify-request", // (used for check email message)
   },
-  // callbacks: { signIn, jwt, session },
 });
 
 export { handler as GET, handler as POST };

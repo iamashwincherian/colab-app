@@ -1,7 +1,7 @@
-import { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { db } from "../db";
 
-export const createContext = (opts: CreateNextContextOptions) => {
+export const createContext = (opts: FetchCreateContextFnOptions) => {
   return {
     prisma: db,
   };

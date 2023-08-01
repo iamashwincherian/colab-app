@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const ButtonVarientTexts = {
   login: "Login with Google",
