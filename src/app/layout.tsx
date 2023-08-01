@@ -2,6 +2,7 @@
 
 import Body from "./Body";
 import Head from "./head";
+import { trpc } from "@utils/trpc/trpc";
 
 import "../styles/globals.css";
 
@@ -14,4 +15,4 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default RootLayout;
+export default trpc.withTRPC(RootLayout);

@@ -22,7 +22,7 @@ export default function withAuth(Component) {
     }, [session, router]);
 
     if (status === "authenticated") {
-      return <Component {...props} />;
+      return <Component {...props} user={session.user} />;
     } else {
       return <Loading />;
     }

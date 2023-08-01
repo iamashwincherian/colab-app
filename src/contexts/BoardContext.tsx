@@ -1,15 +1,19 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { CardProp, ListProp } from "../components/kanban/types";
+import { BoardProp, CardProp, ListProp } from "../components/kanban/types";
 import { trpc } from "../utils/trpc/trpc";
 
 interface BoardType {
-  board: object | undefined;
+  board: BoardProp;
   list: ListProp[];
   cards: CardProp[];
 }
 
 interface BoardContextType extends BoardType {
-  setBoard: (payload: { board: object | null; cards: []; list: [] }) => void;
+  setBoard: (payload: {
+    board: BoardProp;
+    cards: CardProp[];
+    list: ListProp[];
+  }) => void;
   setCards: (cards: CardProp[]) => void;
   createList: ({ name, boardId }: { name: string; boardId: number }) => void;
   deleteList: ({ listId }: { listId: number }) => void;
@@ -18,13 +22,13 @@ interface BoardContextType extends BoardType {
 }
 
 const defaultBoard: BoardType = {
-  board: {},
+  board: null,
   list: [],
   cards: [],
 };
 
 const BoardContext = createContext<BoardContextType>({
-  board: {},
+  board: null,
   list: [],
   cards: [],
   setBoard() {},

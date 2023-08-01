@@ -7,7 +7,7 @@ import withAuth from "../../utils/withAuth";
 import { trpc } from "../../utils/trpc/trpc";
 
 const Boards = () => {
-  const boards = trpc.boards.all.useQuery()?.data;
+  const { data: boards } = trpc.boards.all.useQuery();
 
   return (
     <FullScreenLayout nav>
@@ -20,4 +20,4 @@ const Boards = () => {
   );
 };
 
-export default trpc.withTRPC(withAuth(Boards));
+export default withAuth(Boards);

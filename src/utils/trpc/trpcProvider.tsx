@@ -1,7 +1,7 @@
 import { trpc } from "./trpc";
-import { ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
-interface TrpcProviderProps {
+interface TrpcProviderProps extends FC {
   children: ReactNode;
 }
 
@@ -9,4 +9,4 @@ const TrpcProvider = ({ children }: TrpcProviderProps) => {
   return <>{children}</>;
 };
 
-export default trpc.withTRPC(TrpcProvider);
+export default trpc.withTRPC(TrpcProvider) as FC;

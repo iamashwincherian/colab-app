@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { privateProcedure, router } from "../trpc";
 
 export default router({
-  create: publicProcedure
+  create: privateProcedure
     .input(
       z.object({
         listId: z.number(),
@@ -11,7 +11,10 @@ export default router({
       })
     )
     .mutation(
-      async ({ ctx: { prisma }, input: { boardId, listId, title } }) => {
+      async ({
+        ctx: { prisma, userId },
+        input: { boardId, listId, title },
+      }) => {
         const nextPosition = await prisma.card.count({
           where: {
             listId,
@@ -21,7 +24,7 @@ export default router({
 
         return prisma.card.create({
           data: {
-            userId: 1,
+            userId,
             listId,
             boardId,
             position: nextPosition,
@@ -30,20 +33,20 @@ export default router({
         });
       }
     ),
-  update: publicProcedure
+  update: privateProcedure
     .input(
       z.object({
         id: z.number(),
         title: z.string(),
       })
     )
-    .mutation(({ ctx: { prisma }, input: { id, title } }) =>
+    .mutation(({ ctx: { prisma, userId }, input: { id, title } }) =>
       prisma.card.update({
-        where: { id },
+        where: { id, userId },
         data: { title },
       })
     ),
-  updatePosition: publicProcedure
+  updatePosition: privateProcedure
     .input(
       z.object({
         boardId: z.number(),
@@ -53,24 +56,25 @@ export default router({
           .default([]),
       })
     )
-    .mutation(async ({ ctx: { prisma }, input: { boardId, cards } }) => {
-      const userId = 1;
-      for (const { id, listId, position } of cards) {
-        await prisma.card.update({
-          where: { boardId, userId, id },
-          data: { position, listId },
-        });
+    .mutation(
+      async ({ ctx: { prisma, userId }, input: { boardId, cards } }) => {
+        for (const { id, listId, position } of cards) {
+          await prisma.card.update({
+            where: { boardId, userId, id },
+            data: { position, listId },
+          });
+        }
       }
-    }),
-  delete: publicProcedure
+    ),
+  delete: privateProcedure
     .input(
       z.object({
         cardId: z.number(),
       })
     )
-    .mutation(({ ctx: { prisma }, input: { cardId } }) =>
+    .mutation(({ ctx: { prisma, userId }, input: { cardId } }) =>
       prisma.card.delete({
-        where: { id: cardId },
+        where: { id: cardId, userId },
       })
     ),
 });

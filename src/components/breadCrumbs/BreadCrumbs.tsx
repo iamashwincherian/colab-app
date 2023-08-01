@@ -7,12 +7,14 @@ type BreadCrumbsProps = {
 };
 
 type BreadCrumbItemProps = {
-  text: string;
+  text?: string;
   link?: string;
 };
 
 export function BreadCrumbItem({ text, link }: BreadCrumbItemProps) {
   const router = useRouter();
+
+  if (!text) return <></>;
 
   const jumpToLink = () => {
     if (!link) return;
