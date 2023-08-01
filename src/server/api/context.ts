@@ -1,10 +1,8 @@
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { PrismaClient } from "@prisma/client";
-import { initTRPC } from "@trpc/server";
+import { db } from "../db";
 
 export const createContext = (opts: CreateNextContextOptions) => {
-  const prisma = new PrismaClient();
   return {
-    prisma,
+    prisma: db,
   };
 };
