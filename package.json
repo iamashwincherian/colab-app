@@ -10,8 +10,10 @@
     "prisma:studio": "npx prisma studio",
     "prisma:generate": "npx prisma generate",
     "prisma:migrate": "npx prisma migrate dev",
+    "prisma:migrate:prod": "npx prisma migrate deploy",
     "prisma:migrate:reset": "npx prisma migrate reset",
     "migrate": "npm run prisma:migrate && npm run prisma:generate",
+    "migrate:prod": "npm run prisma:migrate:prod && npm run prisma:generate",
     "migrate:reset": "npm run prisma:migrate:reset && npm run prisma:generate"
   },
   "prisma": {
