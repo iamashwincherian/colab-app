@@ -7,6 +7,7 @@ const t = initTRPC.context<typeof createContext>().create();
 const authenticate = t.middleware(
   async ({ ctx, ctx: { req, prisma }, next }) => {
     const sessionToken = req.cookies["next-auth.session-token"];
+    console.log(req.cookies);
     const session = await prisma.session.findUnique({
       where: { sessionToken },
       select: { userId: true },
