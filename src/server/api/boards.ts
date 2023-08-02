@@ -13,4 +13,35 @@ export default router({
     });
     return board;
   }),
+  create: privateProcedure
+    .input(
+      z.object({ name: z.string(), createSample: z.boolean().default(false) })
+    )
+    .mutation(
+      async ({ ctx: { prisma, userId }, input: { name, createSample } }) => {
+        const sampleListName = "Sample List";
+        const sampleCardName = "Sample Card";
+        const newBoard = await prisma.board.create({
+          data: { name, userId },
+        });
+        await prisma.list.create({
+          data: {
+            name: sampleListName,
+            position: 0,
+            boardId: newBoard.id,
+            userId,
+            cards: {
+              create: {
+                position: 0,
+                title: sampleCardName,
+                boardId: newBoard.id,
+                userId,
+              },
+            },
+          },
+        });
+
+        return newBoard;
+      }
+    ),
 });

@@ -42,6 +42,7 @@ const BoardContext = createContext<BoardContextType>({
 export const useBoardContext = () => useContext(BoardContext);
 export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
   const [board, setBoardData] = useState(defaultBoard);
+  const createBoardMutation = trpc.boards.create.useMutation();
   const createListMutation = trpc.lists.create.useMutation();
   const deleteListMutation = trpc.lists.delete.useMutation();
   const updateCardMutation = trpc.cards.update.useMutation();

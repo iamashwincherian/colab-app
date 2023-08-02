@@ -33,7 +33,7 @@ export default function KanbanBoard(props: KanbanBoardProps) {
 
   useEffect(() => {
     updateList(defaultList);
-  }, [defaultList, updateList]);
+  }, [defaultList]);
 
   if (!props.board) return <></>;
   const {
