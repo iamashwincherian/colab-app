@@ -2,6 +2,26 @@ import { z } from "zod";
 import { privateProcedure, router } from "../trpc";
 
 export default router({
+  all: privateProcedure
+    .input(
+      z.object({
+        boardId: z.number(),
+      })
+    )
+    .query(({ ctx: { prisma, userId }, input: { boardId } }) =>
+      prisma.card.findMany({
+        where: { userId, boardId },
+      })
+    ),
+  find: privateProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .query(({ ctx: { prisma, userId }, input: { id } }) =>
+      prisma.card.findUnique({ where: { id, userId } })
+    ),
   create: privateProcedure
     .input(
       z.object({
@@ -50,10 +70,7 @@ export default router({
     .input(
       z.object({
         boardId: z.number(),
-        cards: z
-          .object({ id: z.number(), position: z.number(), listId: z.number() })
-          .array()
-          .default([]),
+        cards: z.any().array().default([]),
       })
     )
     .mutation(

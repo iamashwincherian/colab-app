@@ -8,11 +8,11 @@ import { useBoardContext } from "../../../contexts/BoardContext";
 import { trpc } from "../../../utils/trpc/trpc";
 
 export default function useKanbanBoard(
-  defaultList: ListProp,
-  defaultCards: CardProp
+  defaultList: ListProp[],
+  defaultCards: CardProp[]
 ) {
-  const [list, setList] = useState<ListProp>(defaultList || []);
-  const [cards, setCardsData] = useState<CardProp>(defaultCards || []);
+  const [list, setList] = useState<ListProp[]>(defaultList || []);
+  const [cards, setCardsData] = useState<CardProp[]>(defaultCards || []);
   const cardUpdatePositionMutation = trpc.cards.updatePosition.useMutation();
   const { setCards } = useBoardContext();
 
@@ -36,12 +36,12 @@ export default function useKanbanBoard(
     const sourceId: number = parseInt(source.droppableId);
     const destinationId: number = parseInt(destination.droppableId);
 
-    let sourceCards = sortCards(
-      cards.filter((card) => card.listId === sourceId)
+    let sourceCards: CardProp[] = sortCards(
+      cards.filter((card) => card?.listId === sourceId)
     );
     if (!sourceCards) return;
 
-    const cardMoving = sourceCards.find((card) => draggableId === card.id);
+    const cardMoving = sourceCards.find((card) => draggableId === card?.id);
     if (!cardMoving) return;
 
     if (sourceId === destinationId) {
@@ -57,8 +57,8 @@ export default function useKanbanBoard(
       sourceCards = sourceCards.map((card, position) => ({
         ...card,
         position,
-      }));
-      const restOfTheCards = cards.filter((card) => card.listId !== sourceId);
+      })) as CardProp[];
+      const restOfTheCards = cards.filter((card) => card?.listId !== sourceId);
       const newCards = [...restOfTheCards, ...sourceCards];
       setCardsData(newCards);
       setCards(newCards);
@@ -66,7 +66,7 @@ export default function useKanbanBoard(
       await cardUpdatePositionMutation.mutate({ cards: newCards, boardId });
     } else {
       let destinationCards =
-        sortCards(cards.filter((card) => card.listId === destinationId)) || [];
+        sortCards(cards.filter((card) => card?.listId === destinationId)) || [];
 
       // Remove the item from its current position
       sourceCards.splice(sourceIndex, 1);
@@ -78,16 +78,17 @@ export default function useKanbanBoard(
       sourceCards = sourceCards.map((card, position) => ({
         ...card,
         position,
-      }));
+      })) as CardProp[];
       destinationCards = destinationCards.map((card, position) => ({
         ...card,
         position,
         listId: destinationId,
-      }));
+      })) as CardProp[];
 
-      const restOfTheCards = cards.filter(
-        (card) => ![sourceId, destinationId].includes(card.listId)
-      );
+      const restOfTheCards = cards.filter((card) => {
+        if (!(card && card?.listId)) return;
+        return ![sourceId, destinationId].includes(card?.listId);
+      });
 
       const newCards = [...restOfTheCards, ...sourceCards, ...destinationCards];
       setCardsData(newCards);
@@ -96,7 +97,7 @@ export default function useKanbanBoard(
     }
   };
 
-  const updateList = (newList: []) => {
+  const updateList = (newList: ListProp[]) => {
     setList([...newList]);
     return newList;
   };

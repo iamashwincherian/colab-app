@@ -3,7 +3,6 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
@@ -13,7 +12,6 @@ import GoogleButton from "../components/buttons/GoogleButton";
 export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
   const { google } = providers;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,11 +19,8 @@ export default function RegisterPage({ providers }: any) {
   const [lastName, setLastNmae] = useState("");
 
   const checkForCallbackError = () => {
-    const error = searchParams.get("error");
+    const error = searchParams?.get("error");
     if (error === "Callback") {
-      enqueueSnackbar("Authentication failed", {
-        variant: "error",
-      });
     }
   };
 
@@ -47,11 +42,9 @@ export default function RegisterPage({ providers }: any) {
     });
     if (response?.ok) {
       if (response.url) {
-        enqueueSnackbar("Registered successfully", { variant: "success" });
         router.replace(response.url);
       }
     } else {
-      enqueueSnackbar(response?.error, { variant: "error" });
     }
   };
 
@@ -185,7 +178,7 @@ export default function RegisterPage({ providers }: any) {
                   Register
                 </button>
 
-                <Link href={"/auth/signin"}>
+                <Link href={"/auth/signIn"}>
                   <p className="text-sm text-center dark:text-gray-300">
                     Already have an account?{" "}
                     <span className="text-primary cursor-pointer hover:text-primary-dark">

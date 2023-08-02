@@ -1,7 +1,7 @@
 import { getProviders } from "next-auth/react";
-import SigninPage from "./signIn";
+import SignInPage from "./signInPage";
 
 export default async function SignIn() {
   const providers = await getProviders();
-  return <SigninPage providers={providers} />;
+  return <SignInPage providers={providers} />;
 }

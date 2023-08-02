@@ -15,6 +15,11 @@ export default router({
         include: { cards: includeCards },
       })
     ),
+  find: privateProcedure
+    .input(z.object({ id: z.number(), boardId: z.number() }))
+    .query(({ ctx: { prisma, userId }, input: { id, boardId } }) =>
+      prisma.list.findUnique({ where: { id, userId, boardId } })
+    ),
   create: privateProcedure
     .input(
       z.object({

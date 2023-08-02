@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Loading from "../components/loading/Loading";
 
-export default function withAuth(Component) {
+export default function withAuth(Component: any) {
   return function ProtectedRoute({ ...props }) {
     const router = useRouter();
     const pathname = usePathname();
@@ -23,8 +23,8 @@ export default function withAuth(Component) {
 
     if (status === "authenticated") {
       return <Component {...props} user={session.user} />;
-    } else {
-      return <Loading />;
     }
+
+    return <Loading />;
   };
 }

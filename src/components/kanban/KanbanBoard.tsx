@@ -6,7 +6,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 
 import List from "./List";
 import useKanbanBoard from "./hooks/useKanbanBoard";
-import { ListProp, CardProp } from "./types";
+import { BoardProp, ListProp, CardProp } from "./types";
 import { trpc } from "../../utils/trpc/trpc";
 import openModal from "../../utils/openModal";
 import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
@@ -14,27 +14,18 @@ import { Button } from "../ui/button";
 import CreateListModal from "./modals/CreateListModal";
 import { useBoardContext } from "../../contexts/BoardContext";
 
-type BoardProps = {
-  board: {
-    name: string;
-    id: number;
-  };
-  list: ListProp;
-  cards: CardProp;
+type KanbanBoardProps = {
+  board: BoardProp;
+  list: ListProp[];
+  cards: CardProp[];
 };
 
-export default function KanbanBoard(props: BoardProps) {
+export default function KanbanBoard(props: KanbanBoardProps) {
+  const { createList } = useBoardContext();
   const editMutation = trpc.lists.edit.useMutation();
   const createCardMutation = trpc.cards.create.useMutation();
-  const { createList } = useBoardContext();
 
-  const {
-    board,
-    board: { id: boardId },
-    list: defaultList,
-    cards: defaultCards,
-  } = props;
-
+  const { list: defaultList, cards: defaultCards } = props;
   let { list, cards, onDragEnd, updateList, updateCards } = useKanbanBoard(
     defaultList,
     defaultCards
@@ -42,14 +33,20 @@ export default function KanbanBoard(props: BoardProps) {
 
   useEffect(() => {
     updateList(defaultList);
-  }, [defaultList]);
+  }, [defaultList, updateList]);
+
+  if (!props.board) return <></>;
+  const {
+    board,
+    board: { id: boardId },
+  } = props;
 
   const handleOnChange = async (result: DropResult) => {
     await onDragEnd(boardId, result);
   };
 
   const handleEditList = async (id: number, name: string) => {
-    const updatedList = list.filter((list) => list.id !== id);
+    const updatedList = list.filter((list) => list?.id !== id);
     const newListItem = await editMutation.mutateAsync({
       boardId,
       id,
@@ -103,7 +100,7 @@ export default function KanbanBoard(props: BoardProps) {
               (list?.length
                 ? list.map(({ id, name }: any) => {
                     const cardsInTheListItem = cards.filter(
-                      (card) => card.listId === id
+                      (card) => card?.listId === id
                     );
                     return (
                       <List

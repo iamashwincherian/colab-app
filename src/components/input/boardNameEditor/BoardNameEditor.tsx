@@ -11,7 +11,7 @@ export default function BoardNameEditor({
   const placeholder = "Enter board name";
   const [boardName, setBoardName] = useState(savedBoardName || "");
   const [showEditIcon, setShowEditIcon] = useState(true);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: any) => {
     const { value } = e.target;

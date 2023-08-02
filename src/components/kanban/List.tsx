@@ -20,6 +20,7 @@ import EditListModal from "./modals/EditListModal";
 import CreateCardModal from "./modals/CreateCardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import { useBoardContext } from "../../contexts/BoardContext";
+import { CardProp } from "./types";
 
 const Menu = ({
   name,
@@ -60,7 +61,7 @@ export default function List({
   onEdit,
   onCardCreate,
 }: any) {
-  const sortedCards = sortCards(cards) || [];
+  const sortedCards: CardProp[] = sortCards(cards) || [];
   const { deleteList } = useBoardContext();
 
   const onDelete = () => {
@@ -88,9 +89,17 @@ export default function List({
             {...provided.droppableProps}
           >
             <div>
-              {sortedCards.map(({ id: cardId, title }, index) => (
-                <Card key={cardId} id={cardId} index={index} title={title} />
-              ))}
+              {sortedCards.map((card, index: number) => {
+                if (!card) return;
+                return (
+                  <Card
+                    key={card.id}
+                    id={card.id}
+                    index={index}
+                    title={card.title}
+                  />
+                );
+              })}
             </div>
             {provided.placeholder}
             <div

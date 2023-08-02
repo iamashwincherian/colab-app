@@ -7,14 +7,12 @@ const DEFAULT_THEME: Theme = "light";
 
 interface ThemeContextInterface {
   theme: Theme;
-  setId: () => void;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextInterface>({
   theme: DEFAULT_THEME,
-  setId() {},
   setTheme() {},
   toggleTheme() {},
 });

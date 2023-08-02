@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-const Avatar = ({ name }: { name: string }) => {
+const Avatar = ({ name }: { name?: string | null }) => {
   if (!name || name === "") return <></>;
 
   const firstLetter = name.charAt(0);
@@ -32,12 +32,15 @@ const Avatar = ({ name }: { name: string }) => {
 
 export function UserNav() {
   const user = useUser();
+  if (!user) return <></>;
+
+  const { name = undefined } = user;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar name={user.name} />
+          <Avatar name={name} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>

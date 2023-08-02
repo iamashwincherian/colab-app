@@ -2,8 +2,8 @@ import { Draggable } from "react-beautiful-dnd";
 import CardContextMenu from "../contextMenus/CardContextMenu";
 
 type CardProps = {
-  id: string;
-  title: string | undefined;
+  id: number;
+  title: string;
   index: number;
 };
 

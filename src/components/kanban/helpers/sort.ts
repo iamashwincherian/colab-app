@@ -1,13 +1,9 @@
 import { CardProp } from "../types";
 
-type sortItem = {
-  position: number;
-  [key: string]: any;
-};
-
-const sort = (items: CardProp = []) => {
-  if (!items || !items.length) return;
-  return items.sort((a: sortItem, b: sortItem) => a.position - b.position);
+const sort = (items: CardProp[] = []): CardProp[] => {
+  return items.sort(
+    (a: CardProp, b: CardProp) => (a?.position ?? 0) - (b?.position ?? 0)
+  );
 };
 
 export const sortCards = sort;

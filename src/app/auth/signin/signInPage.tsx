@@ -3,7 +3,6 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
@@ -13,17 +12,13 @@ import GoogleButton from "../components/buttons/GoogleButton";
 export default function SigninPage({ providers }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
   const { google } = providers;
   const [email, setEmail] = useState("ashwin@colab.com");
   const [password, setPassword] = useState("colabtest");
 
   const checkForCallbackError = () => {
-    const error = searchParams.get("error");
+    const error = searchParams?.get("error");
     if (error === "Callback") {
-      enqueueSnackbar("Authentication failed", {
-        variant: "error",
-      });
     }
   };
 
@@ -41,11 +36,9 @@ export default function SigninPage({ providers }: any) {
     });
     if (response?.ok) {
       if (response.url) {
-        enqueueSnackbar("Logged in successfully", { variant: "success" });
         router.replace(response.url);
       }
     } else {
-      enqueueSnackbar(response?.error, { variant: "error" });
     }
   };
 

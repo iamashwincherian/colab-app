@@ -65,21 +65,21 @@ export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
           setBoardData({ ...board, list: [...board.list, newList] });
         },
         deleteList: ({ listId }) => {
-          const list = board.list.filter((list) => list.id !== listId);
+          const list = board.list.filter((list) => list?.id !== listId);
           deleteListMutation.mutate({ listId });
           setBoardData({ ...board, list });
         },
         updateCard: ({ cardId, title }) => {
-          const cards = board.cards.filter((card) => card.id !== cardId);
-          const cardToEdit = board.cards.find((card) => card.id === cardId);
+          const cards = board.cards.filter((card) => card?.id !== cardId);
+          const cardToEdit = board.cards.find((card) => card?.id === cardId);
           setBoardData({
             ...board,
-            cards: [...cards, { ...cardToEdit, title }],
+            cards: [...cards, { ...cardToEdit, title }] as CardProp[],
           });
           updateCardMutation.mutate({ id: cardId, title });
         },
         deleteCard: (cardId) => {
-          const cards = board.cards.filter((card) => card.id !== cardId);
+          const cards = board.cards.filter((card) => card?.id !== cardId);
           setBoardData({ ...board, cards });
           deleteCardMutation.mutate({ cardId });
         },

@@ -8,6 +8,7 @@ import KanbanBoard from "../../../components/kanban/KanbanBoard";
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import useBoard from "./hooks/useBoard.hook";
 import withAuth from "../../../utils/withAuth";
+import { FC } from "react";
 
 type BoardProps = {
   params: { boardId: string };
@@ -38,4 +39,4 @@ const Board = (props: BoardProps) => {
   );
 };
 
-export default withAuth(Board);
+export default withAuth(Board) as FC;
