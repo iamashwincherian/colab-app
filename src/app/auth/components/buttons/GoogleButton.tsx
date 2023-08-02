@@ -20,7 +20,7 @@ export default function GoogleButton({ type, id }: ButtonProps) {
   const params = useSearchParams();
 
   const handleOnClick = () => {
-    const callbackUrl = params?.get("callback") || "/";
+    const callbackUrl = params?.get("callbackUrl") || "/";
     signIn(id, { callbackUrl });
   };
 

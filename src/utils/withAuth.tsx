@@ -16,7 +16,7 @@ export default function withAuth(Component: any) {
         if (!pathname || pathname === "/") {
           router.push("/auth/signin");
         } else {
-          router.push(`/auth/signin?callback=${pathname}`);
+          router.push(`/auth/signin?callbackUrl=${pathname}`);
         }
       }
     }, [session, router]);
