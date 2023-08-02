@@ -13,7 +13,7 @@ export default function ProtectedRoute({ children }: PageProps) {
   const router = useRouter();
 
   if (status === "unauthenticated") {
-    router.replace("/auth/signIn");
+    router.replace("/auth/signin");
   } else if (status === "authenticated" && session) {
     return <>{children}</>;
   }

@@ -178,7 +178,7 @@ export default function RegisterPage({ providers }: any) {
                   Register
                 </button>
 
-                <Link href={"/auth/signIn"}>
+                <Link href={"/auth/signin"}>
                   <p className="text-sm text-center dark:text-gray-300">
                     Already have an account?{" "}
                     <span className="text-primary cursor-pointer hover:text-primary-dark">

@@ -70,7 +70,7 @@ const Profile = () => {
   const handleLogout = () => {
     logoutUser();
     signOut({ redirect: false });
-    router.push("/auth/signIn");
+    router.push("/auth/signin");
   };
 
   return (

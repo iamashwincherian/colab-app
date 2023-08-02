@@ -31,7 +31,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/auth/signIn",
+    signIn: "/auth/signin",
     newUser: "/",
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=

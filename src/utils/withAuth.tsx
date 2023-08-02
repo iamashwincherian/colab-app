@@ -14,9 +14,9 @@ export default function withAuth(Component: any) {
     useEffect(() => {
       if (status === "unauthenticated") {
         if (!pathname || pathname === "/") {
-          router.push("/auth/signIn");
+          router.push("/auth/signin");
         } else {
-          router.push(`/auth/signIn?callback=${pathname}`);
+          router.push(`/auth/signin?callback=${pathname}`);
         }
       }
     }, [session, router]);

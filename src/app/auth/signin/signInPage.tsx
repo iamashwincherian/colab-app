@@ -12,7 +12,7 @@ import GoogleButton from "../components/buttons/GoogleButton";
 export default function SigninPage({ providers }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { google } = providers;
+  const { google = null } = providers;
   const [email, setEmail] = useState("ashwin@colab.com");
   const [password, setPassword] = useState("colabtest");
 
