@@ -9,10 +9,14 @@ import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import Logo from "../../../components/logo/logo";
 import GoogleButton from "../components/buttons/GoogleButton";
 
+type GoogleProvider = {
+  id: string;
+} | null;
+
 export default function SigninPage({ providers }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { google = null } = providers;
+  const [google, setGoogle] = useState<GoogleProvider>(null);
   const [email, setEmail] = useState("ashwin@colab.com");
   const [password, setPassword] = useState("colabtest");
 
@@ -23,8 +27,16 @@ export default function SigninPage({ providers }: any) {
   };
 
   useEffect(() => {
+    console.log("provider");
     checkForCallbackError();
   }, []);
+
+  useEffect(() => {
+    console.log("providers", providers);
+    if (providers) {
+      setGoogle(providers.google);
+    }
+  }, [providers]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,7 +70,7 @@ export default function SigninPage({ providers }: any) {
                 <p className="text-xl font-regular">Login</p>
                 <small className="mb-4 text-gray-400 ">Welcome back</small>
                 <div className="my-5">
-                  <GoogleButton type="login" id={google.id} />
+                  {google && <GoogleButton type="login" id={google?.id} />}
                 </div>
 
                 <div className="flex items-center">
