@@ -27,12 +27,10 @@ export default function SigninPage({ providers }: any) {
   };
 
   useEffect(() => {
-    console.log("provider");
     checkForCallbackError();
   }, []);
 
   useEffect(() => {
-    console.log("providers", providers);
     if (providers) {
       setGoogle(providers.google);
     }

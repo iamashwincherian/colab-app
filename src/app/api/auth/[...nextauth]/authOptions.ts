@@ -8,6 +8,9 @@ import { NextAuthOptions } from "next-auth";
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
   adapter: PrismaAdapter(db),
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -38,13 +41,10 @@ export const authOptions: NextAuthOptions = {
     verifyRequest: "/auth/verify-request", // (used for check email message)
   },
   callbacks: {
-    session({ session, user }) {
+    session(props) {
+      const { session, user } = props;
       session.user = user;
       return session;
-    },
-    jwt({ token, user, account, profile, isNewUser }) {
-      console.log("token", token);
-      return token;
     },
   },
 };

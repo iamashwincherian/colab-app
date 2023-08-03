@@ -4,22 +4,29 @@ import { createContext } from "./api/context";
 
 const t = initTRPC.context<typeof createContext>().create();
 
+const ACCESS_TOKEN = "next-auth.session-token";
+
 const authenticate = t.middleware(
   async ({ ctx, ctx: { req, prisma }, next }) => {
-    const sessionToken = req.cookies["next-auth.session-token"];
-    console.log(req.cookies);
-    const session = await prisma.session.findUnique({
-      where: { sessionToken },
-      select: { userId: true },
+    const token = await getToken({
+      req,
+      secret: process.env.AUTH_SECRET,
+      cookieName: ACCESS_TOKEN,
     });
-    if (!session) {
+    console.log("token", token);
+
+    const user = await prisma.user.findUnique({
+      where: { email: token?.email || undefined },
+    });
+
+    if (!user) {
       throw new TRPCError({
         message: "You are not authorized",
         code: "FORBIDDEN",
       });
     }
 
-    return next({ ctx: { ...ctx, userId: session.userId } });
+    return next({ ctx: { ...ctx, userId: user.id } });
   }
 );
 
