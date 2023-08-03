@@ -26,6 +26,7 @@ const Boards = () => {
         onSubmit={async ({ name }: { name: string }) => {
           const newBoard = await createBoardMutation.mutateAsync({
             name,
+            createSample: true,
           });
           setBoards([...boards, newBoard]);
         }}
