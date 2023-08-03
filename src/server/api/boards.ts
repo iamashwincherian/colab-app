@@ -8,6 +8,7 @@ export default router({
       prisma.board.findUnique({ where: { id, userId } })
     ),
   all: privateProcedure.query(async ({ ctx: { prisma, userId } }) => {
+    console.log("userId", userId);
     const board = await prisma.board.findMany({
       where: { userId },
     });
