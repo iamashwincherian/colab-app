@@ -11,6 +11,7 @@ const authenticate = t.middleware(
     let user = null;
     const token = await getToken({
       req,
+      secret: process.env.AUTH_SECRET,
     });
 
     if (token) {
