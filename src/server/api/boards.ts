@@ -8,7 +8,6 @@ export default router({
       prisma.board.findUnique({ where: { id, userId } })
     ),
   all: privateProcedure.query(async ({ ctx: { prisma, userId } }) => {
-    console.log("userId", userId);
     const board = await prisma.board.findMany({
       where: { userId },
     });
@@ -20,27 +19,29 @@ export default router({
     )
     .mutation(
       async ({ ctx: { prisma, userId }, input: { name, createSample } }) => {
-        const sampleListName = "Sample List";
-        const sampleCardName = "Sample Card";
         const newBoard = await prisma.board.create({
           data: { name, userId },
         });
-        await prisma.list.create({
-          data: {
-            name: sampleListName,
-            position: 0,
-            boardId: newBoard.id,
-            userId,
-            cards: {
-              create: {
-                position: 0,
-                title: sampleCardName,
-                boardId: newBoard.id,
-                userId,
+        if (createSample) {
+          const sampleListName = "Sample List";
+          const sampleCardName = "Sample Card";
+          await prisma.list.create({
+            data: {
+              name: sampleListName,
+              position: 0,
+              boardId: newBoard.id,
+              userId,
+              cards: {
+                create: {
+                  position: 0,
+                  title: sampleCardName,
+                  boardId: newBoard.id,
+                  userId,
+                },
               },
             },
-          },
-        });
+          });
+        }
 
         return newBoard;
       }
