@@ -23,9 +23,8 @@ const authenticate = t.middleware(
 
     if (!user) {
       throw new TRPCError({
-        message: "You are not authorized",
+        message: `You are not authorized${token}`,
         code: "FORBIDDEN",
-        cause: token,
       });
     }
 
