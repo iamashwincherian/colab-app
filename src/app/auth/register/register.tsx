@@ -8,10 +8,12 @@ import { useEffect, useState } from "react";
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import Logo from "../../../components/logo/logo";
 import GoogleButton from "../components/buttons/GoogleButton";
+import { useToast } from "@components/ui/toast/use-toast";
 
 export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { toast } = useToast();
   const { google } = providers;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,19 +34,22 @@ export default function RegisterPage({ providers }: any) {
     e.preventDefault();
 
     const response = await signIn("credentials", {
-      callbackUrl: "/auth/callback?auth=success",
+      isRegistration: true,
+      name: `${firstName} ${lastName}`,
       redirect: false,
-      isSignup: true,
       email,
       password,
-      firstName,
-      lastName,
     });
-    if (response?.ok) {
-      if (response.url) {
-        router.replace(response.url);
-      }
+    if (response?.ok && !response.error) {
+      toast({
+        description: "Registered successfully",
+      });
+      router.push("/");
     } else {
+      toast({
+        description: "Something went wrong",
+        variant: "destructive",
+      });
     }
   };
 

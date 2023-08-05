@@ -11,6 +11,7 @@ import clsx from "../helpers/clsx";
 import { UserContextProvider } from "../contexts/UserContext";
 import { SettingsContextProvider } from "../contexts/SettingsContext";
 import { BoardContextProvider } from "../contexts/BoardContext";
+import { Toaster } from "@components/ui/toast/toaster";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -37,6 +38,7 @@ export default function ContextProviderWrappers({
               <body className={clsx(theme, inter.className)}>
                 {children}
                 <div id="modalEl"></div>
+                <Toaster />
               </body>
             </BoardContextProvider>
           </ThemeContextProvider>

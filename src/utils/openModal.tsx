@@ -17,7 +17,7 @@ export default function openModal(modal: any, props: object = {}) {
 
   const getComponent = () => {
     return (
-      <div className="modal">
+      <div className="modal m-12 p-12">
         {(React.createElement("div", { open: true, ...props }), modal)}
       </div>
     );

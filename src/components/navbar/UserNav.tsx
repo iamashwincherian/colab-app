@@ -1,3 +1,5 @@
+"use client";
+
 import useUser from "../../utils/useUser";
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
@@ -12,6 +14,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useToast } from "@components/ui/toast/use-toast";
 
 const Avatar = ({ name }: { name?: string | null }) => {
   if (!name || name === "") return <></>;
@@ -31,10 +35,20 @@ const Avatar = ({ name }: { name?: string | null }) => {
 };
 
 export function UserNav() {
+  const router = useRouter();
+  const { toast } = useToast();
   const user = useUser();
   if (!user) return <></>;
 
   const { name = undefined } = user;
+
+  const handleLogout = () => {
+    signOut({ redirect: false });
+    toast({
+      description: "Logging you out",
+    });
+    router.push("/");
+  };
 
   return (
     <DropdownMenu>
@@ -69,7 +83,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut()}>
+        <DropdownMenuItem onClick={handleLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

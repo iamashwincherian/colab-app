@@ -1,8 +1,9 @@
 "use client";
 
+import { useToast } from "@components/ui/toast/use-toast";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
@@ -16,6 +17,7 @@ type GoogleProvider = {
 export default function SigninPage({ providers }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { toast } = useToast();
   const [google, setGoogle] = useState<GoogleProvider>(null);
   const [email, setEmail] = useState("ashwin@colab.com");
   const [password, setPassword] = useState("colabtest");
@@ -38,17 +40,22 @@ export default function SigninPage({ providers }: any) {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const response = await signIn("credentials", {
-      // callbackUrl: "/auth/callback?auth=success",
       email,
       password,
-      redirect: true,
+      redirect: false,
     });
-    if (response?.ok) {
-      if (response.url) {
-        router.replace(response.url);
-      }
+    if (response?.ok && !response.error) {
+      toast({
+        description: "Logged in successfully",
+      });
+      router.push("/");
     } else {
+      toast({
+        description: "Email or Password is invalid!",
+        variant: "destructive",
+      });
     }
   };
 

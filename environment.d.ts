@@ -5,8 +5,8 @@ declare global {
       GOOGLE_SECRET: string;
       AUTH_SECRET: string;
       NODE_ENV: "development" | "production";
+      SALT_ROUNDS: string;
       PORT?: string;
-      PWD: string;
     }
   }
 }
