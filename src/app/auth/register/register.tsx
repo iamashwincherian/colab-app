@@ -9,6 +9,8 @@ import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import Logo from "../../../components/logo/logo";
 import GoogleButton from "../components/buttons/GoogleButton";
 import { useToast } from "@components/ui/toast/use-toast";
+import { Input } from "@components/ui/input";
+import { Label } from "@components/ui/label";
 
 export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();
@@ -81,13 +83,13 @@ export default function RegisterPage({ providers }: any) {
                 </div>
                 <div className="flex gap-2 mb-3">
                   <div>
-                    <label
+                    <Label
                       htmlFor="email-address"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                     >
                       First Name
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       id="first-name"
                       type="text"
                       name="first-name"
@@ -100,13 +102,13 @@ export default function RegisterPage({ providers }: any) {
                     />
                   </div>
                   <div>
-                    <label
+                    <Label
                       htmlFor="email-address"
                       className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                     >
                       Last Name
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                       id="last-name"
                       type="text"
                       name="last-name"
@@ -120,13 +122,13 @@ export default function RegisterPage({ providers }: any) {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <label
+                  <Label
                     htmlFor="email-address"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                   >
                     Email
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="email-address"
                     type="text"
                     name="email-address"
@@ -139,13 +141,13 @@ export default function RegisterPage({ providers }: any) {
                   />
                 </div>
                 <div className="mb-3">
-                  <label
+                  <Label
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                   >
                     Password
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="password"
                     type="password"
                     name="password"
@@ -158,13 +160,13 @@ export default function RegisterPage({ providers }: any) {
                   />
                 </div>
                 {/* <div className="mb-3">
-                  <label
+                  <Label
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                   >
                     Confirm Password
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="password-confirm"
                     type="password"
                     name="password-confirm"

@@ -1,5 +1,8 @@
 "use client";
 
+import { Button } from "@components/ui/button";
+import { Input } from "@components/ui/input";
+import { Label } from "@components/ui/label";
 import { useToast } from "@components/ui/toast/use-toast";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
@@ -21,6 +24,7 @@ export default function SigninPage({ providers }: any) {
   const [google, setGoogle] = useState<GoogleProvider>(null);
   const [email, setEmail] = useState("ashwin@colab.com");
   const [password, setPassword] = useState("colabtest");
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   const checkForCallbackError = () => {
     const error = searchParams?.get("error");
@@ -41,6 +45,7 @@ export default function SigninPage({ providers }: any) {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setDisableSubmitButton(true);
     const response = await signIn("credentials", {
       email,
       password,
@@ -57,6 +62,7 @@ export default function SigninPage({ providers }: any) {
         variant: "destructive",
       });
     }
+    setDisableSubmitButton(false);
   };
 
   return (
@@ -85,13 +91,13 @@ export default function SigninPage({ providers }: any) {
                 </div>
 
                 <div className="my-3">
-                  <label
+                  <Label
                     htmlFor="email-address"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-400"
+                    // className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                   >
                     Email
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="email-address"
                     type="text"
                     name="email-address"
@@ -103,13 +109,13 @@ export default function SigninPage({ providers }: any) {
                   />
                 </div>
                 <div className="w-full">
-                  <label
+                  <Label
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                   >
                     Password
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="password"
                     type="password"
                     name="password"
@@ -128,12 +134,14 @@ export default function SigninPage({ providers }: any) {
                     Forgot password?
                   </a>
                 </div>
-                <button
-                  type={"submit"}
-                  className="bg-primary hover:bg-primary-dark text-white w-full my-3 py-2 rounded-md shadow transition-colors"
+                <Button
+                  type="submit"
+                  variant="default"
+                  className="w-full my-2"
+                  disabled={disableSubmitButton}
                 >
                   Login
-                </button>
+                </Button>
 
                 <Link href={"/auth/register"}>
                   <p className="text-sm text-center dark:text-gray-300">
