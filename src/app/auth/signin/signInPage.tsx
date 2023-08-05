@@ -22,8 +22,8 @@ export default function SigninPage({ providers }: any) {
   const router = useRouter();
   const { toast } = useToast();
   const [google, setGoogle] = useState<GoogleProvider>(null);
-  const [email, setEmail] = useState("ashwin@colab.com");
-  const [password, setPassword] = useState("colabtest");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   const checkForCallbackError = () => {
