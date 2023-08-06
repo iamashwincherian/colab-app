@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@components/ui/button";
-import { Input } from "@components/ui/input";
-import { Label } from "@components/ui/label";
-import { useToast } from "@components/ui/toast/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/toast/use-toast";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { redirect, useRouter, useSearchParams } from "next/navigation";

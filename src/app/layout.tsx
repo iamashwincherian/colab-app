@@ -2,7 +2,7 @@
 
 import Body from "./Body";
 import Head from "./head";
-import { trpc } from "@utils/trpc/trpc";
+import { trpc } from "@/utils/trpc/trpc";
 
 import "../styles/globals.css";
 

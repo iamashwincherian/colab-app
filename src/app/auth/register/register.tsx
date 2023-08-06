@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import Logo from "../../../components/logo/logo";
 import GoogleButton from "../components/buttons/GoogleButton";
-import { useToast } from "@components/ui/toast/use-toast";
-import { Input } from "@components/ui/input";
-import { Label } from "@components/ui/label";
+import { useToast } from "@/components/ui/toast/use-toast";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();

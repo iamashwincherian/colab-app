@@ -3,9 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 
-import { db } from "@server/db";
-import authorize from "@app/api/auth/[...nextauth]/authorize";
-import { User } from "@prisma/client";
+import { db } from "@/server/db";
+import authorize from "@/app/api/auth/[...nextauth]/authorize";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
@@ -40,17 +39,4 @@ export const authOptions: NextAuthOptions = {
     error: "/auth/error", // Error code passed in query string as ?error=
     verifyRequest: "/auth/verify-request", // (used for check email message)
   },
-  // callbacks: {
-  //   session: async ({ session }) => {
-  //     let { user } = session;
-  //     if (user && user.email) {
-  //       user = (await db.user.findUnique({
-  //         where: { email: user.email },
-  //       })) as User;
-  //     }
-
-  //     session.user = user;
-  //     return session;
-  //   },
-  // },
 };

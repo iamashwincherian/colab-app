@@ -11,7 +11,7 @@ import clsx from "../helpers/clsx";
 import { UserContextProvider } from "../contexts/UserContext";
 import { SettingsContextProvider } from "../contexts/SettingsContext";
 import { BoardContextProvider } from "../contexts/BoardContext";
-import { Toaster } from "@components/ui/toast/toaster";
+import { Toaster } from "@/components/ui/toast/toaster";
 
 interface BodyProps {
   children: React.ReactNode;

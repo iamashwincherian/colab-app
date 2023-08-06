@@ -5,8 +5,8 @@ import MainContent from "../../components/layoutWrapper/MainContent";
 import BoardCard from "./components/BoardCard";
 import withAuth from "../../utils/withAuth";
 import { trpc } from "../../utils/trpc/trpc";
-import openModal from "@utils/openModal";
-import CreateBoardModal from "@components/kanban/modals/createBoardModal";
+import openModal from "@/utils/openModal";
+import CreateBoardModal from "@/components/kanban/modals/CreateBoardModal";
 import { useEffect, useState } from "react";
 
 const Boards = () => {

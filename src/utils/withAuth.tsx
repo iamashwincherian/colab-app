@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { redirect, usePathname } from "next/navigation";
-import Loading from "@components/loading/Loading";
+import Loading from "@/components/loading/Loading";
 
 export default function withAuth(Component: any) {
   return function ProtectedRoute({ ...props }) {

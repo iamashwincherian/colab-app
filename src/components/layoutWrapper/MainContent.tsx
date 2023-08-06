@@ -1,4 +1,4 @@
-import { Button, ButtonVariants } from "@components/ui/button";
+import { Button, ButtonVariants } from "@/components/ui/button";
 
 type ButtonTypes = {
   label: string;

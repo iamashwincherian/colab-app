@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useToast } from "@components/ui/toast/use-toast";
+import { useToast } from "@/components/ui/toast/use-toast";
 
 const Avatar = ({ name }: { name?: string | null }) => {
   if (!name || name === "") return <></>;

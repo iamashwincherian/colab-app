@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { db } from "@server/db";
+import { db } from "@/server/db";
 import { User } from "@prisma/client";
 
 interface CredentialType {
