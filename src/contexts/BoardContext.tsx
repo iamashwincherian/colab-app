@@ -16,7 +16,17 @@ interface BoardContextType extends BoardType {
   }) => void;
   setCards: (cards: CardProp[]) => void;
   createList: ({ name, boardId }: { name: string; boardId: number }) => void;
+  editList: ({ name, listId }: { name: string; listId: number }) => void;
   deleteList: ({ listId }: { listId: number }) => void;
+  createCard: ({
+    title,
+    boardId,
+    listId,
+  }: {
+    title: string;
+    boardId: number;
+    listId: number;
+  }) => void;
   updateCard: ({ cardId, title }: { cardId: number; title: string }) => void;
   deleteCard: (cardId: number) => void;
 }
@@ -32,9 +42,11 @@ const BoardContext = createContext<BoardContextType>({
   list: [],
   cards: [],
   setBoard() {},
-  createList() {},
-  deleteList() {},
   setCards() {},
+  createList() {},
+  editList() {},
+  deleteList() {},
+  createCard() {},
   updateCard() {},
   deleteCard() {},
 });
@@ -42,9 +54,10 @@ const BoardContext = createContext<BoardContextType>({
 export const useBoardContext = () => useContext(BoardContext);
 export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
   const [board, setBoardData] = useState(defaultBoard);
-  const createBoardMutation = trpc.boards.create.useMutation();
   const createListMutation = trpc.lists.create.useMutation();
+  const editListMutation = trpc.lists.edit.useMutation();
   const deleteListMutation = trpc.lists.delete.useMutation();
+  const createCardMutation = trpc.cards.create.useMutation();
   const updateCardMutation = trpc.cards.update.useMutation();
   const deleteCardMutation = trpc.cards.delete.useMutation();
 
@@ -65,19 +78,36 @@ export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
           });
           setBoardData({ ...board, list: [...board.list, newList] });
         },
+        editList: async ({ listId, name }) => {
+          const list = board.list.filter((item) => item?.id !== listId);
+          const listToEdit = board.list.find((item) => item?.id === listId);
+          await editListMutation.mutateAsync({ id: listId, name });
+          setBoardData({
+            ...board,
+            list: [...list, { ...listToEdit, name }] as ListProp[],
+          });
+        },
         deleteList: ({ listId }) => {
           const list = board.list.filter((list) => list?.id !== listId);
           deleteListMutation.mutate({ listId });
           setBoardData({ ...board, list });
         },
+        createCard: async ({ title, boardId, listId }) => {
+          const newCard = await createCardMutation.mutateAsync({
+            boardId,
+            listId,
+            title,
+          });
+          setBoardData({ ...board, cards: [...board.cards, newCard] });
+        },
         updateCard: ({ cardId, title }) => {
           const cards = board.cards.filter((card) => card?.id !== cardId);
           const cardToEdit = board.cards.find((card) => card?.id === cardId);
+          updateCardMutation.mutate({ id: cardId, title });
           setBoardData({
             ...board,
             cards: [...cards, { ...cardToEdit, title }] as CardProp[],
           });
-          updateCardMutation.mutate({ id: cardId, title });
         },
         deleteCard: (cardId) => {
           const cards = board.cards.filter((card) => card?.id !== cardId);

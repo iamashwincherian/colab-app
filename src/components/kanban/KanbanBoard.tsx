@@ -13,6 +13,7 @@ import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
 import { Button } from "../ui/button";
 import CreateListModal from "./modals/CreateListModal";
 import { useBoardContext } from "../../contexts/BoardContext";
+import { sortList } from "./helpers/sort";
 
 type KanbanBoardProps = {
   board: BoardProp;
@@ -21,15 +22,14 @@ type KanbanBoardProps = {
 };
 
 export default function KanbanBoard(props: KanbanBoardProps) {
-  const { createList } = useBoardContext();
-  const editMutation = trpc.lists.edit.useMutation();
-  const createCardMutation = trpc.cards.create.useMutation();
+  const { createList, editList, createCard } = useBoardContext();
 
   const { list: defaultList, cards: defaultCards } = props;
   let { list, cards, onDragEnd, updateList, updateCards } = useKanbanBoard(
     defaultList,
     defaultCards
   );
+  const sortedList = (sortList(list) as ListProp[]) || [];
 
   useEffect(() => {
     updateList(defaultList);
@@ -43,31 +43,6 @@ export default function KanbanBoard(props: KanbanBoardProps) {
 
   const handleOnChange = async (result: DropResult) => {
     await onDragEnd(boardId, result);
-  };
-
-  const handleEditList = async (id: number, name: string) => {
-    const updatedList = list.filter((list) => list?.id !== id);
-    const newListItem = await editMutation.mutateAsync({
-      boardId,
-      id,
-      name,
-    });
-    updateList([...updatedList, newListItem]);
-  };
-  const handleOnCardCreate = async ({
-    id,
-    name,
-  }: {
-    id: number;
-    name: string;
-  }) => {
-    const newCard = await createCardMutation.mutateAsync({
-      boardId: boardId,
-      listId: id,
-      title: name,
-    });
-
-    updateCards([...cards, newCard]);
   };
 
   const createNewButton = (
@@ -96,9 +71,9 @@ export default function KanbanBoard(props: KanbanBoardProps) {
       <div className="mt-6">
         <DragDropContext onDragEnd={handleOnChange}>
           <div className="flex dark:text-white items-start">
-            {list &&
-              (list?.length
-                ? list.map(({ id, name }: any) => {
+            {sortedList &&
+              (sortedList?.length
+                ? sortedList.map(({ id, name }: any) => {
                     const cardsInTheListItem = cards.filter(
                       (card) => card?.listId === id
                     );
@@ -107,11 +82,10 @@ export default function KanbanBoard(props: KanbanBoardProps) {
                         id={id}
                         key={id}
                         name={name}
+                        boardId={boardId}
                         cards={cardsInTheListItem}
-                        onEdit={({ name: newName }: { name: string }) =>
-                          handleEditList(id, newName)
-                        }
-                        onCardCreate={handleOnCardCreate}
+                        onEdit={editList}
+                        onCardCreate={createCard}
                       />
                     );
                   })

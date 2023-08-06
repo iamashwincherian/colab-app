@@ -5,10 +5,10 @@ import { Label } from "../../ui/label";
 import { Input } from "../../ui/input";
 
 const CreateCardModal = ({
-  id,
+  listId,
   onSubmit,
 }: {
-  id: number;
+  listId: number;
   onSubmit: Function;
 }) => {
   const [name, setName] = useState<string>("");
@@ -20,7 +20,7 @@ const CreateCardModal = ({
 
   const handleSubmit = () => {
     setOpen(false);
-    onSubmit({ id, name });
+    onSubmit({ listId, title: name });
   };
 
   return (

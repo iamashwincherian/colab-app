@@ -29,7 +29,7 @@ const Menu = ({
 }: {
   name: string;
   onDelete: MouseEventHandler<HTMLDivElement>;
-  onEdit: MouseEventHandler<HTMLDivElement>;
+  onEdit: Function;
 }) => {
   return (
     <DropdownMenu>
@@ -60,8 +60,9 @@ export default function List({
   cards = [],
   onEdit,
   onCardCreate,
+  boardId,
 }: any) {
-  const sortedCards: CardProp[] = sortCards(cards) || [];
+  const sortedCards = (sortCards(cards) as CardProp[]) || [];
   const { deleteList } = useBoardContext();
 
   const onDelete = () => {
@@ -75,11 +76,25 @@ export default function List({
     );
   };
 
+  const handleOnCardCreate = ({
+    listId,
+    title,
+  }: {
+    listId: number;
+    title: string;
+  }) => {
+    onCardCreate({ listId, title, boardId });
+  };
+
   return (
     <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
       <div className="flex justify-between items-center p-2 px-3">
         <p>{name}</p>
-        <Menu name={name} onDelete={onDelete} onEdit={onEdit} />
+        <Menu
+          name={name}
+          onDelete={onDelete}
+          onEdit={({ name }: { name: string }) => onEdit({ name, listId: id })}
+        />
       </div>
       <StrictModeDroppable droppableId={`list-${id}`}>
         {(provided) => (
@@ -104,7 +119,9 @@ export default function List({
             {provided.placeholder}
             <div
               onClick={() =>
-                openModal(<CreateCardModal id={id} onSubmit={onCardCreate} />)
+                openModal(
+                  <CreateCardModal listId={id} onSubmit={handleOnCardCreate} />
+                )
               }
               className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-dark-2 py-2 h dark:hover:bg-dark-3 rounded-b-md"
             >

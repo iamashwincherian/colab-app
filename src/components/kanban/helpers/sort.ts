@@ -1,8 +1,9 @@
-import { CardProp } from "../types";
+import { CardProp, ListProp } from "../types";
 
-const sort = (items: CardProp[] = []): CardProp[] => {
+const sort = (items: CardProp[] | ListProp[] = []) => {
   return items.sort(
-    (a: CardProp, b: CardProp) => (a?.position ?? 0) - (b?.position ?? 0)
+    (a: CardProp | ListProp, b: CardProp | ListProp) =>
+      (a?.position ?? 0) - (b?.position ?? 0)
   );
 };
 

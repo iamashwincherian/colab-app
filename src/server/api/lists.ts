@@ -47,12 +47,11 @@ export default router({
       z.object({
         id: z.number(),
         name: z.string().nonempty(),
-        boardId: z.number(),
       })
     )
-    .mutation(({ ctx: { prisma, userId }, input: { id, name, boardId } }) =>
+    .mutation(({ ctx: { prisma, userId }, input: { id, name } }) =>
       prisma.list.update({
-        where: { id, boardId, userId },
+        where: { id, userId },
         data: { name },
       })
     ),

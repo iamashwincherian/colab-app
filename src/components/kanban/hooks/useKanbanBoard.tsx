@@ -36,9 +36,9 @@ export default function useKanbanBoard(
     const sourceId: number = parseInt(source.droppableId);
     const destinationId: number = parseInt(destination.droppableId);
 
-    let sourceCards: CardProp[] = sortCards(
+    let sourceCards = sortCards(
       cards.filter((card) => card?.listId === sourceId)
-    );
+    ) as CardProp[];
     if (!sourceCards) return;
 
     const cardMoving = sourceCards.find((card) => draggableId === card?.id);
