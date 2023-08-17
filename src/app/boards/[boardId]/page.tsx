@@ -1,5 +1,8 @@
 "use client";
 
+import { FC } from "react";
+import { GearIcon, PlusIcon } from "@radix-ui/react-icons";
+
 import {
   BreadCrumbs,
   BreadCrumbItem,
@@ -8,14 +11,13 @@ import KanbanBoard from "../../../components/kanban/KanbanBoard";
 import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
 import useBoard from "./hooks/useBoard.hook";
 import withAuth from "../../../utils/withAuth";
-import { FC } from "react";
-import { Button } from "@components/ui/button";
-import BoardNameEditor from "@components/input/boardNameEditor/BoardNameEditor";
-import openModal from "@utils/openModal";
-import CreateListModal from "@components/kanban/modals/CreateListModal";
-import { useBoardContext } from "@contexts/BoardContext";
-import Loading from "@components/loading/Loading";
-import { GearIcon, PlusIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
+import BoardNameEditor from "@/components/input/boardNameEditor/BoardNameEditor";
+import openModal from "@/utils/openModal";
+import CreateListModal from "@/components/kanban/modals/CreateListModal";
+import { useBoardContext } from "@/contexts/BoardContext";
+import Loading from "@/components/loading/Loading";
+import BoardSettingsModal from "@/components/kanban/modals/BoardSettingsModal";
 
 type BoardProps = {
   params: { boardId: string };
@@ -26,7 +28,7 @@ const Board = (props: BoardProps) => {
     params: { boardId },
   } = props;
   const { board, list, cards } = useBoard(boardId);
-  const { createList } = useBoardContext();
+  const { createList, setBoardName } = useBoardContext();
 
   const breadCrumbs = (
     <BreadCrumbs>
@@ -55,7 +57,15 @@ const Board = (props: BoardProps) => {
     );
   };
 
-  const openSettings = () => {};
+  const saveBoardSettings = ({ name }: any) => {
+    setBoardName(name);
+  };
+
+  const openSettings = () => {
+    openModal(
+      <BoardSettingsModal board={board} onSubmit={saveBoardSettings} />
+    );
+  };
 
   if (!board) return <Loading />;
 

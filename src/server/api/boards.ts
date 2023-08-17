@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { privateProcedure, router } from "../trpc";
 
@@ -75,4 +76,14 @@ export default router({
         return newBoard;
       }
     ),
+  updateName: privateProcedure
+    .input(z.object({ id: z.number().optional(), name: z.string() }))
+    .mutation(({ ctx: { prisma, userId }, input: { id, name } }) => {
+      if (!id)
+        throw new TRPCError({
+          message: "Invalid board",
+          code: "BAD_REQUEST",
+        });
+      return prisma.board.update({ where: { id, userId }, data: { name } });
+    }),
 });

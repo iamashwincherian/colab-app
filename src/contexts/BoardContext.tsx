@@ -1,10 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { BoardProp, CardProp, ListProp } from "../components/kanban/types";
 import { trpc } from "../utils/trpc/trpc";
 
@@ -15,6 +9,7 @@ interface BoardType {
 }
 
 interface BoardContextType extends BoardType {
+  setBoardName: (name: string) => void;
   setBoard: (payload: {
     board: BoardProp;
     cards: CardProp[];
@@ -47,6 +42,7 @@ const BoardContext = createContext<BoardContextType>({
   board: null,
   list: [],
   cards: [],
+  setBoardName() {},
   setBoard() {},
   setCards() {},
   createList() {},
@@ -61,6 +57,7 @@ export const useBoardContext = () => useContext(BoardContext);
 export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
   const [board, setBoardData] = useState(defaultBoard);
   const createListMutation = trpc.lists.create.useMutation();
+  const updateBoardNameMutation = trpc.boards.updateName.useMutation();
   const editListMutation = trpc.lists.edit.useMutation();
   const deleteListMutation = trpc.lists.delete.useMutation();
   const createCardMutation = trpc.cards.create.useMutation();
@@ -73,6 +70,13 @@ export const BoardContextProvider = ({ children }: { children: ReactNode }) => {
         ...board,
         setBoard: (payload: object) => {
           setBoardData({ ...board, ...payload });
+        },
+        setBoardName: (name: string) => {
+          updateBoardNameMutation.mutateAsync({ name, id: board?.board?.id });
+          setBoardData({
+            ...board,
+            board: { ...board.board, name } as BoardProp,
+          });
         },
         setCards: (cards) => {
           if (cards.length) setBoardData({ ...board, cards });

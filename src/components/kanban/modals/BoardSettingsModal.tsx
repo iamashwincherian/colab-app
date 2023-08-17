@@ -18,9 +18,9 @@ export default function BoardSettingsModal({
   const [open, setOpen] = useState(true);
   const [name, setName] = useState(board?.name || "");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmit({});
+  const handleSubmit = () => {
+    setOpen(false);
+    onSubmit({ name });
   };
 
   return (

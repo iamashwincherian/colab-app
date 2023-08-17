@@ -23,10 +23,13 @@ type ModalProps = {
   description?: string;
   submitButton?: ButtonType;
   cancelButton?: ButtonType;
+  size?: ModalSize;
   onSubmit?: Function;
   onClose?: (open: Boolean) => void;
   children?: ReactNode | string;
 };
+
+type ModalSize = "max-w-md" | "max-w-lg" | "max-w-xl" | "max-w-2xl";
 
 const PrimaryModal = (props: ModalProps) => {
   const {
@@ -43,6 +46,7 @@ const PrimaryModal = (props: ModalProps) => {
       varient: "outline",
       hidden: false,
     },
+    size = "max-w-md",
     onSubmit,
     children,
   } = props;
@@ -65,7 +69,7 @@ const PrimaryModal = (props: ModalProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleOnOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className={size as string}>
         <form onSubmit={handleSubmit} className="grid gap-4 my-2">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
