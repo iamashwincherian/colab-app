@@ -8,8 +8,8 @@ COPY public tailwind.config.js postcss.config.js ./
 RUN npx prisma generate
 RUN npm install
 
-COPY .build ./
 RUN npm run build
+# COPY .build ./
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV production
