@@ -1,32 +1,15 @@
 version: '3'
 
 services:
-  # postgres:
-  #   container_name: postgres
-  #   image: postgres
-  #   restart: always
-  #   ports: 
-  #     - 5432:5432
-  #   volumes:
-  #     - postgres_db:/var/lib/postgresql/data/
-  #   environment:
-  #     POSTGRES_USER: colab
-  #     POSTGRES_PASSWORD: colab123
-  #     POSTGRES_DB: colab_dev
-
   app:
     container_name: app
     image: docker-nextjs-dev
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.${ENV}
     ports:
       - 3000:3000
     env_file: .env
     volumes:
       - ./src:/app/src
       - ./public:/app/public
-
-    # depends_on:
-    #   - postgres
-    

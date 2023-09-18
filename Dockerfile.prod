@@ -1,0 +1,30 @@
+FROM node:alpine as BUILD_IMAGE
+
+WORKDIR /app
+
+# install dependencies
+COPY package.json yarn.lock tailwind.config.js postcss.config.js next.config.js tsconfig.json environment.d.ts .env ./
+COPY prisma ./prisma
+COPY src ./src
+COPY public ./public
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN npx prisma generate
+RUN yarn install --frozen-lockfile
+RUN yarn build
+
+FROM node:alpine
+
+WORKDIR /app
+
+# copy from build image
+COPY package.json yarn.lock tailwind.config.js postcss.config.js next.config.js tsconfig.json environment.d.ts .env ./
+COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
+COPY --from=BUILD_IMAGE /app/.next ./.next
+COPY --from=BUILD_IMAGE /app/prisma ./prisma
+COPY --from=BUILD_IMAGE /app/src ./src
+
+EXPOSE 3000
+
+CMD ["yarn", "start"]
