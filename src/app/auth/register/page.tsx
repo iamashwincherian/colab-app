@@ -10,7 +10,7 @@ interface ProviderType {
   };
 }
 
-export default async function SignIn() {
+export default function SignIn() {
   const [providers, setProviders] = useState<ProviderType | null>(null);
 
   const getProviderData = async () => {
