@@ -1,17 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
-import FullScreenLayout from "../../../components/layouts/FullScreenLayout";
-import Logo from "../../../components/logo/logo";
-import GoogleButton from "../components/buttons/GoogleButton";
+import FullScreenLayout from "@/components/layouts/FullScreenLayout";
+import GoogleButton from "@/app/auth/components/buttons/GoogleButton";
+import Logo from "@/components/logo/logo";
 
 type GoogleProvider = {
   id: string;
@@ -93,7 +94,7 @@ export default function SigninPage({ providers }: any) {
                 <div className="my-3">
                   <Label
                     htmlFor="email-address"
-                    // className="block text-sm font-medium text-gray-700 dark:text-gray-400"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-400"
                   >
                     Email
                   </Label>
