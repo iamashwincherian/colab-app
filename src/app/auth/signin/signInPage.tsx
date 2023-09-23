@@ -144,7 +144,7 @@ export default function SigninPage({ providers }: any) {
                   Login
                 </Button>
 
-                <Link href={"/test"}>
+                <Link href={"/auth/register"}>
                   <p className="text-sm text-center dark:text-gray-300">
                     Don’t have an account yet?{" "}
                     <span className="text-primary cursor-pointer hover:text-primary-dark">

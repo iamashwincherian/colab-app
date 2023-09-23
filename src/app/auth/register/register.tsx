@@ -12,11 +12,15 @@ import { useToast } from "@/components/ui/toast/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+type GoogleProvider = {
+  id: string;
+} | null;
+
 export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
-  const { google } = providers;
+  const [google, setGoogle] = useState<GoogleProvider>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -31,6 +35,12 @@ export default function RegisterPage({ providers }: any) {
   useEffect(() => {
     checkForCallbackError();
   }, []);
+
+  useEffect(() => {
+    if (providers) {
+      setGoogle(providers.google);
+    }
+  }, [providers]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,7 +83,7 @@ export default function RegisterPage({ providers }: any) {
                   Become a part of Colab
                 </small>
                 <div className="my-5">
-                  <GoogleButton type="register" id={google.id} />
+                  {google && <GoogleButton type="register" id={google.id} />}
                 </div>
 
                 <div className="flex items-center mb-3">
