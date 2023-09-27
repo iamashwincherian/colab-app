@@ -59,7 +59,7 @@ export default function SigninPage({ providers }: any) {
       router.push("/");
     } else {
       toast({
-        description: "Email or Password is invalid!",
+        description: "Email or Password is invalid",
         variant: "destructive",
       });
     }
