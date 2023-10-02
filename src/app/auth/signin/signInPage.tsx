@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 
@@ -30,6 +30,7 @@ export default function SigninPage({ providers }: any) {
   const checkForCallbackError = () => {
     const error = searchParams?.get("error");
     if (error === "Callback") {
+      console.error("Authentication failed");
     }
   };
 
