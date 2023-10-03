@@ -58,12 +58,12 @@ export default function SigninPage({ providers }: any) {
     });
     if (response?.ok && !response.error) {
       toast({
-        description: "Logged in successfully",
+        description: "Logged in successfully!",
       });
       router.push("/");
     } else {
       toast({
-        description: "Email or Password is invalid",
+        description: "Email or Password is invalid!",
         variant: "destructive",
       });
     }
