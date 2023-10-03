@@ -30,7 +30,10 @@ export default function SigninPage({ providers }: any) {
   const checkForCallbackError = () => {
     const error = searchParams?.get("error");
     if (error === "Callback") {
-      console.error("Authentication failed");
+      toast({
+        description: "Something went wrong with the authentication!",
+        variant: "destructive",
+      });
     }
   };
 
