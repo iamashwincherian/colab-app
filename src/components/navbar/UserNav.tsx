@@ -16,6 +16,8 @@ import {
 } from "../ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast/use-toast";
+import openModal from "@/utils/openModal";
+import ProfileModal from "./ProfileModal";
 
 const Avatar = ({ name }: { name?: string | null }) => {
   if (!name || name === "") return <></>;
@@ -50,6 +52,10 @@ export function UserNav() {
     router.push("/");
   };
 
+  const openProfile = () => {
+    openModal(<ProfileModal />);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -58,7 +64,7 @@ export function UserNav() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
+        <DropdownMenuLabel className="font-normal" onClick={openProfile}>
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
