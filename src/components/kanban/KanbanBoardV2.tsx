@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  DropResult,
+  OnDragEndResponder,
+} from "react-beautiful-dnd";
 
 import List from "./List";
 import useKanbanBoard from "./hooks/useKanbanBoard";
 import { ListProp, CardProp } from "./types";
 import { useBoardContext } from "../../contexts/BoardContext";
 import { sortList } from "./helpers/sort";
+import onDragEnd from "./helpers/onDragEnd";
 
 interface BoardProp {
   id: number;
@@ -75,29 +80,30 @@ export default function KanbanBoard({ id: boardId, board }: KanbanBoardProps) {
   //   </div>
   // );
 
-  console.log("board", board);
+  const handleDragEnd = (payload: DropResult) => {
+    // onDragEnd(boardId, payload, sortedList);
+  };
 
   return (
     <div className="mt-8">
-      <DragDropContext onDragEnd={() => null}>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex dark:text-white items-start">
-          {sortedList &&
-            sortedList.map(({ id, name, cards }: any) => {
-              const cardsInTheListItem = cards.filter(
-                (card: any) => card?.listId === id
-              );
-              return (
-                <List
-                  id={id}
-                  key={id}
-                  name={name}
-                  boardId={boardId}
-                  cards={cardsInTheListItem}
-                  onEdit={() => {}}
-                  onCardCreate={() => {}}
-                />
-              );
-            })}
+          {sortedList.map(({ id, name, cards }: any) => {
+            const cardsInTheListItem = cards.filter(
+              (card: any) => card?.listId === id
+            );
+            return (
+              <List
+                id={id}
+                key={id}
+                name={name}
+                boardId={boardId}
+                cards={cardsInTheListItem}
+                onEdit={() => {}}
+                onCardCreate={() => {}}
+              />
+            );
+          })}
         </div>
       </DragDropContext>
     </div>
