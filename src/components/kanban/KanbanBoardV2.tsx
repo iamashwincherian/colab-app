@@ -81,6 +81,7 @@ export default function KanbanBoard({ id: boardId, board }: KanbanBoardProps) {
   // );
 
   const handleDragEnd = (payload: DropResult) => {
+    console.log("payload", payload);
     // onDragEnd(boardId, payload, sortedList);
   };
 
