@@ -1,18 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-import {
-  DragDropContext,
-  DropResult,
-  OnDragEndResponder,
-} from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
 import List from "./List";
-import useKanbanBoard from "./hooks/useKanbanBoard";
-import { ListProp, CardProp } from "./types";
-import { useBoardContext } from "../../contexts/BoardContext";
+import { ListProp } from "./types";
 import { sortList } from "./helpers/sort";
-import onDragEnd from "./helpers/onDragEnd";
 
 interface BoardProp {
   id: number;
