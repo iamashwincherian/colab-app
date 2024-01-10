@@ -96,7 +96,7 @@ export default function List({
           onEdit={({ name }: { name: string }) => onEdit({ name, listId: id })}
         />
       </div>
-      <StrictModeDroppable droppableId={`list-${id}`}>
+      <StrictModeDroppable droppableId={id.toString()}>
         {(provided) => (
           <div
             className="mt-2"

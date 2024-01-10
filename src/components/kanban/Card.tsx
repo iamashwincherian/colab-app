@@ -9,7 +9,7 @@ type CardProps = {
 
 export default function Card({ id, title, index }: CardProps) {
   return (
-    <Draggable draggableId={`card-${id}`} key={`card-${id}`} index={index}>
+    <Draggable draggableId={id.toString()} key={`card-${id}`} index={index}>
       {(provided) => (
         <CardContextMenu card={{ id, title }}>
           <div
