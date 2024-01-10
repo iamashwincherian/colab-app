@@ -1,11 +1,15 @@
+import createCard from "./createCard";
+import deleteCard from "./deleteCard";
 import getBoardData from "./getBoardData";
 import onDragEnd from "./onDragEnd";
 import updateCardPosition from "./updateCardPosition";
 
-const BoardService = {
+export const BoardService = {
+  onDragEnd,
+  deleteCard,
+  createCard,
+  updateCardPosition,
   getData: getBoardData,
-  onDragEnd: onDragEnd,
-  updateCardPosition: updateCardPosition,
 };
 
 export default BoardService;

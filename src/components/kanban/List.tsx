@@ -21,6 +21,7 @@ import CreateCardModal from "./modals/CreateCardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import { useBoardContext } from "../../contexts/BoardContext";
 import { Card as CardType } from "@prisma/client";
+import createCard from "@/services/boards/createCard";
 
 const Menu = ({
   name,
@@ -54,14 +55,7 @@ const Menu = ({
   );
 };
 
-export default function List({
-  id,
-  name,
-  cards = [],
-  onEdit,
-  onCardCreate,
-  boardId,
-}: any) {
+export default function List({ id, name, cards = [], onEdit, boardId }: any) {
   const sortedCards = (sortCards(cards) as CardType[]) || [];
   const { deleteList } = useBoardContext();
 
@@ -83,7 +77,7 @@ export default function List({
     listId: number;
     title: string;
   }) => {
-    onCardCreate({ listId, title, boardId });
+    createCard(title, listId, boardId);
   };
 
   return (

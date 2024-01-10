@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { useBoardContext } from "../../contexts/BoardContext";
 import openModal from "../../utils/openModal";
 import EditCardModal from "../kanban/modals/EditCardModal";
 import {
@@ -8,6 +7,8 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "../ui/context-menu";
+import deleteCard from "@/services/boards/deleteCard";
+import editCard from "@/services/boards/editCard";
 
 type CardContextProps = {
   card: {
@@ -18,8 +19,6 @@ type CardContextProps = {
 };
 
 export default function CardContextMenu({ card, children }: CardContextProps) {
-  const { updateCard, deleteCard } = useBoardContext();
-
   return (
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
@@ -29,7 +28,7 @@ export default function CardContextMenu({ card, children }: CardContextProps) {
             openModal(
               <EditCardModal
                 onSubmit={({ title }: { title: string }) =>
-                  updateCard({ title, cardId: card.id })
+                  editCard({ title, cardId: card.id })
                 }
                 title={card.title}
               />
