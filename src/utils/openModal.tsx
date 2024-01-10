@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 
 export default function openModal(modal: any, props: object = {}) {

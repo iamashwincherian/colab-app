@@ -1,5 +1,4 @@
-"use client";
-
+import { createRoot } from "react-dom/client";
 import { FormEvent, ReactNode, useEffect, useState } from "react";
 import { Button, ButtonVariants } from "../ui/button";
 import {
@@ -56,6 +55,15 @@ const PrimaryModal = (props: ModalProps) => {
   useEffect(() => {
     setOpen(props.open);
   }, [props.open]);
+
+  useEffect(() => {
+    const modal = document.getElementById("modalEl");
+    if (open === false) {
+      if (!modal) return;
+      const root = createRoot(modal);
+      root.unmount();
+    }
+  }, [open]);
 
   const handleOnOpenChange = (value: boolean) => {
     setOpen(value);
