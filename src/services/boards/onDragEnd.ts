@@ -31,8 +31,7 @@ export default async function onDragEnd(
     sourceCards.splice(destinationIndex, 0, cardMoving);
     sourceCards = sourceCards.map((card, position) => ({ ...card, position }));
 
-    // update source cards
-    await updateCardPosition(sourceCards);
+    await updateCardPosition(sourceCards, boardId);
   } else {
     let destinationCards = list.find(
       (item) => item.boardId === boardId && item.id === destinationId
@@ -48,7 +47,6 @@ export default async function onDragEnd(
       position,
     }));
 
-    // update both source cards and destinationCards
-    await updateCardPosition([...sourceCards, ...destinationCards]);
+    await updateCardPosition([...sourceCards, ...destinationCards], boardId);
   }
 }

@@ -20,7 +20,7 @@ import EditListModal from "./modals/EditListModal";
 import CreateCardModal from "./modals/CreateCardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import { useBoardContext } from "../../contexts/BoardContext";
-import { CardProp } from "./types";
+import { Card as CardType } from "@prisma/client";
 
 const Menu = ({
   name,
@@ -62,7 +62,7 @@ export default function List({
   onCardCreate,
   boardId,
 }: any) {
-  const sortedCards = (sortCards(cards) as CardProp[]) || [];
+  const sortedCards = (sortCards(cards) as CardType[]) || [];
   const { deleteList } = useBoardContext();
 
   const onDelete = () => {
@@ -104,17 +104,14 @@ export default function List({
             {...provided.droppableProps}
           >
             <div>
-              {sortedCards.map((card, index: number) => {
-                if (!card) return;
-                return (
-                  <Card
-                    key={card.id}
-                    id={card.id}
-                    index={index}
-                    title={card.title}
-                  />
-                );
-              })}
+              {sortedCards.map((card) => (
+                <Card
+                  key={card.id}
+                  id={card.id}
+                  index={card.position}
+                  title={card.title}
+                />
+              ))}
             </div>
             {provided.placeholder}
             <div

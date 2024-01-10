@@ -1,10 +1,9 @@
-import { List } from "@prisma/client";
+import { List, Card } from "@prisma/client";
 import { CardProp, ListProp } from "../types";
 
-const sort = (items: CardProp[] | List[] = []) => {
+const sort = (items: Card[] | List[] = []) => {
   return items.sort(
-    (a: CardProp | List, b: CardProp | List) =>
-      (a?.position ?? 0) - (b?.position ?? 0)
+    (a: Card | List, b: Card | List) => (a?.position ?? 0) - (b?.position ?? 0)
   );
 };
 
