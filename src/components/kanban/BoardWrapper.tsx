@@ -4,7 +4,9 @@ import createList from "@/services/boards/createList";
 import { Board } from "@/types/board";
 import openModal from "@/utils/openModal";
 import React from "react";
+import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
 import MainContent from "../layoutWrapper/MainContent";
+import { Button } from "../ui/button";
 import CreateBoardModal from "./modals/CreateBoardModal";
 
 interface BoardWrapperProps {
@@ -26,11 +28,17 @@ export default function BoardWrapper({ board, children }: BoardWrapperProps) {
   };
 
   return (
-    <MainContent
-      title={name}
-      buttons={[{ label: "Create", onClick: handleCreateBoard }]}
-    >
+    <div className="flex flex-col py-6 px-8 flex-1">
+      <div className="flex justify-between items-center">
+        <div className="mb-5">
+          <BoardNameEditor name={name} boardId={boardId} />
+          <p className="mt-2 text-gray-500 dark:text-zinc-500"></p>
+        </div>
+        <Button variant="default" onClick={handleCreateBoard}>
+          Create
+        </Button>
+      </div>
       {children}
-    </MainContent>
+    </div>
   );
 }

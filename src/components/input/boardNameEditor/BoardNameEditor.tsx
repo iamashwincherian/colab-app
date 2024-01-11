@@ -2,18 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/outline";
-import { useBoardContext } from "@/contexts/BoardContext";
+import updateBoardName from "@/services/boards/updateBoardName";
 
 export default function BoardNameEditor({
   name: savedBoardName,
+  boardId,
 }: {
   name: string | undefined;
+  boardId: number;
 }) {
   const placeholder = "Enter board name";
   const [boardName, setBoardName] = useState(savedBoardName || "");
   const [showEditIcon, setShowEditIcon] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { setBoardName: setBoardNameContext } = useBoardContext();
 
   const handleChange = (e: any) => {
     const { value } = e.target;
@@ -29,8 +30,8 @@ export default function BoardNameEditor({
       const length = boardName.length || placeholder.length;
       inputRef.current.style.width = `${length + 1}ch`;
     }
-    setBoardNameContext(boardName);
-  }, [boardName]);
+    updateBoardName(boardName, boardId);
+  }, [boardName, boardId]);
 
   useEffect(() => {
     if (savedBoardName) {
