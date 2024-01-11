@@ -19,11 +19,11 @@ import openModal from "../../utils/openModal";
 import EditListModal from "./modals/EditListModal";
 import CreateCardModal from "./modals/CreateCardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
-import { useBoardContext } from "../../contexts/BoardContext";
 import { Card as CardType } from "@prisma/client";
 import createCard from "@/services/boards/createCard";
 import editList from "@/services/boards/editList";
 import deleteList from "@/services/boards/deleteList";
+import { Draggable } from "react-beautiful-dnd";
 
 const Menu = ({
   name,
@@ -57,7 +57,7 @@ const Menu = ({
   );
 };
 
-export default function List({ id, name, cards = [], boardId }: any) {
+export default function List({ id, name, index, cards = [], boardId }: any) {
   const sortedCards = (sortCards(cards) as CardType[]) || [];
 
   const onDelete = () => {
@@ -82,48 +82,62 @@ export default function List({ id, name, cards = [], boardId }: any) {
   };
 
   return (
-    <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
-      <div className="flex justify-between items-center p-2 px-3">
-        <p>{name}</p>
-        <Menu
-          name={name}
-          onDelete={onDelete}
-          onEdit={({ name }: { name: string }) =>
-            editList({ name, listId: id })
-          }
-        />
-      </div>
-      <StrictModeDroppable droppableId={id.toString()}>
-        {(provided) => (
-          <div
-            className="mt-2"
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            <div>
-              {sortedCards.map((card) => (
-                <Card
-                  key={card.id}
-                  id={card.id}
-                  index={card.position}
-                  title={card.title}
-                />
-              ))}
+    <Draggable draggableId={id.toString()} key={`list-${id}`} index={index}>
+      {(provided2) => (
+        <li
+          className="shrink-0 h-full w-[272px] select-none"
+          ref={provided2.innerRef}
+          {...provided2.draggableProps}
+          {...provided2.dragHandleProps}
+        >
+          <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
+            <div className="flex justify-between items-center p-2 px-3">
+              <p>{name}</p>
+              <Menu
+                name={name}
+                onDelete={onDelete}
+                onEdit={({ name }: { name: string }) =>
+                  editList({ name, listId: id })
+                }
+              />
             </div>
-            {provided.placeholder}
-            <div
-              onClick={() =>
-                openModal(
-                  <CreateCardModal listId={id} onSubmit={handleOnCardCreate} />
-                )
-              }
-              className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-dark-2 py-2 h dark:hover:bg-dark-3 rounded-b-md"
-            >
-              <PlusIcon className="w-5 h-5 [&>path]:stroke-[3]" />
-            </div>
+            <StrictModeDroppable droppableId={id.toString()} type="card">
+              {(provided) => (
+                <div
+                  className="mt-2"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  <div>
+                    {sortedCards.map((card) => (
+                      <Card
+                        key={card.id}
+                        id={card.id}
+                        index={card.position}
+                        title={card.title}
+                      />
+                    ))}
+                  </div>
+                  {provided.placeholder}
+                  <div
+                    onClick={() =>
+                      openModal(
+                        <CreateCardModal
+                          listId={id}
+                          onSubmit={handleOnCardCreate}
+                        />
+                      )
+                    }
+                    className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-dark-2 py-2 h dark:hover:bg-dark-3 rounded-b-md"
+                  >
+                    <PlusIcon className="w-5 h-5 [&>path]:stroke-[3]" />
+                  </div>
+                </div>
+              )}
+            </StrictModeDroppable>
           </div>
-        )}
-      </StrictModeDroppable>
-    </div>
+        </li>
+      )}
+    </Draggable>
   );
 }

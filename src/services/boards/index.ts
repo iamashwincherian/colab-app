@@ -6,6 +6,7 @@ import editList from "./editList";
 import getBoardData from "./getBoardData";
 import onDragEnd from "./onDragEnd";
 import updateCardPosition from "./updateCardPosition";
+import updateListPosition from "./updateListPosition";
 
 export const BoardService = {
   onDragEnd,
@@ -15,6 +16,7 @@ export const BoardService = {
   editList,
   deleteList,
   createList,
+  updateListPosition,
   getData: getBoardData,
 };
 
