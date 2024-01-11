@@ -8,10 +8,9 @@ import { GearIcon } from "@radix-ui/react-icons";
 import React from "react";
 import { BreadCrumbItem, BreadCrumbs } from "../breadCrumbs/BreadCrumbs";
 import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
-import MainContent from "../layoutWrapper/MainContent";
 import { Button } from "../ui/button";
 import BoardSettingsModal from "./modals/BoardSettingsModal";
-import CreateBoardModal from "./modals/CreateBoardModal";
+import CreateListModal from "./modals/CreateListModal";
 
 interface BoardWrapperProps {
   children: React.ReactNode;
@@ -23,7 +22,7 @@ export default function BoardWrapper({ board, children }: BoardWrapperProps) {
 
   const handleCreateBoard = () => {
     openModal(
-      <CreateBoardModal
+      <CreateListModal
         onSubmit={async ({ name }: { name: string }) =>
           createList({ name, boardId })
         }
