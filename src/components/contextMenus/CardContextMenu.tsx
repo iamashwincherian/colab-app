@@ -9,6 +9,7 @@ import {
 } from "../ui/context-menu";
 import deleteCard from "@/services/boards/deleteCard";
 import editCard from "@/services/boards/editCard";
+import ConfirmationModal from "../modals/ConfirmationModal";
 
 type CardContextProps = {
   card: {
@@ -39,7 +40,16 @@ export default function CardContextMenu({ card, children }: CardContextProps) {
         </ContextMenuItem>
         <ContextMenuItem
           className="text-red-500"
-          onClick={() => deleteCard(card.id)}
+          onClick={() =>
+            openModal(
+              <ConfirmationModal
+                open={true}
+                message="Are you sure you want to delete this card?"
+                description="Please note that you cannot undo this!"
+                onSubmit={() => deleteCard(card.id)}
+              />
+            )
+          }
         >
           Delete
         </ContextMenuItem>
