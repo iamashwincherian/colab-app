@@ -4,11 +4,12 @@ import { useState } from "react";
 import PrimaryModal from "@/components/modals/PrimaryModal";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { BoardProp } from "../types";
+import deleteBoard from "@/services/boards/deleteBoard";
+import { Board } from "@prisma/client";
 
 type BoardSettingsProps = {
   onSubmit: Function;
-  board: BoardProp;
+  board: Board;
 };
 
 export default function BoardSettingsModal({
@@ -19,8 +20,8 @@ export default function BoardSettingsModal({
   const [name, setName] = useState(board?.name || "");
 
   const handleSubmit = () => {
+    onSubmit({ name, boardId: board.id });
     setOpen(false);
-    onSubmit({ name });
   };
 
   return (
@@ -28,7 +29,11 @@ export default function BoardSettingsModal({
       open={open}
       title={"Board Settings"}
       submitButton={{ label: "Save", varient: "outline" }}
-      cancelButton={{ label: "Delete Board", varient: "destructive" }}
+      cancelButton={{
+        label: "Delete Board",
+        varient: "destructive",
+        onClick: () => deleteBoard(board.id),
+      }}
       size="max-w-lg"
       onClose={() => setOpen(false)}
       onSubmit={handleSubmit}

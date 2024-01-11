@@ -1,8 +1,12 @@
 import { Button, ButtonVariants } from "@/components/ui/button";
+import { IconProps } from "@radix-ui/react-icons/dist/types";
 
 type ButtonTypes = {
-  label: string;
-  onClick: Function;
+  label?: string;
+  onClick?: Function;
+  icon?: React.ForwardRefExoticComponent<
+    IconProps & React.RefAttributes<SVGSVGElement>
+  >;
   varient?: ButtonVariants;
 };
 
@@ -28,15 +32,19 @@ export default function MainContent({
           </h1>
           <p className="mt-2 text-gray-500 dark:text-zinc-500">{subtitle}</p>
         </div>
-        {buttons.map(({ label, varient = "default", onClick }, index) => (
-          <Button
-            key={`button-${index}`}
-            variant={varient}
-            onClick={() => onClick()}
-          >
-            {label}
-          </Button>
-        ))}
+        <div className="flex gap-2">
+          {buttons.map(
+            ({ label, icon: Icon, varient = "default", onClick }, index) => (
+              <Button
+                key={`button-${index}`}
+                variant={varient}
+                onClick={() => onClick && onClick()}
+              >
+                {Icon && <Icon />} {label}
+              </Button>
+            )
+          )}
+        </div>
       </div>
       {children}
     </div>

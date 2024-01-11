@@ -14,6 +14,7 @@ type ButtonType = {
   label: string;
   varient?: ButtonVariants;
   hidden?: boolean;
+  onClick?: Function;
 };
 
 type ModalProps = {
@@ -90,7 +91,12 @@ const PrimaryModal = (props: ModalProps) => {
               <Button
                 type="reset"
                 variant={cancelButton.varient}
-                onClick={() => handleOnOpenChange(false)}
+                onClick={async () => {
+                  if (cancelButton.onClick) {
+                    await cancelButton.onClick();
+                  }
+                  handleOnOpenChange(false);
+                }}
               >
                 {cancelButton.label}
               </Button>
