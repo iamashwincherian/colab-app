@@ -30,10 +30,10 @@ export default function KanbanBoard({ board }: KanbanBoardProps) {
             direction="horizontal"
           >
             {(provided) => (
-              <ol
+              <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="flex gap-x-3 h-full"
+                className="flex h-full"
               >
                 {sortedList.map(({ id, name, cards }: any, index: number) => {
                   return (
@@ -47,7 +47,7 @@ export default function KanbanBoard({ board }: KanbanBoardProps) {
                     />
                   );
                 })}
-              </ol>
+              </div>
             )}
           </StrictModeDroppable>
         </div>

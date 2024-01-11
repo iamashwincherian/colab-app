@@ -84,13 +84,15 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
   return (
     <Draggable draggableId={id.toString()} key={`list-${id}`} index={index}>
       {(provided) => (
-        <li
-          className="shrink-0 h-full w-[272px] select-none"
+        <div
+          className="h-full select-none mr-4"
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
         >
-          <div className="bg-gray-50 shadow-sm w-64 mr-4 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md">
+          <div
+            className="bg-gray-50 shadow-sm w-64 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md"
+            {...provided.dragHandleProps}
+          >
             <div className="flex justify-between items-center p-2 px-3">
               <p>{name}</p>
               <Menu
@@ -136,7 +138,7 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
               )}
             </StrictModeDroppable>
           </div>
-        </li>
+        </div>
       )}
     </Draggable>
   );
