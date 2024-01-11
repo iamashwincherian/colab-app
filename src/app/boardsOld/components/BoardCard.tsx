@@ -1,3 +1,5 @@
+"use client";
+
 import { redirect, useRouter } from "next/navigation";
 
 type BoardCardProps = {

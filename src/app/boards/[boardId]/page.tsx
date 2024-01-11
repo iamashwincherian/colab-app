@@ -1,7 +1,6 @@
 import BoardWrapper from "@/components/kanban/BoardWrapper";
 import KanbanBoard from "@/components/kanban/KanbanBoardV2";
 import FullScreenLayout from "@/components/layouts/FullScreenLayout";
-import MainContent from "@/components/layoutWrapper/MainContent";
 import BoardService from "@/services/boards";
 import { authenticateUser } from "@/utils/getUser";
 
