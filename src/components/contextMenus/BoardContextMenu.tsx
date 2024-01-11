@@ -3,7 +3,6 @@ import editBoard from "@/services/boards/editBoard";
 import openModal from "@/utils/openModal";
 import { Board } from "@prisma/client";
 import BoardSettingsModal from "../kanban/modals/BoardSettingsModal";
-import EditCardModal from "../kanban/modals/EditCardModal";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import {
   ContextMenu,
@@ -11,6 +10,7 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "../ui/context-menu";
+import { useToast } from "../ui/toast/use-toast";
 
 type CardContextProps = {
   board: Board;
@@ -21,6 +21,7 @@ export default function BoardContextMenu({
   board,
   children,
 }: CardContextProps) {
+  const { toast } = useToast();
   return (
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
@@ -40,7 +41,13 @@ export default function BoardContextMenu({
                 open={true}
                 message="Are you sure you want to delete this board?"
                 description="Please note that you cannot undo this!"
-                onSubmit={() => deleteBoard(board.id)}
+                onSubmit={() => {
+                  deleteBoard(board.id).then(() => {
+                    toast({
+                      description: `Successfully deleted board: "${board.name}"`,
+                    });
+                  });
+                }}
               />
             );
           }}
