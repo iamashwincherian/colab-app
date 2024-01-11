@@ -15,5 +15,5 @@ export default async function deleteList(
   }
 
   await db.list.delete({ where: { id: listId } });
-  revalidatePath(`/boardsv2/${list.boardId}`);
+  revalidatePath(`/boards/${list.boardId}`);
 }

@@ -8,7 +8,7 @@ const updateCardPosition = async (cards: Card[], boardId: number) => {
   for (const card of cards) {
     await db.card.update({ where: { id: card.id }, data: { ...card } });
   }
-  revalidatePath(`/boardsv2/${boardId}`);
+  revalidatePath(`/boards/${boardId}`);
 };
 
 export default updateCardPosition;

@@ -13,5 +13,5 @@ export default async function editCard({ title, cardId }: EditCardProps) {
   if (!card) return;
 
   await db.card.update({ where: { id: cardId }, data: { title } });
-  revalidatePath(`/boardsV2/${card.boardId}`);
+  revalidatePath(`/boards/${card.boardId}`);
 }

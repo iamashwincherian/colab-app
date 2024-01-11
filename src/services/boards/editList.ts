@@ -13,5 +13,5 @@ export default async function editList({ name, listId }: EditListProps) {
   if (!list) return;
 
   await db.list.update({ where: { id: listId }, data: { name } });
-  revalidatePath(`/boardsV2/${list.boardId}`);
+  revalidatePath(`/boards/${list.boardId}`);
 }

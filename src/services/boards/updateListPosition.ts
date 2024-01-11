@@ -16,5 +16,5 @@ export default async function updateListPosition(
       data: { ...(listItem as List) },
     });
   }
-  revalidatePath(`/boardsv2/${boardId}`);
+  revalidatePath(`/boards/${boardId}`);
 }

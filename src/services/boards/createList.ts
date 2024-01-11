@@ -19,5 +19,5 @@ export default async function createList({ name, boardId }: CreateListTypes) {
     data: { name, boardId, userId, position: nextPosition },
   });
   console.log("boardId", boardId);
-  revalidatePath(`/boardsv2/${boardId}`);
+  revalidatePath(`/boards/${boardId}`);
 }

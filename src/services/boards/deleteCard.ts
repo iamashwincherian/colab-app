@@ -8,5 +8,5 @@ export default async function deleteCard(cardId: number) {
   if (!card) return;
 
   await db.card.delete({ where: { id: cardId } });
-  revalidatePath(`/boardsv2/${card.boardId}`);
+  revalidatePath(`/boards/${card.boardId}`);
 }

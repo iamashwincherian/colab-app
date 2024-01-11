@@ -13,5 +13,5 @@ export default async function createCard(
   await db.card.create({
     data: { title, listId, boardId, userId, position: 0 },
   });
-  revalidatePath(`/boardsv2/${boardId}`);
+  revalidatePath(`/boards/${boardId}`);
 }
