@@ -14,7 +14,7 @@ const CreateBoardModal = ({ onSubmit }: { onSubmit: Function }) => {
 
   const handleSubmit = () => {
     setOpen(false);
-    onSubmit({ name });
+    onSubmit({ name, createSample: true });
   };
 
   return (
