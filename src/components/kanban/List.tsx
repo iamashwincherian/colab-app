@@ -22,6 +22,8 @@ import ConfirmationModal from "../modals/ConfirmationModal";
 import { useBoardContext } from "../../contexts/BoardContext";
 import { Card as CardType } from "@prisma/client";
 import createCard from "@/services/boards/createCard";
+import editList from "@/services/boards/editList";
+import deleteList from "@/services/boards/deleteList";
 
 const Menu = ({
   name,
@@ -55,9 +57,8 @@ const Menu = ({
   );
 };
 
-export default function List({ id, name, cards = [], onEdit, boardId }: any) {
+export default function List({ id, name, cards = [], boardId }: any) {
   const sortedCards = (sortCards(cards) as CardType[]) || [];
-  const { deleteList } = useBoardContext();
 
   const onDelete = () => {
     openModal(
@@ -65,7 +66,7 @@ export default function List({ id, name, cards = [], onEdit, boardId }: any) {
         open={true}
         message="Are you sure you want to delete this list?"
         description="Please note that all the cards in this list will also be deleted!"
-        onSubmit={() => deleteList({ listId: id })}
+        onSubmit={() => deleteList(id, true)}
       />
     );
   };
@@ -87,7 +88,9 @@ export default function List({ id, name, cards = [], onEdit, boardId }: any) {
         <Menu
           name={name}
           onDelete={onDelete}
-          onEdit={({ name }: { name: string }) => onEdit({ name, listId: id })}
+          onEdit={({ name }: { name: string }) =>
+            editList({ name, listId: id })
+          }
         />
       </div>
       <StrictModeDroppable droppableId={id.toString()}>

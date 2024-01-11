@@ -45,7 +45,7 @@ const Board = (props: BoardProps) => {
           openModal(
             <CreateListModal
               onSubmit={({ name }: { name: string }) =>
-                createList({ boardId, name })
+                createList({ name, boardId })
               }
             />
           )

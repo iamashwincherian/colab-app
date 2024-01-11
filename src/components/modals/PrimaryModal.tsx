@@ -58,11 +58,12 @@ const PrimaryModal = (props: ModalProps) => {
 
   useEffect(() => {
     const modal = document.getElementById("modalEl");
-    if (open === false) {
-      if (!modal) return;
+    if (!modal) return;
+
+    return () => {
       const root = createRoot(modal);
       root.unmount();
-    }
+    };
   }, [open]);
 
   const handleOnOpenChange = (value: boolean) => {

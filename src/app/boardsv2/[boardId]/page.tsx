@@ -1,5 +1,7 @@
+import BoardWrapper from "@/components/kanban/BoardWrapper";
 import KanbanBoard from "@/components/kanban/KanbanBoardV2";
 import FullScreenLayout from "@/components/layouts/FullScreenLayout";
+import MainContent from "@/components/layoutWrapper/MainContent";
 import BoardService from "@/services/boards";
 import { authenticateUser } from "@/utils/getUser";
 
@@ -13,10 +15,11 @@ export default async function BoardPage({ params: { boardId } }: BoardProps) {
 
   return (
     <FullScreenLayout nav>
-      <div className="p-10 pt-6">
-        <div>{board?.name}</div>
-        {board && <KanbanBoard board={board} />}
-      </div>
+      {board && (
+        <BoardWrapper board={board}>
+          <KanbanBoard board={board} />
+        </BoardWrapper>
+      )}
     </FullScreenLayout>
   );
 }
