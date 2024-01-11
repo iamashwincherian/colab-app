@@ -9,12 +9,14 @@ import { Board } from "@prisma/client";
 
 type BoardSettingsProps = {
   onSubmit: Function;
+  onDelete?: Function;
   board: Board;
 };
 
 export default function BoardSettingsModal({
   board,
   onSubmit,
+  onDelete,
 }: BoardSettingsProps) {
   const [open, setOpen] = useState(true);
   const [name, setName] = useState(board?.name || "");
@@ -32,7 +34,7 @@ export default function BoardSettingsModal({
       cancelButton={{
         label: "Delete Board",
         varient: "destructive",
-        onClick: () => deleteBoard(board.id),
+        onClick: onDelete,
       }}
       size="max-w-lg"
       onClose={() => setOpen(false)}

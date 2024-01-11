@@ -1,6 +1,7 @@
 "use client";
 
 import createList from "@/services/boards/createList";
+import deleteBoard from "@/services/boards/deleteBoard";
 import editBoard from "@/services/boards/editBoard";
 import { Board } from "@/types/board";
 import openModal from "@/utils/openModal";
@@ -9,6 +10,7 @@ import React from "react";
 import { BreadCrumbItem, BreadCrumbs } from "../breadCrumbs/BreadCrumbs";
 import BoardNameEditor from "../input/boardNameEditor/BoardNameEditor";
 import { Button } from "../ui/button";
+import { useToast } from "../ui/toast/use-toast";
 import BoardSettingsModal from "./modals/BoardSettingsModal";
 import CreateListModal from "./modals/CreateListModal";
 
@@ -19,12 +21,15 @@ interface BoardWrapperProps {
 
 export default function BoardWrapper({ board, children }: BoardWrapperProps) {
   const { id: boardId, name } = board;
+  const { toast } = useToast();
 
   const handleCreateBoard = () => {
     openModal(
       <CreateListModal
         onSubmit={async ({ name }: { name: string }) =>
-          createList({ name, boardId })
+          createList({ name, boardId }).then(() =>
+            toast({ description: "Created list successfully!" })
+          )
         }
       />
     );
@@ -45,7 +50,19 @@ export default function BoardWrapper({ board, children }: BoardWrapperProps) {
           <Button
             onClick={() =>
               openModal(
-                <BoardSettingsModal board={board} onSubmit={editBoard} />
+                <BoardSettingsModal
+                  board={board}
+                  onSubmit={(payload: any) =>
+                    editBoard(payload).then(() =>
+                      toast({ description: "Updated board successfully!" })
+                    )
+                  }
+                  onDelete={() =>
+                    deleteBoard(board.id).then(() =>
+                      toast({ description: "Deleted board successfully!" })
+                    )
+                  }
+                />
               )
             }
             variant="outline"

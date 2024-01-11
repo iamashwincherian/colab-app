@@ -10,6 +10,7 @@ import {
 import deleteCard from "@/services/boards/deleteCard";
 import editCard from "@/services/boards/editCard";
 import ConfirmationModal from "../modals/ConfirmationModal";
+import { useToast } from "../ui/toast/use-toast";
 
 type CardContextProps = {
   card: {
@@ -20,6 +21,7 @@ type CardContextProps = {
 };
 
 export default function CardContextMenu({ card, children }: CardContextProps) {
+  const { toast } = useToast();
   return (
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
@@ -29,7 +31,9 @@ export default function CardContextMenu({ card, children }: CardContextProps) {
             openModal(
               <EditCardModal
                 onSubmit={({ title }: { title: string }) =>
-                  editCard({ title, cardId: card.id })
+                  editCard({ title, cardId: card.id }).then(() =>
+                    toast({ description: "Updated card successfully!" })
+                  )
                 }
                 title={card.title}
               />
@@ -46,7 +50,11 @@ export default function CardContextMenu({ card, children }: CardContextProps) {
                 open={true}
                 message="Are you sure you want to delete this card?"
                 description="Please note that you cannot undo this!"
-                onSubmit={() => deleteCard(card.id)}
+                onSubmit={() =>
+                  deleteCard(card.id).then(() =>
+                    toast({ description: "Deleted card successfully!" })
+                  )
+                }
               />
             )
           }

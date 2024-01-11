@@ -24,6 +24,7 @@ import createCard from "@/services/boards/createCard";
 import editList from "@/services/boards/editList";
 import deleteList from "@/services/boards/deleteList";
 import { Draggable } from "react-beautiful-dnd";
+import { useToast } from "../ui/toast/use-toast";
 
 const Menu = ({
   name,
@@ -59,6 +60,7 @@ const Menu = ({
 
 export default function List({ id, name, index, cards = [], boardId }: any) {
   const sortedCards = (sortCards(cards) as CardType[]) || [];
+  const { toast } = useToast();
 
   const onDelete = () => {
     openModal(
@@ -66,7 +68,11 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
         open={true}
         message="Are you sure you want to delete this list?"
         description="Please note that all the cards in this list will also be deleted!"
-        onSubmit={() => deleteList(id, true)}
+        onSubmit={() =>
+          deleteList(id, true).then(() =>
+            toast({ description: "Deleted list successfully!" })
+          )
+        }
       />
     );
   };
@@ -78,7 +84,11 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
     listId: number;
     title: string;
   }) => {
-    createCard(title, listId, boardId);
+    createCard(title, listId, boardId).then(() => {
+      toast({
+        description: "Created new card successfully!",
+      });
+    });
   };
 
   return (
@@ -99,7 +109,9 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
                 name={name}
                 onDelete={onDelete}
                 onEdit={({ name }: { name: string }) =>
-                  editList({ name, listId: id })
+                  editList({ name, listId: id }).then(() =>
+                    toast({ description: "Updated list successfully!" })
+                  )
                 }
               />
             </div>

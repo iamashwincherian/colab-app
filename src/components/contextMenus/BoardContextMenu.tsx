@@ -44,7 +44,7 @@ export default function BoardContextMenu({
                 onSubmit={() => {
                   deleteBoard(board.id).then(() => {
                     toast({
-                      description: `Successfully deleted board: "${board.name}"`,
+                      description: `Deleted board successfully!`,
                     });
                   });
                 }}
