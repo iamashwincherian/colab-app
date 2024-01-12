@@ -37,12 +37,12 @@ export default function BoardWrapper({ board, children }: BoardWrapperProps) {
 
   return (
     <div className="flex flex-col py-6 px-8 flex-1">
-      <BreadCrumbs>
-        <BreadCrumbItem text="Boards" link="/boards" />
-        <BreadCrumbItem text={board.name} />
-      </BreadCrumbs>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between">
         <div className="mb-5">
+          <BreadCrumbs>
+            <BreadCrumbItem text="Boards" link="/boards" />
+            <BreadCrumbItem text={board.name} />
+          </BreadCrumbs>
           <BoardNameEditor name={name} boardId={boardId} />
           <p className="mt-2 text-gray-500 dark:text-zinc-500"></p>
         </div>
