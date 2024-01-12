@@ -47,7 +47,7 @@ export default function RegisterPage({ providers }: any) {
 
     const response = await signIn("credentials", {
       isRegistration: true,
-      name: `${firstName} ${lastName}`,
+      name: `${firstName} ${lastName}`.trim(),
       redirect: false,
       email,
       password,

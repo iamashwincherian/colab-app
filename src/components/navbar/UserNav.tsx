@@ -45,7 +45,8 @@ export function UserNav() {
   const { name = undefined } = user;
 
   const handleLogout = () => {
-    signOut({ redirect: false });
+    // Fix this
+    signOut({ redirect: true });
     toast({
       description: "Logging you out",
     });
