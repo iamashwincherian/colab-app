@@ -9,6 +9,10 @@ export interface DropResultType extends DropResult {
   type: DraggableType;
 }
 
+const getId = (id: string): number => {
+  return parseInt(id.split("-")[id.split("-").length - 1]);
+};
+
 export default async function onDragEnd(
   boardId: number,
   payload: DropResultType,
@@ -17,11 +21,11 @@ export default async function onDragEnd(
   const { source, destination, type } = payload;
   if (!destination) return;
 
-  const draggableId = parseInt(payload.draggableId);
+  const draggableId = getId(payload.draggableId);
+  const sourceId = getId(source.droppableId);
+  const destinationId = getId(destination.droppableId);
   const sourceIndex = source.index;
   const destinationIndex = destination.index;
-  const sourceId = parseInt(source.droppableId);
-  const destinationId = parseInt(destination.droppableId);
 
   if (type === "card") {
     let sourceCards = list.find(

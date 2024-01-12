@@ -92,7 +92,7 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
   };
 
   return (
-    <Draggable draggableId={id.toString()} key={`list-${id}`} index={index}>
+    <Draggable draggableId={`list-${id}`} key={`list-${id}`} index={index}>
       {(provided) => (
         <div
           className="h-full select-none mr-4"
@@ -115,7 +115,7 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
                 }
               />
             </div>
-            <StrictModeDroppable droppableId={id.toString()} type="card">
+            <StrictModeDroppable droppableId={`card-${id}`} type="card">
               {(provided) => (
                 <div
                   className="mt-2"
