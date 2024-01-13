@@ -27,7 +27,7 @@ export default async function createSampleBoardData(
   boardId: number,
   userId: string
 ) {
-  const allPromises = await Promise.all(
+  await Promise.all(
     sampleData.map(async (list, index) => {
       const newList = await db.list.create({
         data: { name: list.name, position: index, userId, boardId },
