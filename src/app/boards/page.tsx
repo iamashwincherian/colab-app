@@ -14,10 +14,17 @@ const Boards = async () => {
   return (
     <FullScreenLayout nav>
       <BoardsTopbar>
-        <div className="flex flex-wrap gap-8">
-          {boards.map((board) => (
-            <BoardCard key={board.id} board={board} />
-          ))}
+        <div>
+          <div className="flex flex-wrap gap-8">
+            {boards.map((board) => (
+              <BoardCard key={board.id} board={board} />
+            ))}
+          </div>
+          {boards.length === 0 && (
+            <div className="flex items-center justify-center w-full h-[70vh] text-muted-foreground">
+              There are no boards. Create one to get started.
+            </div>
+          )}
         </div>
       </BoardsTopbar>
     </FullScreenLayout>

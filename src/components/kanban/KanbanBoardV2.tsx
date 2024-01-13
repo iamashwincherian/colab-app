@@ -52,6 +52,11 @@ export default function KanbanBoard({ board }: KanbanBoardProps) {
           </StrictModeDroppable>
         </div>
       </DragDropContext>
+      {sortedList.length === 0 && (
+        <div className="flex items-center justify-center w-full h-[60vh] text-muted-foreground">
+          There are no list/cards. Create one to get started.
+        </div>
+      )}
     </div>
   );
 }
