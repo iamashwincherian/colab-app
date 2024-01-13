@@ -16,7 +16,7 @@ export default function Card({ id, title, index }: CardProps) {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            className="bg-white shadow-sm dark:bg-dark-3 mx-3 p-4 rounded border dark:border-none dark:shadow-lg cursor-pointer mb-3"
+            className="bg-white dark:bg-zinc-800 shadow-sm mx-3 p-4 rounded border dark:shadow-lg cursor-pointer mb-3"
           >
             {title}
           </div>

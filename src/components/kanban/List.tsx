@@ -100,7 +100,7 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
           {...provided.draggableProps}
         >
           <div
-            className="bg-gray-50 shadow-sm w-64 text-left flex flex-col border dark:border-none dark:bg-dark-2 rounded-md"
+            className="bg-gray-50 shadow-sm w-64 text-left flex flex-col border dark:border-none dark:bg-zinc-900 rounded-md"
             {...provided.dragHandleProps}
           >
             <div className="flex justify-between items-center p-2 px-3">
@@ -142,7 +142,7 @@ export default function List({ id, name, index, cards = [], boardId }: any) {
                         />
                       )
                     }
-                    className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-dark-2 py-2 h dark:hover:bg-dark-3 rounded-b-md"
+                    className="flex justify-center w-full cursor-pointer bg-gray-50 hover:bg-gray-100 dark:bg-zinc-900 py-2 h dark:hover:bg-zinc-800 rounded-b-md"
                   >
                     <PlusIcon className="w-5 h-5 [&>path]:stroke-[3]" />
                   </div>

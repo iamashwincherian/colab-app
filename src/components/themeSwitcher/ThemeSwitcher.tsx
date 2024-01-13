@@ -1,27 +1,39 @@
 "use client";
 
-import { Switch } from "@headlessui/react";
-import { useThemeContext } from "../../contexts/ThemeContext";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
 
-export default function ThemeSwitcher() {
-  const { theme, toggleTheme } = useThemeContext();
-  const darkMode: boolean = theme === "dark";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+export function ThemeSwitcher() {
+  const { setTheme } = useTheme();
 
   return (
-    <div className="flex justify-between items-center">
-      <Switch
-        checked={darkMode}
-        onChange={toggleTheme}
-        className={`${
-          darkMode ? "bg-dark-3" : "bg-gray-200"
-        } relative inline-flex h-6 w-11 items-center rounded-full ml-4`}
-      >
-        <span
-          className={`${
-            darkMode ? "translate-x-6" : "translate-x-1"
-          } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-        />
-      </Switch>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
+          <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

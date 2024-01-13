@@ -3,15 +3,12 @@
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 
-import {
-  ThemeContextProvider,
-  useThemeContext,
-} from "../contexts/ThemeContext";
-import clsx from "../helpers/clsx";
+import { ThemeContextProvider } from "../contexts/ThemeContext";
 import { UserContextProvider } from "../contexts/UserContext";
 import { SettingsContextProvider } from "../contexts/SettingsContext";
 import { BoardContextProvider } from "../contexts/BoardContext";
 import { Toaster } from "@/components/ui/toast/toaster";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -28,22 +25,19 @@ export default function ContextProviderWrappers({
   children,
   session,
 }: BodyProps) {
-  const { theme } = useThemeContext();
   return (
     <SessionProvider session={session}>
-      <SettingsContextProvider>
-        <UserContextProvider>
-          <ThemeContextProvider>
-            <BoardContextProvider>
-              <body className={clsx(theme, inter.className)}>
-                {children}
-                <div id="modalEl"></div>
-                <Toaster />
-              </body>
-            </BoardContextProvider>
-          </ThemeContextProvider>
-        </UserContextProvider>
-      </SettingsContextProvider>
+      <UserContextProvider>
+        <BoardContextProvider>
+          <body className={inter.className}>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+              {children}
+              <div id="modalEl"></div>
+            </ThemeProvider>
+            <Toaster />
+          </body>
+        </BoardContextProvider>
+      </UserContextProvider>
     </SessionProvider>
   );
 }

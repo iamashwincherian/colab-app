@@ -1,12 +1,13 @@
 "use client";
 
+import React from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-import { sortList } from "./helpers/sort";
 import { Board, List as ListType } from "@/types/board";
 import onDragEnd, { DropResultType } from "@/services/boards/onDragEnd";
-import List from "./List";
 import { StrictModeDroppable } from "../droppable/Droppable";
+import { sortList } from "./helpers/sort";
+import List from "./List";
 
 type KanbanBoardProps = {
   board: Board;
@@ -21,7 +22,7 @@ export default function KanbanBoard({ board }: KanbanBoardProps) {
   };
 
   return (
-    <div className="mt-4">
+    <React.Fragment>
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex dark:text-white items-start">
           <StrictModeDroppable
@@ -57,6 +58,6 @@ export default function KanbanBoard({ board }: KanbanBoardProps) {
           There are no list/cards. Create one to get started.
         </div>
       )}
-    </div>
+    </React.Fragment>
   );
 }

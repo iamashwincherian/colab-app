@@ -27,7 +27,7 @@ export default function MainContent({
     <div className="flex flex-col py-6 px-8 flex-1">
       <div className="flex justify-between">
         <div className="mb-5">
-          <h1 className="text-3xl font-medium tracking-tight text-gray-900 dark:text-zinc-300 capitalize">
+          <h1 className="text-3xl font-medium tracking-tight capitalize">
             {title}
           </h1>
           <p className="mt-2 text-gray-500 dark:text-zinc-500">{subtitle}</p>

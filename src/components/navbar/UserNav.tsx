@@ -18,8 +18,10 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast/use-toast";
 import openModal from "@/utils/openModal";
 import ProfileModal from "./ProfileModal";
+import { useTheme } from "next-themes";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 
-const Avatar = ({ name }: { name?: string | null }) => {
+const UserAvatar = ({ name }: { name?: string | null }) => {
   if (!name || name === "") return <></>;
 
   const firstLetter = name.charAt(0);
@@ -27,25 +29,23 @@ const Avatar = ({ name }: { name?: string | null }) => {
   if (name.split(" ").length > 1) {
     lastLetter = name.split(" ").slice(-1)[0].charAt(0);
   }
-  const avatarLetters = firstLetter + lastLetter;
-
   return (
-    <div className="rounded-full bg-secondary p-2 border border-gray-200">
-      <span className="tracking-wider">{avatarLetters}</span>
-    </div>
+    <Avatar className="border w-9 h-9 cursor-pointer">
+      <AvatarFallback>{`${firstLetter}${lastLetter}`}</AvatarFallback>
+    </Avatar>
   );
 };
 
 export function UserNav() {
   const router = useRouter();
   const { toast } = useToast();
+  const { theme, setTheme } = useTheme();
   const user = useUser();
   if (!user) return <></>;
 
   const { name = undefined } = user;
 
   const handleLogout = () => {
-    // Fix this
     signOut({ redirect: true });
     toast({
       description: "Logging you out",
@@ -57,11 +57,16 @@ export function UserNav() {
     openModal(<ProfileModal />);
   };
 
+  const switchTheme = () => {
+    if (theme === "light") setTheme("dark");
+    else setTheme("light");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar name={name} />
+          <UserAvatar name={name} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -74,22 +79,10 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Billing
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator /> */}
+        <DropdownMenuItem onClick={switchTheme}>
+          {theme === "light" ? "Dark Theme" : "Light Theme"}
+          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

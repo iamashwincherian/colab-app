@@ -8,7 +8,7 @@ export default function FullScreenLayout({
   nav?: boolean;
 }) {
   return (
-    <div className="flex flex-col bg-gray-50 dark:bg-dark h-screen">
+    <div className="flex flex-col bg-gray-50 dark:bg-zinc-950 h-screen">
       {nav && <Navbar />}
       {children}
     </div>
