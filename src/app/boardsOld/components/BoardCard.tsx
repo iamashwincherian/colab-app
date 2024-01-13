@@ -24,7 +24,10 @@ export default function BoardCard({ board }: BoardCardProps) {
 
   return (
     <BoardContextMenu board={board}>
-      <Card onClick={openBoard} className="cursor-pointer">
+      <Card
+        onClick={openBoard}
+        className="rounded-lg cursor-pointer shadow-none hover:shadow"
+      >
         <CardHeader>
           <CardTitle>{name}</CardTitle>
           <CardDescription>Description goes here</CardDescription>

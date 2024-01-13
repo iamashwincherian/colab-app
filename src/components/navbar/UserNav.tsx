@@ -7,7 +7,6 @@ import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -20,6 +19,7 @@ import openModal from "@/utils/openModal";
 import ProfileModal from "./ProfileModal";
 import { useTheme } from "next-themes";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { ExitIcon, GearIcon } from "@radix-ui/react-icons";
 
 const UserAvatar = ({ name }: { name?: string | null }) => {
   if (!name || name === "") return <></>;
@@ -79,13 +79,13 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={switchTheme}>
-          {theme === "light" ? "Dark Theme" : "Light Theme"}
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        <DropdownMenuItem>
+          <GearIcon className="mr-2" />
+          Settings
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout}>
+          <ExitIcon className="mr-2" />
           Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
