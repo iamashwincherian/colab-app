@@ -13,6 +13,7 @@ import { useToast } from "@/components/ui/toast/use-toast";
 import FullScreenLayout from "@/components/layouts/FullScreenLayout";
 import GoogleButton from "@/app/auth/components/buttons/GoogleButton";
 import Logo from "@/components/logo/logo";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 type GoogleProvider = {
   id: string;
@@ -80,21 +81,21 @@ export default function SigninPage({ providers }: any) {
               Welcome to Colab
             </p>
           </div>
-          <div className="overflow-hidden shadow sm:rounded-lg">
-            <div className="w-[400px] bg-white dark:bg-dark-2 dark:text-gray-300 px-4 py-5 sm:p-6 ">
+          <Card className="w-[400px]">
+            <CardHeader className="pb-3">
+              <p className="text-xl font-regular">Login</p>
+              <small className="text-gray-400 ">Welcome back</small>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-5">
+                {google && <GoogleButton type="login" id={google?.id} />}
+              </div>
+              <div className="flex items-center">
+                <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
+                <p className="mx-4 dark:text-gray-200">or</p>
+                <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
+              </div>
               <form onSubmit={handleLogin}>
-                <p className="text-xl font-regular">Login</p>
-                <small className="mb-4 text-gray-400 ">Welcome back</small>
-                <div className="my-5">
-                  {google && <GoogleButton type="login" id={google?.id} />}
-                </div>
-
-                <div className="flex items-center">
-                  <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
-                  <p className="mx-4 dark:text-gray-200">or</p>
-                  <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
-                </div>
-
                 <div className="my-3">
                   <Label
                     htmlFor="email-address"
@@ -110,7 +111,7 @@ export default function SigninPage({ providers }: any) {
                     placeholder="user@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                    className="mt-2"
                   />
                 </div>
                 <div className="w-full">
@@ -128,7 +129,7 @@ export default function SigninPage({ providers }: any) {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                    className="mt-2"
                   />
                 </div>
                 <div className="w-full text-right my-2">
@@ -142,7 +143,8 @@ export default function SigninPage({ providers }: any) {
                 <Button
                   type="submit"
                   variant="default"
-                  className="w-full my-2"
+                  size="full"
+                  className="my-2"
                   disabled={disableSubmitButton}
                 >
                   Login
@@ -157,8 +159,8 @@ export default function SigninPage({ providers }: any) {
                   </p>
                 </Link>
               </form>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </FullScreenLayout>
