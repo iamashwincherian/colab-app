@@ -1,5 +1,5 @@
 import FullScreenLayout from "../../components/layouts/FullScreenLayout";
-import BoardCard from "../boardsOld/components/BoardCard";
+import BoardCard from "./components/BoardCard";
 import { authenticateUser } from "@/utils/getUser";
 import BoardsTopbar from "./BoardsTopbar";
 import { db } from "@/server/db";

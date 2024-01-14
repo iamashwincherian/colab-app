@@ -1,5 +1,5 @@
-import Boards from "./boards/page";
+import { redirect } from "next/navigation";
 
 export default function App() {
-  return <Boards />;
+  redirect("/boards");
 }

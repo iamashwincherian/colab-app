@@ -1,68 +1,63 @@
 "use client";
 
-import { useEffect } from "react";
+import React from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-import List from "./List";
-import useKanbanBoard from "./hooks/useKanbanBoard";
-import { BoardProp, ListProp, CardProp } from "./types";
-import { useBoardContext } from "../../contexts/BoardContext";
+import { Board, List as ListType } from "@/types/board";
+import onDragEnd, { DropResultType } from "@/services/boards/onDragEnd";
+import { StrictModeDroppable } from "../droppable/Droppable";
 import { sortList } from "./helpers/sort";
+import List from "./List";
 
 type KanbanBoardProps = {
-  board: BoardProp;
-  list: ListProp[];
-  cards: CardProp[];
+  board: Board;
 };
 
-export default function KanbanBoard(props: KanbanBoardProps) {
-  const { createList, editList, createCard } = useBoardContext();
+export default function KanbanBoard({ board }: KanbanBoardProps) {
+  const { id: boardId, lists = [] } = board;
+  const sortedList = sortList(lists) as ListType[];
 
-  const { list: defaultList, cards: defaultCards } = props;
-  let { list, cards, onDragEnd, updateList } = useKanbanBoard(
-    defaultList,
-    defaultCards
-  );
-  const sortedList = (sortList(list) as ListProp[]) || [];
-
-  useEffect(() => {
-    updateList(defaultList);
-  }, [defaultList]);
-
-  if (!props.board) return <></>;
-  const {
-    board: { id: boardId },
-  } = props;
-
-  const handleOnChange = async (result: DropResult) => {
-    await onDragEnd(boardId, result);
+  const handleDragEnd = (payload: DropResult) => {
+    onDragEnd(boardId, payload as DropResultType, sortedList);
   };
 
   return (
-    <div className="mt-8">
-      <DragDropContext onDragEnd={handleOnChange}>
+    <React.Fragment>
+      <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex dark:text-white items-start">
-          {sortedList &&
-            (sortedList?.length
-              ? sortedList.map(({ id, name }: any) => {
-                  const cardsInTheListItem = cards.filter(
-                    (card) => card?.listId === id
-                  );
+          <StrictModeDroppable
+            droppableId="lists"
+            type="list"
+            direction="horizontal"
+          >
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="flex h-full"
+              >
+                {sortedList.map(({ id, name, cards }: any, index: number) => {
                   return (
                     <List
                       id={id}
                       key={id}
                       name={name}
+                      index={index}
                       boardId={boardId}
-                      cards={cardsInTheListItem}
-                      onEdit={editList}
-                      onCardCreate={createCard}
+                      cards={cards}
                     />
                   );
-                })
-              : null)}
+                })}
+              </div>
+            )}
+          </StrictModeDroppable>
         </div>
       </DragDropContext>
-    </div>
+      {sortedList.length === 0 && (
+        <div className="flex items-center justify-center w-full h-[60vh] text-muted-foreground">
+          There are no list/cards. Create one to get started.
+        </div>
+      )}
+    </React.Fragment>
   );
 }
