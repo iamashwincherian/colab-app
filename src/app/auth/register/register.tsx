@@ -11,6 +11,8 @@ import GoogleButton from "../components/buttons/GoogleButton";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 type GoogleProvider = {
   id: string;
@@ -75,17 +77,16 @@ export default function RegisterPage({ providers }: any) {
               Welcome to Colab
             </p>
           </div>
-          <div className="overflow-hidden shadow sm:rounded-lg">
-            <div className="w-[400px] bg-white dark:bg-dark-2 dark:text-gray-300 px-4 py-5 sm:p-6 ">
+          <Card>
+            <CardHeader className="pb-3">
+              <p className="text-xl font-regular">Register</p>
+              <small className="text-gray-400 ">Become a part of Colab</small>
+            </CardHeader>
+            <CardContent>
               <form onSubmit={handleLogin}>
-                <p className="text-xl font-regular">Register</p>
-                <small className="mb-4 text-gray-400 ">
-                  Become a part of Colab
-                </small>
-                <div className="my-5">
+                <div className="mb-5">
                   {google && <GoogleButton type="register" id={google.id} />}
                 </div>
-
                 <div className="flex items-center mb-3">
                   <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
                   <p className="mx-4 dark:text-gray-200">or</p>
@@ -93,12 +94,7 @@ export default function RegisterPage({ providers }: any) {
                 </div>
                 <div className="flex gap-2 mb-3">
                   <div>
-                    <Label
-                      htmlFor="email-address"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                    >
-                      First Name
-                    </Label>
+                    <Label htmlFor="email-address">First Name</Label>
                     <Input
                       id="first-name"
                       type="text"
@@ -107,17 +103,12 @@ export default function RegisterPage({ providers }: any) {
                       value={firstName}
                       placeholder={"John"}
                       onChange={(e) => setFirstName(e.target.value)}
+                      className="mt-2"
                       required
-                      className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                     />
                   </div>
                   <div>
-                    <Label
-                      htmlFor="email-address"
-                      className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                    >
-                      Last Name
-                    </Label>
+                    <Label htmlFor="email-address">Last Name</Label>
                     <Input
                       id="last-name"
                       type="text"
@@ -126,18 +117,13 @@ export default function RegisterPage({ providers }: any) {
                       value={lastName}
                       placeholder={"Doe"}
                       onChange={(e) => setLastNmae(e.target.value)}
+                      className="mt-2"
                       required
-                      className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                     />
                   </div>
                 </div>
                 <div className="mb-3">
-                  <Label
-                    htmlFor="email-address"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Email
-                  </Label>
+                  <Label htmlFor="email-address">Email</Label>
                   <Input
                     id="email-address"
                     type="text"
@@ -147,16 +133,10 @@ export default function RegisterPage({ providers }: any) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
                 </div>
                 <div className="mb-3">
-                  <Label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Password
-                  </Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
@@ -166,35 +146,11 @@ export default function RegisterPage({ providers }: any) {
                     value={password}
                     required
                     onChange={(e) => setPassword(e.target.value)}
-                    className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
                   />
                 </div>
-                {/* <div className="mb-3">
-                  <Label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Confirm Password
-                  </Label>
-                  <Input
-                    id="password-confirm"
-                    type="password"
-                    name="password-confirm"
-                    autoComplete="password-confirm"
-                    placeholder="••••••••"
-                    value={passwordConfirm}
-                    required
-                    onChange={(e) => setPasswordConfirm(e.target.value)}
-                    className="mt-1 block w-full rounded-md dark:border-dark-2 dark:bg-dark dark:text-gray-300 border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
-                  />
-                </div> */}
-                <button
-                  type={"submit"}
-                  className="bg-primary hover:bg-primary-dark text-white w-full my-3 py-2 rounded-md shadow transition-colors"
-                >
+                <Button type="submit" size="full" className="my-2">
                   Register
-                </button>
-
+                </Button>
                 <Link href={"/auth/signin"}>
                   <p className="text-sm text-center dark:text-gray-300">
                     Already have an account?{" "}
@@ -204,8 +160,8 @@ export default function RegisterPage({ providers }: any) {
                   </p>
                 </Link>
               </form>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </FullScreenLayout>
