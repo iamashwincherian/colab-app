@@ -10,14 +10,12 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast/use-toast";
 import openModal from "@/utils/openModal";
 import ProfileModal from "./ProfileModal";
-import { useTheme } from "next-themes";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { ExitIcon, GearIcon } from "@radix-ui/react-icons";
 
@@ -39,7 +37,6 @@ const UserAvatar = ({ name }: { name?: string | null }) => {
 export function UserNav() {
   const router = useRouter();
   const { toast } = useToast();
-  const { theme, setTheme } = useTheme();
   const user = useUser();
   if (!user) return <></>;
 
@@ -55,11 +52,6 @@ export function UserNav() {
 
   const openProfile = () => {
     openModal(<ProfileModal />);
-  };
-
-  const switchTheme = () => {
-    if (theme === "light") setTheme("dark");
-    else setTheme("light");
   };
 
   return (
