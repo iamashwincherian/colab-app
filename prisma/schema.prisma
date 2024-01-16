@@ -37,27 +37,29 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  emailVerified DateTime?
-  hash          String?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  Board         Board[]
-  List          List[]
-  Card          Card[]
+  id                String              @id @default(cuid())
+  name              String
+  email             String              @unique
+  emailVerified     DateTime?
+  hash              String?
+  image             String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  accounts          Account[]
+  sessions          Session[]
+  Board             Board[]
+  List              List[]
+  Card              Card[]
+  VerificationToken VerificationToken[]
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+  token   String   @unique
+  expires DateTime
 
-  @@unique([identifier, token])
+  @@unique([userId, token])
 }
 
 model Board {
