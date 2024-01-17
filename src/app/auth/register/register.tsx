@@ -20,7 +20,6 @@ type GoogleProvider = {
 
 export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const { toast } = useToast();
   const [google, setGoogle] = useState<GoogleProvider>(null);
   const [email, setEmail] = useState("");
@@ -44,27 +43,21 @@ export default function RegisterPage({ providers }: any) {
     }
   }, [providers]);
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const response = await signIn("credentials", {
+    await signIn("credentials", {
       isRegistration: true,
       name: `${firstName} ${lastName}`.trim(),
-      redirect: false,
+      redirect: true,
       email,
       password,
+      callbackUrl: "/",
+    }).then(() => {
+      toast({
+        description: "Verification email sent successfully!",
+      });
     });
-    if (response?.ok && !response.error) {
-      toast({
-        description: "Registered successfully",
-      });
-      router.push("/");
-    } else {
-      toast({
-        description: "Something went wrong",
-        variant: "destructive",
-      });
-    }
   };
 
   return (
@@ -83,7 +76,7 @@ export default function RegisterPage({ providers }: any) {
               <small className="text-gray-400 ">Become a part of Colab</small>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleLogin}>
+              <form onSubmit={handleRegistration}>
                 <div className="mb-5">
                   {google && <GoogleButton type="register" id={google.id} />}
                 </div>

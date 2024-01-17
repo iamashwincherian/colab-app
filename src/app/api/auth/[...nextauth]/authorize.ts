@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import { db } from "@/server/db";
 import { User } from "@prisma/client";
-import createBoard from "@/services/boards/createBoard";
 import createSampleBoardData from "@/services/boards/helpers/createSampleBoard";
+import sendVerificationEmail from "@/services/auth/sendVerificationEmail";
 
 interface CredentialType {
   name: string;
@@ -45,6 +45,7 @@ export default async function authorize(credentials: any) {
   if (!user) {
     if (isRegistration) {
       user = await createNewUser(credentials);
+      await sendVerificationEmail();
     } else return null;
   }
 

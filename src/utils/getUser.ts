@@ -16,5 +16,6 @@ export const getCurrentUser = async () => {
 export const authenticateUser = async () => {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/signin");
+  if (!user.emailVerified) redirect("/auth/verify-request");
   return user;
 };

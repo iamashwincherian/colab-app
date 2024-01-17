@@ -52,23 +52,25 @@ export default function SigninPage({ providers }: any) {
     e.preventDefault();
 
     setDisableSubmitButton(true);
-    const response = await signIn("credentials", {
+    await signIn("credentials", {
       email,
       password,
-      redirect: false,
+      redirect: true,
+      callbackUrl: "/",
     });
-    if (response?.ok && !response.error) {
-      toast({
-        description: "Logged in successfully!",
-      });
-      router.push("/");
-    } else {
-      toast({
-        description: "Email or Password is invalid!",
-        variant: "destructive",
-      });
-    }
-    setDisableSubmitButton(false);
+    // console.log("response", response);
+    // if (response?.ok && !response.error) {
+    //   toast({
+    //     description: "Logged in successfully!",
+    //   });
+    //   router.push("/");
+    // } else {
+    //   toast({
+    //     description: "Email or Password is invalid!",
+    //     variant: "destructive",
+    //   });
+    // }
+    // setDisableSubmitButton(false);
   };
 
   return (
