@@ -59,7 +59,7 @@ model VerificationToken {
   token   String   @unique
   expires DateTime
 
-  @@unique([userId, token])
+  @@unique([userId])
 }
 
 model Board {
