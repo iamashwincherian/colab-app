@@ -47,7 +47,6 @@ export function UserNav() {
     toast({
       description: "Logging you out",
     });
-    router.push("/");
   };
 
   const openProfile = () => {
