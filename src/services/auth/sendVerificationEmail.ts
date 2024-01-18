@@ -53,11 +53,19 @@ const sendEmail = (to: string, token: string) => {
   console.log("Email sent to:", to);
 };
 
-export default async function sendVerificationEmail(
-  forceSend: boolean = false
-) {
-  const user = await getCurrentUser();
-  if (!user) return;
+interface SendVerificationEmailProps {
+  forceSend?: boolean;
+  user?: User | null;
+}
+
+export default async function sendVerificationEmail({
+  forceSend = false,
+  user = null,
+}: SendVerificationEmailProps) {
+  if (!user) {
+    user = (await getCurrentUser()) as User;
+    if (!user) return;
+  }
 
   let token = null;
   let existingToken = await db.verificationToken.findUnique({

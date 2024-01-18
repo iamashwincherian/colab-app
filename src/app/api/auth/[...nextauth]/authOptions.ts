@@ -40,7 +40,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     redirect: async ({ baseUrl, url }) => {
-      // move this to a middleware
       const user = await getCurrentUser();
       if (user && !user.emailVerified) {
         return "/auth/verify-request";

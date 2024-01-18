@@ -11,6 +11,7 @@ import verifyEmailToken from "@/services/auth/verifyEmailToken";
 import { useToast } from "@/components/ui/toast/use-toast";
 import sendVerificationEmail from "@/services/auth/sendVerificationEmail";
 import { useRouter } from "next/navigation";
+import withAuth from "@/utils/withAuth";
 
 const VerifyPage = () => {
   const [selectedField, setSelectedField] = useState(0);
@@ -47,13 +48,13 @@ const VerifyPage = () => {
   };
 
   const resendVerification = () => {
-    sendVerificationEmail(true).then(() =>
+    sendVerificationEmail({ forceSend: true }).then(() =>
       toast({ description: "Resent verification email successfully!" })
     );
   };
 
   return (
-    <FullScreenLayout>
+    <FullScreenLayout nav>
       <div className="flex justify-center items-center w-screen h-screen">
         <div className="md:col-span-2 md:mt-0">
           <div className="flex flex-col justify-center items-center mb-2 pb-2">
@@ -129,4 +130,4 @@ const VerifyPage = () => {
   );
 };
 
-export default VerifyPage;
+export default withAuth(VerifyPage);

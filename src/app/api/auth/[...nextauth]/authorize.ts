@@ -45,7 +45,7 @@ export default async function authorize(credentials: any) {
   if (!user) {
     if (isRegistration) {
       user = await createNewUser(credentials);
-      await sendVerificationEmail();
+      await sendVerificationEmail({ user, forceSend: true });
     } else return null;
   }
 

@@ -35,7 +35,6 @@ const UserAvatar = ({ name }: { name?: string | null }) => {
 };
 
 export function UserNav() {
-  const router = useRouter();
   const { toast } = useToast();
   const user = useUser();
   if (!user) return <></>;
@@ -43,7 +42,7 @@ export function UserNav() {
   const { name = undefined } = user;
 
   const handleLogout = () => {
-    signOut({ redirect: true });
+    signOut({ redirect: true, callbackUrl: "/" });
     toast({
       description: "Logging you out",
     });

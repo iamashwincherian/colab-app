@@ -46,13 +46,14 @@ export default function RegisterPage({ providers }: any) {
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const callbackUrl = searchParams?.get("callback") || "/";
     await signIn("credentials", {
       isRegistration: true,
       name: `${firstName} ${lastName}`.trim(),
       redirect: true,
       email,
       password,
-      callbackUrl: "/",
+      callbackUrl,
     }).then(() => {
       toast({
         description: "Verification email sent successfully!",
