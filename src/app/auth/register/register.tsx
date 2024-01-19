@@ -20,22 +20,14 @@ type GoogleProvider = {
 
 export default function RegisterPage({ providers }: any) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { toast } = useToast();
   const [google, setGoogle] = useState<GoogleProvider>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastNmae] = useState("");
-
-  const checkForCallbackError = () => {
-    const error = searchParams?.get("error");
-    if (error === "Callback") {
-    }
-  };
-
-  useEffect(() => {
-    checkForCallbackError();
-  }, []);
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
   useEffect(() => {
     if (providers) {
@@ -45,20 +37,26 @@ export default function RegisterPage({ providers }: any) {
 
   const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (disableSubmitButton) return;
 
+    setDisableSubmitButton(true);
     const callbackUrl = searchParams?.get("callback") || "/";
-    await signIn("credentials", {
+    signIn("credentials", {
       isRegistration: true,
       name: `${firstName} ${lastName}`.trim(),
-      redirect: true,
+      redirect: false,
       email,
       password,
-      callbackUrl,
-    }).then(() => {
-      toast({
-        description: "Verification email sent successfully!",
-      });
-    });
+    })
+      .then((response) => {
+        if (!response) return;
+        if (response.error) {
+          toast({ description: "Registration Failed!" });
+        }
+        router.push(callbackUrl);
+      })
+      .catch(() => toast({ description: "Something went wrong!" }))
+      .finally(() => setDisableSubmitButton(false));
   };
 
   return (
@@ -142,7 +140,12 @@ export default function RegisterPage({ providers }: any) {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" size="full" className="my-2">
+                <Button
+                  type="submit"
+                  size="full"
+                  className="my-2"
+                  disabled={disableSubmitButton}
+                >
                   Register
                 </Button>
                 <Link href={"/auth/signin"}>

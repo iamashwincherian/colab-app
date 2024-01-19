@@ -50,21 +50,34 @@ export default function SigninPage({ providers }: any) {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (disableSubmitButton) return;
     setDisableSubmitButton(true);
 
     const callbackUrl = searchParams?.get("callback") || "/";
-    await signIn("credentials", {
+    signIn("credentials", {
       email,
       password,
-      redirect: true,
-      callbackUrl,
-    }).then(() => {
-      toast({
-        description: "Logged in successfully!",
-      });
-    });
-    setDisableSubmitButton(false);
+      redirect: false,
+    })
+      .then((response) => {
+        if (!response) return;
+        let errorMessage = null;
+
+        if (response.error) {
+          if (response.error === "INVALID_CREDENTIALS") {
+            errorMessage = "Invalid credentials!";
+          } else {
+            errorMessage = "Login failed!";
+          }
+        } else {
+          toast({
+            description: "Logged in successfully!",
+          });
+          router.push(callbackUrl);
+        }
+      })
+      .catch(() => toast({ description: "Something went wrong!" }))
+      .finally(() => setDisableSubmitButton(false));
   };
 
   return (

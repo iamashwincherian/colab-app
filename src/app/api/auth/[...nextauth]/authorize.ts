@@ -33,7 +33,8 @@ const createNewUser = async ({ name, email, password }: CredentialType) => {
 };
 
 export default async function authorize(credentials: any) {
-  if (!credentials) return null;
+  if (!credentials) throw new Error("INVALID_CREDENTIALS");
+
   const {
     email,
     password,
@@ -46,11 +47,11 @@ export default async function authorize(credentials: any) {
     if (isRegistration) {
       user = await createNewUser(credentials);
       await sendVerificationEmail({ user, forceSend: true });
-    } else return null;
+    } else throw new Error("INVALID_CREDENTIALS");
   }
 
   const passwordValid = await bcrypt.compare(password, user.hash || "");
-  if (!passwordValid) return null;
+  if (!passwordValid) throw new Error("INVALID_CREDENTIALS");
 
   return user;
 }
