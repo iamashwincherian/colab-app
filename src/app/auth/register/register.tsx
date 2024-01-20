@@ -10,9 +10,20 @@ import Logo from "../../../components/logo/logo";
 import GoogleButton from "../components/buttons/GoogleButton";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { registerCredentialSchema } from "@/app/api/auth/[...nextauth]/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 type GoogleProvider = {
   id: string;
@@ -23,11 +34,13 @@ export default function RegisterPage({ providers }: any) {
   const router = useRouter();
   const { toast } = useToast();
   const [google, setGoogle] = useState<GoogleProvider>(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastNmae] = useState("");
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
+
+  const form = useForm<z.infer<typeof registerCredentialSchema>>({
+    resolver: zodResolver(registerCredentialSchema),
+    defaultValues: { firstName: "", lastName: "", email: "", password: "" },
+    disabled: disableSubmitButton,
+  });
 
   useEffect(() => {
     if (providers) {
@@ -35,24 +48,28 @@ export default function RegisterPage({ providers }: any) {
     }
   }, [providers]);
 
-  const handleRegistration = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleRegistration = async () => {
     if (disableSubmitButton) return;
 
     setDisableSubmitButton(true);
     const callbackUrl = searchParams?.get("callback") || "/";
     signIn("credentials", {
+      firstName: form.getValues("firstName"),
+      lastName: form.getValues("lastName"),
+      email: form.getValues("email"),
+      password: form.getValues("password"),
       isRegistration: true,
-      name: `${firstName} ${lastName}`.trim(),
       redirect: false,
-      email,
-      password,
     })
       .then((response) => {
         if (!response) return;
         if (response.error) {
-          toast({ description: "Registration Failed!" });
+          return toast({ description: "Registration Failed!" });
         }
+        toast({
+          title: "Registered successfully!",
+          description: "Verification pin has been sent to your email id.",
+        });
         router.push(callbackUrl);
       })
       .catch(() => toast({ description: "Something went wrong!" }))
@@ -75,88 +92,104 @@ export default function RegisterPage({ providers }: any) {
               <small className="text-gray-400 ">Become a part of Colab</small>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleRegistration}>
-                <div className="mb-5">
-                  {google && <GoogleButton type="register" id={google.id} />}
-                </div>
-                <div className="flex items-center mb-3">
-                  <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
-                  <p className="mx-4 dark:text-gray-200">or</p>
-                  <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
-                </div>
-                <div className="flex gap-2 mb-3">
-                  <div>
-                    <Label htmlFor="email-address">First Name</Label>
-                    <Input
-                      id="first-name"
-                      type="text"
-                      name="first-name"
-                      autoComplete="first-name"
-                      value={firstName}
-                      placeholder={"John"}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="mt-2"
-                      required
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleRegistration)}>
+                  <div className="mb-5">
+                    {google && <GoogleButton type="register" id={google.id} />}
+                  </div>
+                  <div className="flex items-center mb-3">
+                    <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
+                    <p className="mx-4 dark:text-gray-200">or</p>
+                    <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
+                  </div>
+                  <div className="flex gap-2 mb-3">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              autoComplete="firstName"
+                              placeholder="John"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              autoComplete="lastName"
+                              placeholder="Doe"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="email-address">Last Name</Label>
-                    <Input
-                      id="last-name"
-                      type="text"
-                      name="last-name"
-                      autoComplete="last-name"
-                      value={lastName}
-                      placeholder={"Doe"}
-                      onChange={(e) => setLastNmae(e.target.value)}
-                      className="mt-2"
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <Label htmlFor="email-address">Email</Label>
-                  <Input
-                    id="email-address"
-                    type="text"
-                    name="email-address"
-                    autoComplete="email"
-                    placeholder="user@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem className="mt-3">
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            autoComplete="email"
+                            placeholder="user@example.com"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="mb-3">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
+                  <FormField
+                    control={form.control}
                     name="password"
-                    autoComplete="password"
-                    placeholder="••••••••"
-                    value={password}
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
+                    render={({ field }) => (
+                      <FormItem className="mt-3">
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="password"
+                            placeholder="••••••••"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <Button
-                  type="submit"
-                  size="full"
-                  className="my-2"
-                  disabled={disableSubmitButton}
-                >
-                  Register
-                </Button>
-                <Link href={"/auth/signin"}>
-                  <p className="text-sm text-center dark:text-gray-300">
-                    Already have an account?{" "}
-                    <span className="text-primary cursor-pointer hover:text-primary-dark">
-                      Login
-                    </span>
-                  </p>
-                </Link>
-              </form>
+                  <Button
+                    type="submit"
+                    size="full"
+                    className="my-4"
+                    disabled={disableSubmitButton}
+                  >
+                    Register
+                  </Button>
+                  <Link href={"/auth/signin"}>
+                    <p className="text-sm text-center dark:text-gray-300">
+                      Already have an account?{" "}
+                      <span className="text-primary cursor-pointer hover:text-primary-dark">
+                        Login
+                      </span>
+                    </p>
+                  </Link>
+                </form>
+              </Form>
             </CardContent>
           </Card>
         </div>

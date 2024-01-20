@@ -1,11 +1,14 @@
 import bcrypt from "bcrypt";
+
 import { db } from "@/server/db";
 import { User } from "@prisma/client";
 import createSampleBoardData from "@/services/boards/helpers/createSampleBoard";
 import sendVerificationEmail from "@/services/auth/sendVerificationEmail";
+import { loginCredentialSchema, registerCredentialSchema } from "./schemas";
 
 interface CredentialType {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   isRegistration?: boolean;
@@ -13,12 +16,17 @@ interface CredentialType {
 
 const SAMPLE_BOARD_NAME = "Getting Started";
 
-const createNewUser = async ({ name, email, password }: CredentialType) => {
+const createNewUser = async ({
+  firstName,
+  lastName,
+  email,
+  password,
+}: CredentialType) => {
   const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS));
   const hash = await bcrypt.hashSync(password, salt);
   const user = await db.user.create({
     data: {
-      name,
+      name: `${firstName} ${lastName}`.trim(),
       email,
       hash,
     },
@@ -41,7 +49,14 @@ export default async function authorize(credentials: any) {
     isRegistration = false,
   } = credentials as CredentialType;
 
-  let user: User | null = await db.user.findUnique({ where: { email } });
+  console.log("email", credentials);
+
+  const validation = isRegistration
+    ? registerCredentialSchema.safeParse(credentials)
+    : loginCredentialSchema.safeParse(credentials);
+  if (!validation.success) throw new Error(JSON.stringify(validation.error));
+
+  let user = (await db.user.findUnique({ where: { email } })) as User;
 
   if (!user) {
     if (isRegistration) {

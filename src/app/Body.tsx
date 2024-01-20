@@ -3,9 +3,7 @@
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 
-import { ThemeContextProvider } from "../contexts/ThemeContext";
 import { UserContextProvider } from "../contexts/UserContext";
-import { SettingsContextProvider } from "../contexts/SettingsContext";
 import { BoardContextProvider } from "../contexts/BoardContext";
 import { Toaster } from "@/components/ui/toast/toaster";
 import { ThemeProvider } from "@/providers/ThemeProvider";

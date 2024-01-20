@@ -7,13 +7,24 @@ import { signIn } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toast/use-toast";
 
 import FullScreenLayout from "@/components/layouts/FullScreenLayout";
 import GoogleButton from "@/app/auth/components/buttons/GoogleButton";
 import Logo from "@/components/logo/logo";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { loginCredentialSchema } from "@/app/api/auth/[...nextauth]/schemas";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 type GoogleProvider = {
   id: string;
@@ -24,23 +35,13 @@ export default function SigninPage({ providers }: any) {
   const router = useRouter();
   const { toast } = useToast();
   const [google, setGoogle] = useState<GoogleProvider>(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
-  const checkForCallbackError = () => {
-    const error = searchParams?.get("error");
-    if (error === "Callback") {
-      toast({
-        description: "Something went wrong with the authentication!",
-        variant: "destructive",
-      });
-    }
-  };
-
-  useEffect(() => {
-    checkForCallbackError();
-  }, []);
+  const form = useForm<z.infer<typeof loginCredentialSchema>>({
+    resolver: zodResolver(loginCredentialSchema),
+    defaultValues: { email: "", password: "" },
+    disabled: disableSubmitButton,
+  });
 
   useEffect(() => {
     if (providers) {
@@ -48,31 +49,28 @@ export default function SigninPage({ providers }: any) {
     }
   }, [providers]);
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     if (disableSubmitButton) return;
     setDisableSubmitButton(true);
+    form.clearErrors();
 
     const callbackUrl = searchParams?.get("callback") || "/";
     signIn("credentials", {
-      email,
-      password,
+      email: form.getValues("email"),
+      password: form.getValues("password"),
       redirect: false,
     })
       .then((response) => {
         if (!response) return;
-        let errorMessage = null;
 
         if (response.error) {
           if (response.error === "INVALID_CREDENTIALS") {
-            errorMessage = "Invalid credentials!";
+            toast({ description: "Email or password is invalid!" });
           } else {
-            errorMessage = "Login failed!";
+            toast({ description: "Login failed!" });
           }
         } else {
-          toast({
-            description: "Logged in successfully!",
-          });
+          toast({ description: "Logged in successfully!" });
           router.push(callbackUrl);
         }
       })
@@ -104,70 +102,71 @@ export default function SigninPage({ providers }: any) {
                 <p className="mx-4 dark:text-gray-200">or</p>
                 <div className="h-0.5 bg-gray-200 dark:bg-gray-600 w-full"></div>
               </div>
-              <form onSubmit={handleLogin}>
-                <div className="my-3">
-                  <Label
-                    htmlFor="email-address"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Email
-                  </Label>
-                  <Input
-                    id="email-address"
-                    type="text"
-                    name="email-address"
-                    autoComplete="email"
-                    placeholder="user@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="mt-2"
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(handleLogin)}>
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="text"
+                            autoComplete="email"
+                            placeholder="user@example.com"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="w-full">
-                  <Label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
+                  <FormField
+                    control={form.control}
                     name="password"
-                    autoComplete="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="mt-2"
+                    render={({ field }) => (
+                      <FormItem className="mt-3">
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="password"
+                            placeholder="••••••••"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
-                <div className="w-full text-right my-2">
-                  <a
-                    className="text-xs text-gray-400 hover:text-black dark:hover:text-white transition-all"
-                    href="#"
+                  <div className="w-full text-right my-2">
+                    <a
+                      className="text-xs text-gray-400 hover:text-black dark:hover:text-white transition-all"
+                      href="#"
+                    >
+                      Forgot password?
+                    </a>
+                  </div>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    size="full"
+                    className="my-2"
+                    disabled={disableSubmitButton}
                   >
-                    Forgot password?
-                  </a>
-                </div>
-                <Button
-                  type="submit"
-                  variant="default"
-                  size="full"
-                  className="my-2"
-                  disabled={disableSubmitButton}
-                >
-                  Login
-                </Button>
+                    Login
+                  </Button>
 
-                <Link href={"/auth/register"}>
-                  <p className="text-sm text-center dark:text-gray-300">
-                    Don’t have an account yet?{" "}
-                    <span className="text-primary cursor-pointer hover:text-primary-dark">
-                      Sign up
-                    </span>
-                  </p>
-                </Link>
-              </form>
+                  <Link href={"/auth/register"}>
+                    <p className="text-sm text-center dark:text-gray-300">
+                      Don’t have an account yet?{" "}
+                      <span className="text-primary cursor-pointer hover:text-primary-dark">
+                        Sign up
+                      </span>
+                    </p>
+                  </Link>
+                </form>
+              </Form>
             </CardContent>
           </Card>
         </div>
