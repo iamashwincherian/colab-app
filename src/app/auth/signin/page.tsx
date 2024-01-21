@@ -1,25 +1,34 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { getProviders } from "next-auth/react";
-import SignInPage from "./signInPage";
 
-interface ProviderType {
-  credentials: {
-    name: string;
-  };
-}
+import FullScreenLayout from "@/components/layouts/FullScreenLayout";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Logo from "@/components/logo/logo";
+import SigninForm from "../_forms/SigninForm";
 
-export default function SignIn() {
-  const [providers, setProviders] = useState<ProviderType | null>(null);
+export default async function SigninPage() {
+  const providers = await getProviders();
 
-  const getProviderData = async () => {
-    setProviders(await getProviders());
-  };
-
-  useEffect(() => {
-    getProviderData();
-  }, []);
-
-  return <SignInPage providers={providers} />;
+  return (
+    <FullScreenLayout>
+      <div className="flex justify-center items-center w-screen h-screen">
+        <div className="md:col-span-2 md:mt-0">
+          <div className="flex flex-col justify-center items-center mb-2 pb-2">
+            <Logo />
+            <p className="text-lg my-4 font-semibold dark:text-gray-300">
+              Welcome to Colab
+            </p>
+          </div>
+          <Card className="w-[400px]">
+            <CardHeader className="pb-3">
+              <p className="text-xl font-regular">Login</p>
+              <small className="text-gray-400 ">Welcome back</small>
+            </CardHeader>
+            <CardContent>
+              <SigninForm providers={providers} />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </FullScreenLayout>
+  );
 }
