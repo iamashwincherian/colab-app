@@ -49,8 +49,6 @@ export default async function authorize(credentials: any) {
     isRegistration = false,
   } = credentials as CredentialType;
 
-  console.log("email", credentials);
-
   const validation = isRegistration
     ? registerCredentialSchema.safeParse(credentials)
     : loginCredentialSchema.safeParse(credentials);

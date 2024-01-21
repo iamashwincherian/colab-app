@@ -18,6 +18,5 @@ export default async function createList({ name, boardId }: CreateListTypes) {
   await db.list.create({
     data: { name, boardId, userId, position: nextPosition },
   });
-  console.log("boardId", boardId);
   revalidatePath(`/boards/${boardId}`);
 }
