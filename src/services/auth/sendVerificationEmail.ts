@@ -50,7 +50,10 @@ const sendEmail = (to: string, token: string) => {
     text: `Welcome to Colab. Use this PIN to verify your email Id. PIN : ${token}`,
     priority: "high",
   });
-  console.log("Email sent to:", to);
+
+  if (process.env.NODE_ENV === "development") {
+    console.log(`Email sent to: ${to}, with PIN: ${token}`);
+  }
 };
 
 interface SendVerificationEmailProps {

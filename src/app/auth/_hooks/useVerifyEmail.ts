@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 
 import { useToast } from "@/components/ui/toast/use-toast";
@@ -10,6 +10,7 @@ import verifyEmailToken from "@/services/auth/verifyEmailToken";
 export default function useVerifyEmail() {
   const { toast } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const otpRefs = [
     useRef<HTMLInputElement>(null),
@@ -42,11 +43,13 @@ export default function useVerifyEmail() {
   const verifyOtp = (data: z.infer<typeof verifyEmailSchema>) => {
     const { otp1, otp2, otp3, otp4 } = data;
     const otp = otp1.concat(otp2).concat(otp3).concat(otp4);
+    const callbackUrl = searchParams?.get("callback") || "/";
+
     verifyEmailToken(otp)
       .then((verified: boolean) => {
         if (verified) {
           toast({ description: "Email verified successfully!" });
-          router.push("/");
+          router.push(callbackUrl);
         } else {
           toast({ description: "Incorrect PIN" });
         }

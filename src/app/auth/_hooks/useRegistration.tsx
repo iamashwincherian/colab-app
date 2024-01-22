@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { UseFormReturn } from "react-hook-form";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { useToast } from "@/components/ui/toast/use-toast";
 
@@ -18,7 +18,6 @@ type FormType = UseFormReturn<
 >;
 
 export default function useRegistration() {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -28,7 +27,6 @@ export default function useRegistration() {
     if (formDisabled) return;
 
     setFormDisabled(true);
-    const callbackUrl = searchParams?.get("callback") || "/";
     signIn("credentials", {
       firstName: form.getValues("firstName"),
       lastName: form.getValues("lastName"),
@@ -46,7 +44,7 @@ export default function useRegistration() {
           title: "Registered successfully!",
           description: "Verification pin has been sent to your email id.",
         });
-        router.push(callbackUrl);
+        router.push("/auth/verify-email");
       })
       .catch(() => toast({ description: "Something went wrong!" }))
       .finally(() => setFormDisabled(false));
