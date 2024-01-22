@@ -12,6 +12,8 @@ export default async function BoardPage({ params: { boardId } }: BoardProps) {
   await authenticateUser();
   const board = await BoardService.getData(boardId);
 
+  console.log("loaded");
+
   return (
     <FullScreenLayout nav>
       {board && (

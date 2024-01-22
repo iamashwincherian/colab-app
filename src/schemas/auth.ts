@@ -22,3 +22,7 @@ export const verifyEmailSchema = z.object({
   otp3: z.string().max(1),
   otp4: z.string().max(1),
 });
+
+export const passwordResetSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+});

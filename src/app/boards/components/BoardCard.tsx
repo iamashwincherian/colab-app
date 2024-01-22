@@ -19,7 +19,7 @@ export default function BoardCard({ board }: BoardCardProps) {
   const router = useRouter();
 
   const openBoard = () => {
-    router.replace(`/boards/${id}`);
+    router.push(`/boards/${id}`);
   };
 
   return (

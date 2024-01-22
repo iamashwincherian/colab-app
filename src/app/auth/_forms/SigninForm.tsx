@@ -84,12 +84,11 @@ export default function SigninForm({ providers }: SigninFormPropType) {
             )}
           />
           <div className="w-full text-right my-2">
-            <a
-              className="text-xs text-gray-400 hover:text-black dark:hover:text-white transition-all"
-              href="#"
-            >
-              Forgot password?
-            </a>
+            <Link href={"/auth/password-reset"}>
+              <p className="text-xs text-gray-400 hover:text-black dark:hover:text-white transition-all">
+                Forgot password?
+              </p>
+            </Link>
           </div>
           <Button
             type="submit"
