@@ -18,6 +18,6 @@ export const authenticateUser = async () => {
   const user = await getCurrentUser();
   const callbackUrl = `?callback=${headers().get("x-url")}`;
   if (!user) redirect("/auth/signin" + callbackUrl);
-  if (!user.emailVerified) redirect("/auth/verify-request" + callbackUrl);
+  if (!user.emailVerified) redirect("/auth/verify-email" + callbackUrl);
   return user;
 };

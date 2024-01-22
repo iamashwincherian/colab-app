@@ -4,7 +4,10 @@ import { db } from "@/server/db";
 import { User } from "@prisma/client";
 import createSampleBoardData from "@/services/boards/helpers/createSampleBoard";
 import sendVerificationEmail from "@/services/auth/sendVerificationEmail";
-import { loginCredentialSchema, registerCredentialSchema } from "./schemas";
+import {
+  loginCredentialSchema,
+  registerCredentialSchema,
+} from "../../../../schemas/auth";
 
 interface CredentialType {
   firstName: string;

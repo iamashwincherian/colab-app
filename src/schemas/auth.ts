@@ -15,3 +15,10 @@ export const registerCredentialSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
 });
+
+export const verifyEmailSchema = z.object({
+  otp1: z.string().max(1),
+  otp2: z.string().max(1),
+  otp3: z.string().max(1),
+  otp4: z.string().max(1),
+});

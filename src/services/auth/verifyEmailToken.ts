@@ -2,6 +2,11 @@
 
 import { db } from "@/server/db";
 import { getCurrentUser } from "@/utils/getUser";
+import { z } from "zod";
+
+const otpSchema = z
+  .string()
+  .length(4, { message: "PIN should contain 4 digits" });
 
 export default async function verifyEmailToken(
   token: string
@@ -9,6 +14,7 @@ export default async function verifyEmailToken(
   const user = await getCurrentUser();
   if (!user) return false;
 
+  otpSchema.parse(token);
   const existingToken = await db.verificationToken.findFirst({
     where: { token, user },
   });

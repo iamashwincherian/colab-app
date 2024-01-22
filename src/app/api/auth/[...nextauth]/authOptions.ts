@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
     redirect: async ({ baseUrl, url }) => {
       const user = await getCurrentUser();
       if (user && !user.emailVerified) {
-        return "/auth/verify-request";
+        return "/auth/verify-email";
       }
 
       if (url.startsWith("/")) return `${baseUrl}${url}`;
@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
     newUser: "/",
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=
-    verifyRequest: "/auth/verify-request", // (used for check email message)
+    verifyRequest: "/auth/verify-email", // (used for check email message)
   },
 };
 

@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, Fragment } from "react";
+import { Fragment } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 import { BuiltInProviderType } from "next-auth/providers";
 import { ClientSafeProvider, LiteralUnion, signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import GoogleButton from "../_components/GoogleButton";
-import { loginCredentialSchema } from "@/app/api/auth/[...nextauth]/schemas";
+import { loginCredentialSchema } from "@/schemas/auth";
 import useSignin from "../_hooks/useSignin";
 
 interface SigninFormPropType {

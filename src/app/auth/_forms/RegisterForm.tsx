@@ -19,7 +19,7 @@ import {
 import GoogleButton from "../_components/GoogleButton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { registerCredentialSchema } from "@/app/api/auth/[...nextauth]/schemas";
+import { registerCredentialSchema } from "@/schemas/auth";
 import useRegistratiom from "../_hooks/useRegistration";
 
 interface RegisterFormPropType {
