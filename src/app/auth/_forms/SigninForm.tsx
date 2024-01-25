@@ -3,7 +3,7 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import { BuiltInProviderType } from "next-auth/providers";
-import { ClientSafeProvider, LiteralUnion, signIn } from "next-auth/react";
+import { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -99,15 +99,6 @@ export default function SigninForm({ providers }: SigninFormPropType) {
           >
             Login
           </Button>
-
-          <Link href={"/auth/register"}>
-            <p className="text-sm text-center dark:text-gray-300">
-              Don’t have an account yet?{" "}
-              <span className="text-primary cursor-pointer hover:text-primary-dark">
-                Sign up
-              </span>
-            </p>
-          </Link>
         </form>
       </Form>
     </Fragment>

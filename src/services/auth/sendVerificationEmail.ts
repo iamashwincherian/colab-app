@@ -5,11 +5,10 @@ import { User } from "@prisma/client";
 import { db } from "@/server/db";
 import moment from "moment";
 import { getCurrentUser } from "@/utils/getUser";
+import { TEST_EMAIL_ID } from "@/utils/constants";
 
-const TEST_EMAIL_ID = "ashwincherian.spam@gmail.com";
-
-const isExpired = (date1: Date) => {
-  return moment(date1).isAfter(moment());
+const isExpired = (date: Date) => {
+  return moment(date).isAfter(moment());
 };
 
 export const createVerificationToken = async (user: User) => {
@@ -24,7 +23,7 @@ export const createVerificationToken = async (user: User) => {
 
   if (existingToken) {
     await db.verificationToken.update({
-      where: { userId: user.id },
+      where: { userId: user.id, token: existingToken.token },
       data: { token, expires },
     });
   } else {
@@ -71,7 +70,7 @@ export default async function sendVerificationEmail({
   }
 
   let token = null;
-  let existingToken = await db.verificationToken.findUnique({
+  let existingToken = await db.verificationToken.findFirst({
     where: { userId: user.id },
   });
 

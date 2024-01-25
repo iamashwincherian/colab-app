@@ -47,7 +47,9 @@ export default function useSignin() {
           router.push(callbackUrl);
         }
       })
-      .catch(() => toast({ description: "Something went wrong!" }))
+      .catch(() => {
+        toast({ description: "Something went wrong!" });
+      })
       .finally(() => setFormDisabled(false));
   };
 

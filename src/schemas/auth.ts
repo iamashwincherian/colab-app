@@ -23,6 +23,12 @@ export const verifyEmailSchema = z.object({
   otp4: z.string().max(1),
 });
 
-export const passwordResetSchema = z.object({
+export const passwordResetEmailSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
+});
+
+export const passwordResetSchema = z.object({
+  password: z
+    .string()
+    .min(8, { message: "Should contain atleast 8 characters" }),
 });
