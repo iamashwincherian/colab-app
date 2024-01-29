@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/server/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -19,12 +21,12 @@ export const getCurrentUser = async () => {
 export const authenticateUser = async () => {
   const user = await getCurrentUser();
   const xURL = headers().get("x-url") || "";
+  const isExcludedUrl = callbackExceptionUrls.includes(xURL);
 
-  const callbackUrl = !callbackExceptionUrls.includes(xURL)
-    ? `?callback=${xURL}`
-    : "";
+  const callbackUrl = !isExcludedUrl && xURL !== "" ? `?callback=${xURL}` : "";
 
   if (!user) redirect("/auth/signin" + callbackUrl);
-  if (!user.emailVerified) redirect("/auth/verify-email" + callbackUrl);
+  if (!user.emailVerified)
+    !isExcludedUrl && redirect("/auth/verify-email" + callbackUrl);
   return user;
 };

@@ -5,7 +5,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 
 import { db } from "@/server/db";
 import authorize from "@/app/api/auth/[...nextauth]/authorize";
-import { getCurrentUser } from "@/utils/getUser";
+import { authenticateUser, getCurrentUser } from "@/utils/getUser";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
@@ -42,7 +42,9 @@ export const authOptions: NextAuthOptions = {
     redirect: async ({ baseUrl, url }) => {
       const user = await getCurrentUser();
       if (user && !user.emailVerified) {
-        return "/auth/verify-email";
+        if (url !== "/auth/verify-email") {
+          return "/auth/verify-email";
+        }
       }
 
       if (url.startsWith("/")) return `${baseUrl}${url}`;
