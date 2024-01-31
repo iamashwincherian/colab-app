@@ -5,8 +5,10 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 
 import { db } from "@/server/db";
 import authorize from "@/app/api/auth/[...nextauth]/authorize";
-import { authenticateUser, getCurrentUser } from "@/utils/getUser";
+import { getCurrentUser } from "@/utils/getUser";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+
+const VERIFY_EMAIL_URL = "/auth/verify-email";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET,
@@ -42,8 +44,8 @@ export const authOptions: NextAuthOptions = {
     redirect: async ({ baseUrl, url }) => {
       const user = await getCurrentUser();
       if (user && !user.emailVerified) {
-        if (url !== "/auth/verify-email") {
-          return "/auth/verify-email";
+        if (url !== VERIFY_EMAIL_URL) {
+          return VERIFY_EMAIL_URL;
         }
       }
 
@@ -58,7 +60,7 @@ export const authOptions: NextAuthOptions = {
     newUser: "/",
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=
-    verifyRequest: "/auth/verify-email", // (used for check email message)
+    verifyRequest: VERIFY_EMAIL_URL, // (used for check email message)
   },
 };
 
