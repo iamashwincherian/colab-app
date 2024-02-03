@@ -8,5 +8,4 @@ export default async function updateBoardName(name: string, boardId: number) {
   if (!board) return;
 
   await db.board.update({ where: { id: boardId }, data: { name } });
-  revalidatePath(`/boards/${boardId}`);
 }

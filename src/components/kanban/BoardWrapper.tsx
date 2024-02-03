@@ -22,6 +22,7 @@ interface BoardWrapperProps {
 export default function BoardWrapper({ board, children }: BoardWrapperProps) {
   const { id: boardId, name } = board;
   const { toast } = useToast();
+  console.log("board", name);
 
   const handleCreateBoard = () => {
     openModal(
@@ -76,7 +77,7 @@ export default function BoardWrapper({ board, children }: BoardWrapperProps) {
         </div>
       </div>
 
-      {children}
+      {/* {children} */}
     </div>
   );
 }
